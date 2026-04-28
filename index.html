@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CCMA Clinical Mastery Lab - Working Full Version</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070816;--panel:rgba(255,255,255,.10);--panel2:rgba(255,255,255,.16);--ink:#f8fbff;--muted:#b9c4dc;--line:rgba(255,255,255,.18);--violet:#a855f7;--pink:#ec4899;--cyan:#22d3ee;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--blue:#3b82f6;--radius:24px;--shadow:0 24px 80px rgba(0,0,0,.35)}
+*{box-sizing:border-box;margin:0;padding:0} body{font-family:'DM Sans',system-ui,sans-serif;background:radial-gradient(circle at 15% 10%,rgba(168,85,247,.38),transparent 28%),radial-gradient(circle at 90% 10%,rgba(34,211,238,.26),transparent 25%),linear-gradient(135deg,#050611,#10172a 55%,#050611);color:var(--ink);min-height:100vh;overflow-x:hidden} h1,h2,h3{font-family:'Playfair Display',serif} .app{position:relative;z-index:2} .orb{position:fixed;border-radius:999px;filter:blur(2px);opacity:.28;z-index:0;animation:float 16s infinite alternate ease-in-out} @keyframes float{from{transform:translateY(25px) rotate(0)}to{transform:translateY(-35px) rotate(25deg)}}
+header{position:sticky;top:0;z-index:20;background:rgba(5,6,17,.78);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)} .hdr{max-width:1280px;margin:auto;padding:16px 20px;display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap} .brand{display:flex;gap:12px;align-items:center} .logo{width:52px;height:52px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,var(--violet),var(--cyan));font-weight:900;box-shadow:0 0 32px rgba(34,211,238,.42)} .title{font-size:clamp(1.1rem,2vw,1.55rem);font-weight:900} .sub{font-size:.78rem;color:var(--muted)} .stats{display:flex;gap:8px;flex-wrap:wrap} .pill{border:1px solid var(--line);background:rgba(255,255,255,.08);border-radius:999px;padding:7px 13px;font-size:.78rem;font-weight:900} .pill b{color:#fde68a}
+nav{max-width:1280px;margin:auto;padding:0 20px 14px;display:flex;gap:8px;overflow-x:auto} .tab{white-space:nowrap;border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--muted);border-radius:999px;padding:9px 14px;font-size:.78rem;font-weight:900;cursor:pointer;transition:.2s} .tab:hover,.tab.active{background:linear-gradient(135deg,rgba(168,85,247,.45),rgba(34,211,238,.3));color:#fff;transform:translateY(-1px)}
+main{max-width:1280px;margin:auto;padding:28px 20px 80px} .section{display:none;animation:rise .35s ease} .section.active{display:block} @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}} .hero,.card{border:1px solid var(--line);background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.06));box-shadow:var(--shadow);border-radius:var(--radius);backdrop-filter:blur(16px)} .hero{padding:38px;position:relative;overflow:hidden} .hero:before{content:'';position:absolute;inset:-2px;background:linear-gradient(120deg,transparent,rgba(34,211,238,.18),transparent);transform:translateX(-100%);animation:sheen 5s infinite} @keyframes sheen{40%,100%{transform:translateX(100%)}} .kicker{display:inline-block;background:linear-gradient(135deg,var(--pink),var(--violet));border-radius:999px;padding:7px 14px;font-size:.76rem;font-weight:900;margin-bottom:14px} .hero h1{font-size:clamp(2rem,5vw,4.4rem);line-height:.98;margin-bottom:14px} .hero p,.card p,.mini{color:var(--muted);line-height:1.75} .hero p{max-width:880px;font-size:1.02rem} .btnrow{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px} button{font-family:inherit} .btn{border:0;border-radius:16px;padding:13px 20px;font-weight:900;cursor:pointer;transition:.18s;color:#fff;background:linear-gradient(135deg,var(--violet),var(--blue));box-shadow:0 12px 30px rgba(59,130,246,.25)} .btn:hover{transform:translateY(-2px) scale(1.01)} .btn.alt{background:rgba(255,255,255,.08);border:1px solid var(--line);box-shadow:none} .btn.green{background:linear-gradient(135deg,var(--green),#0ea5e9)} .btn.red{background:linear-gradient(135deg,var(--red),var(--pink))}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px} @media(max-width:880px){.grid{grid-template-columns:1fr}} .card{padding:20px;margin-bottom:16px} .card h3{font-size:1.12rem;margin-bottom:8px} .topic{display:inline-block;border-radius:999px;padding:5px 11px;font-size:.72rem;font-weight:900;margin-bottom:10px} .t-vitals{background:rgba(34,211,238,.18);color:#67e8f9} .t-law{background:rgba(248,113,113,.18);color:#fca5a5} .t-lab{background:rgba(34,197,94,.18);color:#86efac} .t-admin{background:rgba(245,158,11,.18);color:#fcd34d} .t-pharm{background:rgba(236,72,153,.18);color:#f9a8d4} .t-general{background:rgba(168,85,247,.18);color:#d8b4fe}
+.builderGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:16px} .flip{perspective:1000px;min-height:250px;cursor:pointer} .flipIn{position:relative;width:100%;height:100%;min-height:250px;transition:.65s;transform-style:preserve-3d} .flip.on .flipIn{transform:rotateY(180deg)} .front,.back{position:absolute;inset:0;border-radius:22px;padding:18px;backface-visibility:hidden;border:1px solid var(--line);background:linear-gradient(135deg,rgba(255,255,255,.15),rgba(255,255,255,.06));overflow:auto} .back{transform:rotateY(180deg);background:linear-gradient(135deg,rgba(34,211,238,.18),rgba(168,85,247,.14))}
+.qbox{display:grid;grid-template-columns:1.05fr .95fr;gap:18px} @media(max-width:920px){.qbox{grid-template-columns:1fr}} .questionText{font-size:1.18rem;line-height:1.65;font-weight:900} .word{cursor:pointer;padding:2px 3px;border-radius:6px} .word:hover{background:rgba(255,255,255,.12)} .word.mark{background:rgba(250,204,21,.25);box-shadow:inset 0 -2px 0 #facc15} .option{display:block;width:100%;text-align:left;margin:9px 0;padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.08);color:#fff;cursor:pointer;font-size:.95rem;transition:.18s} .option:hover:not(:disabled){transform:translateX(6px);border-color:rgba(34,211,238,.55);background:rgba(34,211,238,.10)} .option.correct{border-color:var(--green);background:rgba(34,197,94,.22)} .option.wrong{border-color:var(--red);background:rgba(239,68,68,.18)} .feedback{display:none;margin-top:14px;border-radius:18px;padding:16px;background:rgba(255,255,255,.08);border-left:5px solid var(--cyan);line-height:1.75;color:#e5edff} .feedback.show{display:block} .bar{height:10px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden} .fill{height:100%;width:0%;background:linear-gradient(90deg,var(--pink),var(--cyan));transition:.35s} .dash{display:grid;grid-template-columns:repeat(4,1fr);gap:14px} @media(max-width:760px){.dash{grid-template-columns:1fr 1fr}} .metric{text-align:center;border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.08);padding:18px} .metric b{font-size:2rem;color:#fde68a} .examList{display:grid;gap:14px} .mini{font-size:.86rem;margin-top:6px} .timer{color:#fde68a;font-weight:900;font-size:1.8rem} label.option input{margin-right:8px} .note{border-left:4px solid var(--amber);background:rgba(245,158,11,.12);padding:14px;border-radius:16px;color:#fde68a;margin:16px 0} .examTop{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.examBadge{border:1px solid var(--line);background:rgba(255,255,255,.10);border-radius:999px;padding:8px 12px;font-weight:900;color:#fde68a}.examFeedback{display:none;margin-top:14px;padding:16px;border-radius:18px;border-left:5px solid var(--cyan);background:rgba(255,255,255,.10);line-height:1.7}.examFeedback.show{display:block}.examFeedback.good{border-left-color:var(--green);background:rgba(34,197,94,.16)}.examFeedback.bad{border-left-color:var(--red);background:rgba(239,68,68,.15)}.answerReveal{font-weight:900;color:#fde68a}.autoNext{font-size:.82rem;color:var(--muted);margin-top:8px}
+
+/* segmented concept builder upgrades */
+.segmentWrap{display:grid;gap:18px;margin-top:18px}.segBlock{border:1px solid var(--line);border-radius:28px;background:linear-gradient(135deg,rgba(255,255,255,.13),rgba(255,255,255,.05));box-shadow:var(--shadow);overflow:hidden}.segHead{padding:20px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}.segTitle{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:900}.segTitle span{display:inline-block;border-bottom:3px solid currentColor;padding-bottom:3px}.segNote{color:var(--muted);font-size:.86rem;max-width:680px;line-height:1.65;margin-top:6px}.segMeta{border:1px solid var(--line);background:rgba(255,255,255,.08);border-radius:999px;padding:7px 12px;font-size:.76rem;font-weight:900}.segGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;padding:18px}.seg-vitals{--seg:#22d3ee;--segSoft:rgba(34,211,238,.16)}.seg-clinical{--seg:#22c55e;--segSoft:rgba(34,197,94,.15)}.seg-law{--seg:#fb7185;--segSoft:rgba(251,113,133,.15)}.seg-admin{--seg:#f59e0b;--segSoft:rgba(245,158,11,.15)}.seg-comm{--seg:#a855f7;--segSoft:rgba(168,85,247,.15)}.seg-pharm{--seg:#ec4899;--segSoft:rgba(236,72,153,.15)}.seg-body{--seg:#38bdf8;--segSoft:rgba(56,189,248,.14)}.seg-general{--seg:#c084fc;--segSoft:rgba(192,132,252,.14)}.segBlock{box-shadow:0 18px 55px color-mix(in srgb,var(--seg) 16%, transparent)}.segHead{background:linear-gradient(135deg,var(--segSoft),rgba(255,255,255,.04))}.flip.topicTone .front{border-top:5px solid var(--seg);background:linear-gradient(145deg,var(--segSoft),rgba(255,255,255,.07))}.flip.topicTone .back{border-top:5px solid var(--seg);background:linear-gradient(145deg,rgba(255,255,255,.14),var(--segSoft))}.lessonTitle{color:var(--seg);font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;font-weight:900;margin-bottom:8px}.focusLine{margin:10px 0;padding:10px 12px;border-radius:14px;background:rgba(0,0,0,.16);border-left:4px solid var(--seg);font-size:.88rem}.focusLine b{color:#fff}.focusLine u{text-decoration-color:var(--seg);text-decoration-thickness:3px;text-underline-offset:3px}.checkBox{margin-top:12px;padding:12px;border-radius:16px;background:rgba(255,255,255,.10);border:1px solid var(--line)}.checkBox h4{font-size:.86rem;color:#fff;margin-bottom:8px}.checkBtn{border:1px solid var(--line);background:rgba(255,255,255,.10);color:#fff;border-radius:999px;padding:7px 11px;font-weight:900;margin:4px;cursor:pointer}.checkBtn:hover{background:var(--segSoft);border-color:var(--seg)}.checkResult{font-size:.82rem;color:#dbeafe;margin-top:8px;display:none}.checkResult.show{display:block}.timeChip{display:inline-flex;gap:6px;align-items:center;border:1px solid rgba(253,230,138,.35);background:rgba(245,158,11,.12);color:#fde68a;border-radius:999px;padding:6px 11px;font-weight:900;font-size:.78rem}.speedBox{margin-top:12px;display:grid;gap:8px}.speedRow{display:flex;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:rgba(255,255,255,.06);font-size:.86rem}.footerRights{text-align:center;color:var(--muted);font-size:.82rem;padding:18px 20px 35px}.footerRights b{color:#fff}
+
+
+
+/* FINAL VISUAL + ADAPTIVE REMEDIATION UPGRADES */
+header{background:linear-gradient(135deg,rgba(2,6,23,.96),rgba(15,23,42,.94),rgba(30,41,59,.92));box-shadow:0 14px 48px rgba(0,0,0,.42)}.hdr{padding:20px 22px}.brand{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.20);border-radius:24px;padding:12px 16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 16px 40px rgba(0,0,0,.24)}.title{color:#fff;letter-spacing:.01em;text-shadow:0 2px 16px rgba(0,0,0,.48)}.sub{color:#e2e8f0;font-weight:700}.stats .pill,.pill{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.28);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}nav{padding-top:2px;padding-bottom:18px}.tab{background:rgba(255,255,255,.12);color:#f8fafc;border-color:rgba(255,255,255,.24)}.tab:hover,.tab.active{color:#fff;box-shadow:0 10px 30px rgba(34,211,238,.18)}.hero{background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.11)),radial-gradient(circle at 15% 20%,rgba(34,211,238,.24),transparent 35%),radial-gradient(circle at 85% 15%,rgba(236,72,153,.22),transparent 34%);border-color:rgba(255,255,255,.30);box-shadow:0 28px 90px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.18)}.hero h1{color:#fff;text-shadow:0 3px 24px rgba(0,0,0,.55)}.hero p,.hero .mini{color:#f1f5f9;font-weight:650;max-width:940px}.hero .mini b{color:#fff}.grid>.card{background:linear-gradient(145deg,rgba(255,255,255,.20),rgba(255,255,255,.08));border-color:rgba(255,255,255,.26)}.grid>.card h3{color:#fff;font-size:1.22rem}.grid>.card p{color:#e2e8f0;font-weight:600}.segmentWrap{gap:26px}.segBlock{position:relative;border:1px solid color-mix(in srgb,var(--seg) 52%, rgba(255,255,255,.18));background:linear-gradient(140deg,color-mix(in srgb,var(--seg) 22%, transparent),rgba(255,255,255,.08)),radial-gradient(circle at top left,color-mix(in srgb,var(--seg) 32%, transparent),transparent 42%),rgba(255,255,255,.07);box-shadow:0 22px 70px color-mix(in srgb,var(--seg) 22%, transparent),inset 0 1px 0 rgba(255,255,255,.20)}.segBlock::before{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(120deg,transparent,rgba(255,255,255,.16),transparent);transform:translateX(-120%);animation:zoneSheen 7s infinite}@keyframes zoneSheen{45%,100%{transform:translateX(120%)}}.segHead{min-height:128px;padding:28px 30px;background:linear-gradient(135deg,color-mix(in srgb,var(--seg) 42%, rgba(255,255,255,.06)),rgba(255,255,255,.08)),radial-gradient(circle at 85% 20%,rgba(255,255,255,.22),transparent 30%)}.segTitle{font-size:clamp(1.45rem,2.7vw,2.15rem);color:#fff;letter-spacing:.01em;text-shadow:0 3px 20px rgba(0,0,0,.45)}.segTitle span{border-bottom:4px solid var(--seg);text-decoration:none;padding-bottom:6px}.segNote{color:#f8fafc;font-weight:650;font-size:.96rem}.segMeta{color:#fff;background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.32);box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}.flip.topicTone{min-height:285px}.flip.topicTone .flipIn{min-height:285px}.flip.topicTone .front,.flip.topicTone .back{background:linear-gradient(150deg,color-mix(in srgb,var(--seg) 21%, rgba(255,255,255,.12)),rgba(255,255,255,.08));border-color:color-mix(in srgb,var(--seg) 44%, rgba(255,255,255,.16));box-shadow:0 16px 42px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.13)}.flip.topicTone h3{color:#fff;font-size:1.18rem;letter-spacing:.01em}.flip.topicTone p{color:#eaf2ff;font-weight:560}.lessonTitle{color:#fff;display:inline-block;background:color-mix(in srgb,var(--seg) 42%, rgba(255,255,255,.08));border:1px solid color-mix(in srgb,var(--seg) 60%, rgba(255,255,255,.14));border-radius:999px;padding:5px 11px;margin:6px 0 10px}.focusLine{background:rgba(2,6,23,.34);border-left-color:var(--seg);color:#f8fafc;box-shadow:inset 0 1px 0 rgba(255,255,255,.07)}.reviewBox{margin-top:16px;padding:16px;border-radius:18px;background:linear-gradient(135deg,rgba(34,211,238,.18),rgba(168,85,247,.14));border:1px solid rgba(255,255,255,.22);border-left:5px solid var(--cyan);box-shadow:0 12px 35px rgba(0,0,0,.22)}.reviewBox h4{color:#fff;font-size:.98rem;margin-bottom:6px}.reviewBox p{color:#eaf2ff;line-height:1.65;margin-bottom:10px}.btn.small{padding:9px 13px;border-radius:14px;font-size:.82rem}.cardSpotlight{animation:cardSpotlight 1.8s ease;outline:3px solid var(--seg);outline-offset:5px}@keyframes cardSpotlight{0%{box-shadow:0 0 0 rgba(255,255,255,0)}45%{box-shadow:0 0 42px color-mix(in srgb,var(--seg) 58%, transparent),0 0 0 10px color-mix(in srgb,var(--seg) 18%, transparent)}100%{box-shadow:0 16px 42px rgba(0,0,0,.20)}}.speedBox .speedRow b{color:#fff}.footerRights{border-top:1px solid rgba(255,255,255,.14);margin-top:24px}
+
+
+.legalDistinctions{grid-column:1/-1;margin:0 18px 18px;padding:18px 20px;border-radius:22px;background:linear-gradient(135deg,rgba(251,113,133,.20),rgba(168,85,247,.16));border:1px solid rgba(255,255,255,.24);border-left:6px solid #fb7185;box-shadow:0 18px 55px rgba(251,113,133,.13)}
+.legalDistinctions h3{color:#fff;font-family:'Playfair Display',serif;margin-bottom:10px}.legalDistinctions .distGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}.legalDistinctions .distItem{background:rgba(2,6,23,.26);border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:12px;color:#eaf2ff;font-size:.88rem;line-height:1.65}.legalDistinctions b{color:#fff}
+.directLegalTag{display:inline-block;margin-left:6px;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);font-size:.68rem;color:#fff;font-weight:900}
+
+.studyGrid{display:grid;gap:8px;margin:10px 0}.studyItem{background:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.55);border-left:4px solid var(--accent,#4f46e5);padding:9px 10px;border-radius:12px;font-size:.86rem;line-height:1.55}.studyItem b{display:block;color:#172554;margin-bottom:2px}.mustList{display:grid;gap:4px;margin-top:4px}.mustList span{display:block;padding:4px 7px;border-radius:8px;background:rgba(15,23,42,.05)}.optionRats{margin-top:14px;padding:12px;border-radius:14px;background:rgba(255,255,255,.76);border:1px solid rgba(148,163,184,.35)}.optionRats h4{margin:0 0 8px;font-size:.9rem}.optionRats div{padding:7px 0;border-top:1px solid rgba(148,163,184,.25);font-size:.86rem;line-height:1.55}.optionRats div:first-of-type{border-top:0}.correctText{color:#047857;font-weight:800}.wrongText{color:#b91c1c;font-weight:800}.checkBox .choicePair{display:flex;gap:8px;flex-wrap:wrap}.checkBtn{min-width:150px;white-space:normal;text-align:left;}
+
+/* ===== FLASHCARD SYSTEM REVISION: CLEAN GLASSY BLUE, HIGH CONTRAST ===== */
+:root{--fc-navy:#0f172a;--fc-ink:#111827;--fc-muted:#475569;--fc-line:#cbd5e1;--fc-blue:#2563eb;--fc-soft:#eff6ff;--fc-purple:#6d28d9;--fc-red:#b42318;--fc-teal:#0f766e;}
+.flip.topicTone{min-height:315px;cursor:pointer}.flip.topicTone .flipIn{min-height:315px}.flip.topicTone .front,.flip.topicTone .back{color:var(--fc-ink)!important;background:linear-gradient(150deg,rgba(255,255,255,.96),rgba(239,246,255,.90))!important;border:1px solid rgba(148,163,184,.60)!important;border-top:6px solid var(--seg)!important;box-shadow:0 20px 50px rgba(15,23,42,.25),inset 0 1px 0 rgba(255,255,255,.85)!important;overflow:auto}.flip.topicTone .back{background:linear-gradient(150deg,#ffffff,#f8fbff)!important}.flip.topicTone h3{color:#0f172a!important;font-size:1.12rem!important;line-height:1.25}.flip.topicTone p,.flip.topicTone .mini{color:#475569!important;font-weight:650!important}.topic{background:#e0f2fe!important;color:#075985!important;border:1px solid #bae6fd!important}.lessonTitle{color:#1d4ed8!important;background:#dbeafe!important;border:1px solid #bfdbfe!important;border-radius:999px;padding:5px 11px;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;font-weight:900}.focusLine{background:#f8fafc!important;color:#0f172a!important;border-left:4px solid var(--seg)!important;border:1px solid #e2e8f0!important;border-left-width:4px!important;border-radius:16px;padding:12px!important;box-shadow:none!important}.focusLine b{color:#1e3a8a!important}.focusLine u{color:#0f172a!important;text-decoration-color:var(--seg)!important;text-decoration-thickness:3px;text-underline-offset:4px}.cardFrontTerm{font-family:'Playfair Display',serif;font-size:clamp(1.45rem,2vw,1.9rem);font-weight:900;color:#0f172a;line-height:1.12;margin:14px 0 10px}.frontPrompt{display:grid;gap:8px;margin:13px 0}.promptChip{border:1px solid #dbeafe;background:#eff6ff;color:#172554;border-radius:16px;padding:10px 12px;font-weight:900}.promptChip strong{color:#6d28d9}.tapCue{margin-top:10px;padding:9px 11px;border-radius:999px;background:#eef2ff;color:#3730a3;font-size:.78rem;font-weight:900;text-align:center}.studyGrid{display:grid;gap:10px;margin:12px 0}.studyItem{background:#ffffff!important;border:1px solid #dbe4f0!important;border-left:5px solid var(--seg)!important;padding:11px 12px!important;border-radius:16px!important;color:#111827!important;font-size:.87rem!important;line-height:1.5;box-shadow:0 8px 20px rgba(15,23,42,.06)}.studyItem b{display:block;color:#1e3a8a!important;text-transform:uppercase;letter-spacing:.045em;font-size:.72rem;margin-bottom:5px}.studyItem.definitionBox{border-left-color:#2563eb!important}.studyItem.keyBox{border-left-color:#6d28d9!important}.studyItem.memoryBox{border-left-color:#0f766e!important}.studyItem.testBox{border-left-color:#b42318!important}.mustList{display:grid;gap:5px;margin-top:4px}.mustList span{display:block;padding:6px 8px;border-radius:10px;background:#f1f5f9;color:#0f172a}.checkBox{background:#f8fafc!important;border:1px solid #cbd5e1!important;border-radius:18px!important;color:#0f172a!important}.checkBox h4{color:#1e3a8a!important;font-size:.86rem!important;margin-bottom:8px}.checkBox .mini{color:#334155!important}.checkBtn{background:#ffffff!important;color:#0f172a!important;border:1px solid #cbd5e1!important;border-radius:14px!important;min-width:190px;text-align:left;white-space:normal;padding:9px 11px!important}.checkBtn:hover{border-color:#2563eb!important;background:#eff6ff!important}.checkResult{color:#0f172a!important;background:#ecfdf5;border-left:4px solid #10b981;border-radius:12px;padding:9px 10px;margin-top:10px}.legalDistinctions{background:linear-gradient(135deg,#eff6ff,#f5f3ff)!important;border:1px solid #cbd5e1!important;border-left:6px solid #6d28d9!important;color:#0f172a!important}.legalDistinctions h3{color:#172554!important}.legalDistinctions .distItem{background:#ffffff!important;border:1px solid #dbe4f0!important;color:#0f172a!important}.legalDistinctions b{color:#1e3a8a!important}.directLegalTag{background:#fee2e2!important;color:#991b1b!important;border:1px solid #fecaca!important}.segHead{color:#fff}.segTitle,.segNote,.segMeta{color:#fff!important}.segmentWrap .segBlock{border-color:color-mix(in srgb,var(--seg) 45%, rgba(255,255,255,.18))}.optionRats{background:#ffffff!important;color:#0f172a!important;border:1px solid #cbd5e1!important}.optionRats h4{color:#172554!important}.optionRats div{color:#334155!important}.correctText{color:#047857!important}.wrongText{color:#b91c1c!important}
+
+
+/* === Topic-colored flashcard system update === */
+.seg-vitals{--seg-card-1:#dbeafe;--seg-card-2:#bfdbfe;--seg-back-1:#eff6ff;--seg-back-2:#dbeafe;--seg-ink:#0f172a;--seg-head:#1e3a8a;--seg-chip-bg:#eff6ff;--seg-chip-ink:#1e3a8a;--seg-pill-bg:#dbeafe;--seg-pill-ink:#1d4ed8;--seg-accent:#2563eb}
+.seg-clinical{--seg-card-1:#dcfce7;--seg-card-2:#bbf7d0;--seg-back-1:#f0fdf4;--seg-back-2:#dcfce7;--seg-ink:#0f172a;--seg-head:#166534;--seg-chip-bg:#ecfdf5;--seg-chip-ink:#166534;--seg-pill-bg:#dcfce7;--seg-pill-ink:#15803d;--seg-accent:#22c55e}
+.seg-law{--seg-card-1:#ffe4e6;--seg-card-2:#fecdd3;--seg-back-1:#fff1f2;--seg-back-2:#ffe4e6;--seg-ink:#0f172a;--seg-head:#9f1239;--seg-chip-bg:#fff1f2;--seg-chip-ink:#9f1239;--seg-pill-bg:#ffe4e6;--seg-pill-ink:#be123c;--seg-accent:#fb7185}
+.seg-admin{--seg-card-1:#fef3c7;--seg-card-2:#fde68a;--seg-back-1:#fffbeb;--seg-back-2:#fef3c7;--seg-ink:#0f172a;--seg-head:#92400e;--seg-chip-bg:#fffbeb;--seg-chip-ink:#92400e;--seg-pill-bg:#fef3c7;--seg-pill-ink:#b45309;--seg-accent:#f59e0b}
+.seg-comm{--seg-card-1:#ede9fe;--seg-card-2:#ddd6fe;--seg-back-1:#f5f3ff;--seg-back-2:#ede9fe;--seg-ink:#0f172a;--seg-head:#5b21b6;--seg-chip-bg:#f5f3ff;--seg-chip-ink:#5b21b6;--seg-pill-bg:#ede9fe;--seg-pill-ink:#7c3aed;--seg-accent:#8b5cf6}
+.seg-pharm{--seg-card-1:#fce7f3;--seg-card-2:#fbcfe8;--seg-back-1:#fdf2f8;--seg-back-2:#fce7f3;--seg-ink:#0f172a;--seg-head:#9d174d;--seg-chip-bg:#fdf2f8;--seg-chip-ink:#9d174d;--seg-pill-bg:#fce7f3;--seg-pill-ink:#db2777;--seg-accent:#ec4899}
+.seg-body{--seg-card-1:#e0f2fe;--seg-card-2:#bae6fd;--seg-back-1:#f0f9ff;--seg-back-2:#e0f2fe;--seg-ink:#0f172a;--seg-head:#075985;--seg-chip-bg:#f0f9ff;--seg-chip-ink:#075985;--seg-pill-bg:#e0f2fe;--seg-pill-ink:#0284c7;--seg-accent:#38bdf8}
+.seg-general{--seg-card-1:#f3e8ff;--seg-card-2:#e9d5ff;--seg-back-1:#faf5ff;--seg-back-2:#f3e8ff;--seg-ink:#0f172a;--seg-head:#6b21a8;--seg-chip-bg:#faf5ff;--seg-chip-ink:#6b21a8;--seg-pill-bg:#f3e8ff;--seg-pill-ink:#9333ea;--seg-accent:#c084fc}
+
+.segBlock .flip.topicTone .front,
+.segBlock .flip.topicTone .back{
+  color:var(--seg-ink)!important;
+  background:linear-gradient(160deg,var(--seg-card-1),var(--seg-card-2))!important;
+  border:1px solid color-mix(in srgb,var(--seg-accent) 28%, #94a3b8)!important;
+  border-top:8px solid var(--seg-accent)!important;
+  box-shadow:0 20px 48px rgba(15,23,42,.16), inset 0 1px 0 rgba(255,255,255,.75)!important;
+}
+.segBlock .flip.topicTone .back{
+  background:linear-gradient(160deg,var(--seg-back-1),var(--seg-back-2))!important;
+}
+.segBlock .flip.topicTone h3,
+.segBlock .flip.topicTone .cardFrontTerm{
+  color:var(--seg-head)!important;
+}
+.segBlock .flip.topicTone p,
+.segBlock .flip.topicTone .mini,
+.segBlock .flip.topicTone .tapCue,
+.segBlock .flip.topicTone .checkBox .mini,
+.segBlock .flip.topicTone .checkResult{
+  color:var(--seg-ink)!important;
+}
+.segBlock .flip.topicTone .lessonTitle{
+  background:var(--seg-pill-bg)!important;
+  color:var(--seg-pill-ink)!important;
+  border:1px solid color-mix(in srgb,var(--seg-accent) 30%, #cbd5e1)!important;
+}
+.segBlock .flip.topicTone .topic{
+  background:var(--seg-pill-bg)!important;
+  color:var(--seg-pill-ink)!important;
+  border:1px solid color-mix(in srgb,var(--seg-accent) 28%, #cbd5e1)!important;
+}
+.segBlock .flip.topicTone .promptChip,
+.segBlock .flip.topicTone .tapCue{
+  background:var(--seg-chip-bg)!important;
+  color:var(--seg-chip-ink)!important;
+  border:1px solid color-mix(in srgb,var(--seg-accent) 26%, #dbeafe)!important;
+}
+.segBlock .flip.topicTone .promptChip strong{color:var(--seg-head)!important}
+.segBlock .flip.topicTone .focusLine{
+  background:#ffffffd9!important;
+  color:var(--seg-ink)!important;
+  border:1px solid color-mix(in srgb,var(--seg-accent) 18%, #cbd5e1)!important;
+  border-left:5px solid var(--seg-accent)!important;
+}
+.segBlock .flip.topicTone .focusLine b,
+.segBlock .flip.topicTone .focusLine u{color:var(--seg-head)!important}
+.segBlock .flip.topicTone .studyItem{
+  background:rgba(255,255,255,.92)!important;
+  color:var(--seg-ink)!important;
+  border:1px solid color-mix(in srgb,var(--seg-accent) 15%, #cbd5e1)!important;
+  border-left:5px solid var(--seg-accent)!important;
+}
+.segBlock .flip.topicTone .studyItem b{color:var(--seg-head)!important}
+.segBlock .flip.topicTone .mustList span{
+  background:color-mix(in srgb,var(--seg-card-1) 74%, white)!important;
+  color:var(--seg-ink)!important;
+}
+.segBlock .flip.topicTone .checkBox{
+  background:rgba(255,255,255,.78)!important;
+  border:1px solid color-mix(in srgb,var(--seg-accent) 20%, #cbd5e1)!important;
+}
+.segBlock .flip.topicTone .checkBox h4{color:var(--seg-head)!important}
+.segBlock .flip.topicTone .checkBtn{
+  background:#fff!important;
+  color:var(--seg-ink)!important;
+  border:1px solid color-mix(in srgb,var(--seg-accent) 22%, #cbd5e1)!important;
+}
+.segBlock .flip.topicTone .checkBtn:hover{
+  background:var(--seg-chip-bg)!important;
+  border-color:var(--seg-accent)!important;
+}
+.segBlock .flip.topicTone .checkResult{
+  background:color-mix(in srgb,var(--seg-card-1) 55%, white)!important;
+  border-left:4px solid var(--seg-accent)!important;
+}
+
+
+/* === Chic guided-practice + rationale readability upgrade === */
+.qbox .card{
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.93), rgba(239,246,255,.84)),
+    radial-gradient(circle at 10% 10%, rgba(59,130,246,.12), transparent 38%),
+    radial-gradient(circle at 90% 0%, rgba(168,85,247,.10), transparent 38%) !important;
+  color:#0f172a !important;
+  border:1px solid rgba(148,163,184,.55) !important;
+  box-shadow:0 22px 65px rgba(15,23,42,.18), inset 0 1px 0 rgba(255,255,255,.86) !important;
+}
+.qbox .card h2,
+.qbox .card h3{
+  color:#172554 !important;
+  letter-spacing:.01em;
+}
+.qbox .card .mini{
+  color:#334155 !important;
+  font-weight:650;
+}
+.questionText{
+  background:linear-gradient(135deg,#ffffff,#f8fafc) !important;
+  color:#0f172a !important;
+  border:1px solid #dbe4f0 !important;
+  border-left:6px solid #2563eb !important;
+  border-radius:20px !important;
+  padding:18px 20px !important;
+  line-height:1.8 !important;
+  box-shadow:0 10px 28px rgba(15,23,42,.08) !important;
+}
+.questionText .hilite,
+.questionText mark,
+.highlighted{
+  background:linear-gradient(180deg, transparent 48%, #fed7aa 48%) !important;
+  color:#111827 !important;
+  padding:0 3px;
+  border-radius:4px;
+}
+.option{
+  background:linear-gradient(135deg,#ffffff,#f8fafc) !important;
+  color:#0f172a !important;
+  border:1px solid #cbd5e1 !important;
+  box-shadow:0 7px 18px rgba(15,23,42,.07) !important;
+}
+.option:hover:not(:disabled){
+  background:linear-gradient(135deg,#eff6ff,#eef2ff) !important;
+  border-color:#2563eb !important;
+  transform:translateY(-1px);
+}
+.option.correct{
+  background:linear-gradient(135deg,#ecfdf5,#d1fae5) !important;
+  border-color:#059669 !important;
+  color:#064e3b !important;
+}
+.option.wrong{
+  background:linear-gradient(135deg,#fff1f2,#ffe4e6) !important;
+  border-color:#e11d48 !important;
+  color:#881337 !important;
+}
+.feedback,
+.examFeedback{
+  background:
+    linear-gradient(135deg,#ffffff,#f8fafc),
+    radial-gradient(circle at top right, rgba(168,85,247,.09), transparent 35%) !important;
+  color:#0f172a !important;
+  border:1px solid #cbd5e1 !important;
+  border-left:6px solid #7c3aed !important;
+  border-radius:22px !important;
+  box-shadow:0 18px 48px rgba(15,23,42,.12) !important;
+  padding:18px 20px !important;
+  line-height:1.8 !important;
+}
+.feedback b,
+.examFeedback b{
+  color:#1e3a8a !important;
+}
+.feedback strong,
+.examFeedback strong{
+  color:#581c87 !important;
+}
+.feedback em,
+.examFeedback em{
+  color:#9a3412 !important;
+  font-style:normal;
+  font-weight:900;
+  background:linear-gradient(180deg,transparent 55%,#fed7aa 55%);
+  padding:0 3px;
+  border-radius:4px;
+}
+.optionRats{
+  background:linear-gradient(135deg,#f8fafc,#ffffff) !important;
+  color:#0f172a !important;
+  border:1px solid #dbe4f0 !important;
+  border-radius:18px !important;
+  padding:14px !important;
+  margin-top:14px !important;
+}
+.optionRats h4{
+  color:#172554 !important;
+}
+.optionRats div{
+  border-bottom:1px solid #e2e8f0;
+  padding:8px 0;
+}
+.optionRats div:last-child{border-bottom:0}
+.correctText{
+  color:#047857 !important;
+  font-weight:900;
+  text-decoration:underline;
+  text-decoration-color:#34d399;
+  text-decoration-thickness:3px;
+  text-underline-offset:4px;
+}
+.wrongText{
+  color:#b91c1c !important;
+  font-weight:900;
+  text-decoration:underline;
+  text-decoration-color:#fb7185;
+  text-decoration-thickness:3px;
+  text-underline-offset:4px;
+}
+.reviewBox{
+  background:
+    linear-gradient(135deg,#eff6ff,#f5f3ff) !important;
+  color:#0f172a !important;
+  border:1px solid #c7d2fe !important;
+  border-left:6px solid #2563eb !important;
+  box-shadow:0 16px 42px rgba(37,99,235,.12) !important;
+}
+.reviewBox h4{
+  color:#172554 !important;
+}
+.reviewBox p{
+  color:#1e293b !important;
+}
+.reviewBox p b{
+  color:#6d28d9 !important;
+}
+.timeChip{
+  background:#fff7ed !important;
+  color:#9a3412 !important;
+  border:1px solid #fed7aa !important;
+}
+.topic{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.65);
+}
+.studyItem b,
+.feedback b,
+.optionRats h4{
+  text-decoration:underline;
+  text-decoration-color:#f59e0b;
+  text-decoration-thickness:3px;
+  text-underline-offset:5px;
+}
+.accent-purple{
+  color:#6d28d9 !important;
+  font-weight:900;
+}
+.accent-orange{
+  color:#c2410c !important;
+  font-weight:900;
+  background:linear-gradient(180deg,transparent 58%,#fed7aa 58%);
+  border-radius:4px;
+  padding:0 3px;
+}
+.accent-blue{
+  color:#1d4ed8 !important;
+  font-weight:900;
+  text-decoration:underline;
+  text-decoration-color:#93c5fd;
+  text-decoration-thickness:3px;
+  text-underline-offset:4px;
+}
+
+
+/* === Glossy colored but legible visual correction === */
+/* The goal: tinted glass, shine, strong contrast, no plain white washout. */
+
+:root{
+  --glass-navy:#0f172a;
+  --glass-ink:#102033;
+  --glass-muted:#334155;
+  --glass-blue:#2563eb;
+  --glass-purple:#7c3aed;
+  --glass-orange:#ea580c;
+  --glass-teal:#0f766e;
+}
+
+/* Main practice/rationale cards: colored glass instead of flat white */
+.qbox .card,
+.card.examQ{
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(145deg, rgba(219,234,254,.82), rgba(224,242,254,.64) 44%, rgba(237,233,254,.68)),
+    radial-gradient(circle at 10% 0%, rgba(34,211,238,.30), transparent 34%),
+    radial-gradient(circle at 95% 8%, rgba(124,58,237,.22), transparent 36%) !important;
+  color:var(--glass-ink)!important;
+  border:1px solid rgba(96,165,250,.45)!important;
+  box-shadow:
+    0 24px 70px rgba(15,23,42,.22),
+    inset 0 1px 0 rgba(255,255,255,.62),
+    inset 0 -1px 0 rgba(37,99,235,.10)!important;
+  backdrop-filter:blur(18px) saturate(1.25);
+}
+
+.qbox .card::before,
+.card.examQ::before,
+.feedback::before,
+.examFeedback::before,
+.optionRats::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(115deg, transparent 0%, rgba(255,255,255,.36) 38%, transparent 66%);
+  transform:translateX(-120%);
+  animation:softGlassSweep 7s infinite;
+}
+
+@keyframes softGlassSweep{
+  45%,100%{transform:translateX(120%)}
+}
+
+.qbox .card h2,
+.qbox .card h3,
+.card.examQ h2{
+  color:#172554!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.45);
+}
+
+.qbox .card .mini,
+.card.examQ .mini{
+  color:#26364d!important;
+  font-weight:700;
+}
+
+/* Question stem: tinted blue glass with dark text */
+.questionText{
+  background:
+    linear-gradient(135deg, rgba(191,219,254,.82), rgba(224,242,254,.72)),
+    radial-gradient(circle at 90% 12%, rgba(56,189,248,.24), transparent 30%) !important;
+  color:#0f172a!important;
+  border:1px solid rgba(37,99,235,.35)!important;
+  border-left:7px solid #2563eb!important;
+  border-radius:22px!important;
+  box-shadow:
+    0 14px 34px rgba(37,99,235,.12),
+    inset 0 1px 0 rgba(255,255,255,.55)!important;
+  backdrop-filter:blur(14px);
+}
+
+/* Answer choices: tinted glass, not plain white */
+.option{
+  background:
+    linear-gradient(135deg, rgba(239,246,255,.86), rgba(221,214,254,.55)),
+    radial-gradient(circle at 100% 0%, rgba(96,165,250,.18), transparent 34%) !important;
+  color:#102033!important;
+  border:1px solid rgba(96,165,250,.35)!important;
+  box-shadow:0 10px 24px rgba(15,23,42,.10), inset 0 1px 0 rgba(255,255,255,.55)!important;
+  backdrop-filter:blur(12px);
+}
+
+.option:hover:not(:disabled){
+  background:
+    linear-gradient(135deg, rgba(191,219,254,.82), rgba(221,214,254,.70)) !important;
+  border-color:#2563eb!important;
+  color:#0f172a!important;
+}
+
+.option.correct{
+  background:
+    linear-gradient(135deg, rgba(187,247,208,.86), rgba(209,250,229,.68)) !important;
+  border-color:#059669!important;
+  color:#064e3b!important;
+}
+
+.option.wrong{
+  background:
+    linear-gradient(135deg, rgba(254,205,211,.86), rgba(255,228,230,.70)) !important;
+  border-color:#e11d48!important;
+  color:#881337!important;
+}
+
+/* Rationale box: glossy purple-blue glass, still readable */
+.feedback,
+.examFeedback{
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(135deg, rgba(237,233,254,.86), rgba(219,234,254,.72) 55%, rgba(224,242,254,.68)),
+    radial-gradient(circle at 12% 0%, rgba(124,58,237,.20), transparent 35%),
+    radial-gradient(circle at 90% 8%, rgba(14,165,233,.20), transparent 36%) !important;
+  color:#111827!important;
+  border:1px solid rgba(124,58,237,.30)!important;
+  border-left:7px solid #7c3aed!important;
+  border-radius:24px!important;
+  box-shadow:
+    0 22px 58px rgba(76,29,149,.16),
+    inset 0 1px 0 rgba(255,255,255,.58)!important;
+  backdrop-filter:blur(18px) saturate(1.22);
+}
+
+.feedback b,
+.examFeedback b,
+.feedback strong,
+.examFeedback strong{
+  color:#1e3a8a!important;
+}
+
+.feedback h4,
+.examFeedback h4{
+  color:#172554!important;
+}
+
+/* Option rationales: colored glass panel */
+.optionRats{
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(135deg, rgba(224,242,254,.78), rgba(245,243,255,.74)),
+    radial-gradient(circle at top right, rgba(245,158,11,.12), transparent 35%) !important;
+  color:#0f172a!important;
+  border:1px solid rgba(96,165,250,.35)!important;
+  border-left:6px solid #0ea5e9!important;
+  box-shadow:0 16px 38px rgba(15,23,42,.10), inset 0 1px 0 rgba(255,255,255,.52)!important;
+  backdrop-filter:blur(16px);
+}
+
+/* Review link box: colored glass, not white */
+.reviewBox{
+  background:
+    linear-gradient(135deg, rgba(219,234,254,.82), rgba(237,233,254,.75)),
+    radial-gradient(circle at 5% 0%, rgba(37,99,235,.18), transparent 34%),
+    radial-gradient(circle at 95% 0%, rgba(124,58,237,.16), transparent 34%) !important;
+  color:#102033!important;
+  border:1px solid rgba(99,102,241,.30)!important;
+  border-left:7px solid #2563eb!important;
+  box-shadow:0 18px 45px rgba(37,99,235,.14), inset 0 1px 0 rgba(255,255,255,.55)!important;
+  backdrop-filter:blur(16px);
+}
+
+.reviewBox h4{color:#172554!important}
+.reviewBox p{color:#233348!important}
+.reviewBox p b{color:#6d28d9!important}
+
+/* Segment-specific flashcards: stronger colored glossy surface, dark readable ink */
+.seg-vitals .flip.topicTone .front,
+.seg-vitals .flip.topicTone .back{
+  background:
+    linear-gradient(155deg, rgba(147,197,253,.86), rgba(191,219,254,.72)),
+    radial-gradient(circle at 80% 8%, rgba(34,211,238,.28), transparent 32%) !important;
+}
+.seg-clinical .flip.topicTone .front,
+.seg-clinical .flip.topicTone .back{
+  background:
+    linear-gradient(155deg, rgba(134,239,172,.82), rgba(187,247,208,.70)),
+    radial-gradient(circle at 80% 8%, rgba(20,184,166,.22), transparent 32%) !important;
+}
+.seg-law .flip.topicTone .front,
+.seg-law .flip.topicTone .back{
+  background:
+    linear-gradient(155deg, rgba(253,164,175,.80), rgba(255,228,230,.72)),
+    radial-gradient(circle at 80% 8%, rgba(244,63,94,.20), transparent 32%) !important;
+}
+.seg-admin .flip.topicTone .front,
+.seg-admin .flip.topicTone .back{
+  background:
+    linear-gradient(155deg, rgba(252,211,77,.78), rgba(254,243,199,.74)),
+    radial-gradient(circle at 80% 8%, rgba(249,115,22,.18), transparent 32%) !important;
+}
+.seg-comm .flip.topicTone .front,
+.seg-comm .flip.topicTone .back{
+  background:
+    linear-gradient(155deg, rgba(196,181,253,.82), rgba(237,233,254,.73)),
+    radial-gradient(circle at 80% 8%, rgba(124,58,237,.20), transparent 32%) !important;
+}
+.seg-pharm .flip.topicTone .front,
+.seg-pharm .flip.topicTone .back{
+  background:
+    linear-gradient(155deg, rgba(249,168,212,.80), rgba(252,231,243,.73)),
+    radial-gradient(circle at 80% 8%, rgba(219,39,119,.18), transparent 32%) !important;
+}
+.seg-body .flip.topicTone .front,
+.seg-body .flip.topicTone .back{
+  background:
+    linear-gradient(155deg, rgba(125,211,252,.82), rgba(224,242,254,.74)),
+    radial-gradient(circle at 80% 8%, rgba(2,132,199,.18), transparent 32%) !important;
+}
+.seg-general .flip.topicTone .front,
+.seg-general .flip.topicTone .back{
+  background:
+    linear-gradient(155deg, rgba(216,180,254,.82), rgba(243,232,255,.74)),
+    radial-gradient(circle at 80% 8%, rgba(147,51,234,.18), transparent 32%) !important;
+}
+
+.flip.topicTone .front,
+.flip.topicTone .back{
+  backdrop-filter:blur(16px) saturate(1.22);
+  box-shadow:
+    0 22px 52px rgba(15,23,42,.18),
+    inset 0 1px 0 rgba(255,255,255,.58)!important;
+}
+
+/* Make card inner boxes tinted, not white */
+.segBlock .flip.topicTone .studyItem{
+  background:rgba(255,255,255,.55)!important;
+  backdrop-filter:blur(10px);
+  color:#0f172a!important;
+}
+
+.segBlock .flip.topicTone .checkBox{
+  background:rgba(255,255,255,.48)!important;
+  backdrop-filter:blur(10px);
+  color:#0f172a!important;
+}
+
+.segBlock .flip.topicTone .promptChip,
+.segBlock .flip.topicTone .tapCue,
+.segBlock .flip.topicTone .mustList span{
+  background:rgba(255,255,255,.48)!important;
+  color:#0f172a!important;
+  backdrop-filter:blur(8px);
+}
+
+/* Harmonious emphasis: blue + orange + purple depending on role */
+.accent-blue{
+  color:#1d4ed8!important;
+  font-weight:950;
+  text-decoration:underline;
+  text-decoration-color:#60a5fa;
+  text-decoration-thickness:3px;
+  text-underline-offset:4px;
+}
+
+.accent-orange{
+  color:#c2410c!important;
+  font-weight:950;
+  background:linear-gradient(180deg,transparent 55%,rgba(251,146,60,.38) 55%);
+  border-radius:5px;
+  padding:0 3px;
+}
+
+.accent-purple{
+  color:#6d28d9!important;
+  font-weight:950;
+  background:linear-gradient(180deg,transparent 58%,rgba(196,181,253,.45) 58%);
+  border-radius:5px;
+  padding:0 3px;
+}
+
+.studyItem b,
+.feedback b,
+.optionRats h4{
+  text-decoration:underline;
+  text-decoration-color:#fb923c;
+  text-decoration-thickness:3px;
+  text-underline-offset:5px;
+}
+
+.correctText{
+  color:#047857!important;
+  text-decoration-color:#34d399!important;
+}
+
+.wrongText{
+  color:#be123c!important;
+  text-decoration-color:#fb7185!important;
+}
+
+/* Keep all labels readable on tinted glass */
+.lessonTitle,
+.topic,
+.timeChip{
+  backdrop-filter:blur(10px);
+  color:#102033!important;
+  font-weight:950!important;
+}
+
+.timeChip{
+  background:rgba(255,247,237,.72)!important;
+  color:#9a3412!important;
+  border:1px solid rgba(251,146,60,.40)!important;
+}
+
+
+/* === Final glass + flashcard emphasis upgrade === */
+
+/* Stronger true glass look for Guided Practice / Exam panels */
+.qbox .card,
+.card.examQ{
+  background:
+    linear-gradient(135deg, rgba(125,211,252,.34), rgba(191,219,254,.28) 38%, rgba(221,214,254,.30) 78%),
+    radial-gradient(circle at 10% 0%, rgba(255,255,255,.58), transparent 28%),
+    radial-gradient(circle at 90% 5%, rgba(168,85,247,.24), transparent 35%) !important;
+  border:1px solid rgba(255,255,255,.42)!important;
+  box-shadow:
+    0 28px 85px rgba(15,23,42,.30),
+    inset 0 1px 0 rgba(255,255,255,.72),
+    inset 0 -1px 0 rgba(255,255,255,.26)!important;
+  backdrop-filter:blur(26px) saturate(1.45);
+  -webkit-backdrop-filter:blur(26px) saturate(1.45);
+}
+
+.qbox .card::after,
+.card.examQ::after,
+.feedback::after,
+.examFeedback::after{
+  content:"";
+  position:absolute;
+  inset:1px;
+  border-radius:inherit;
+  pointer-events:none;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.42), transparent 30%),
+    linear-gradient(315deg, rgba(255,255,255,.16), transparent 38%);
+  mix-blend-mode:screen;
+}
+
+/* More chic glassy question stem */
+.questionText{
+  background:
+    linear-gradient(135deg, rgba(224,242,254,.48), rgba(199,210,254,.34)),
+    radial-gradient(circle at 10% 0%, rgba(255,255,255,.62), transparent 30%) !important;
+  border:1px solid rgba(255,255,255,.52)!important;
+  border-left:7px solid rgba(37,99,235,.86)!important;
+  box-shadow:
+    0 18px 42px rgba(37,99,235,.18),
+    inset 0 1px 0 rgba(255,255,255,.72)!important;
+  backdrop-filter:blur(22px) saturate(1.35);
+  -webkit-backdrop-filter:blur(22px) saturate(1.35);
+  color:#0f172a!important;
+}
+
+/* Glassy choices */
+.option{
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.46), rgba(219,234,254,.30), rgba(237,233,254,.28)) !important;
+  border:1px solid rgba(255,255,255,.55)!important;
+  box-shadow:
+    0 12px 30px rgba(15,23,42,.13),
+    inset 0 1px 0 rgba(255,255,255,.70)!important;
+  backdrop-filter:blur(18px) saturate(1.35);
+  -webkit-backdrop-filter:blur(18px) saturate(1.35);
+  color:#0b1220!important;
+}
+
+.option:hover:not(:disabled){
+  background:
+    linear-gradient(135deg, rgba(219,234,254,.58), rgba(221,214,254,.44)) !important;
+  border-color:rgba(37,99,235,.72)!important;
+}
+
+/* Rationale: true chic colored glass */
+.feedback,
+.examFeedback{
+  background:
+    linear-gradient(135deg, rgba(237,233,254,.44), rgba(191,219,254,.34), rgba(224,242,254,.30)),
+    radial-gradient(circle at 5% 0%, rgba(255,255,255,.60), transparent 32%),
+    radial-gradient(circle at 100% 5%, rgba(124,58,237,.24), transparent 36%) !important;
+  border:1px solid rgba(255,255,255,.52)!important;
+  border-left:8px solid rgba(124,58,237,.86)!important;
+  box-shadow:
+    0 26px 72px rgba(76,29,149,.20),
+    inset 0 1px 0 rgba(255,255,255,.72),
+    inset 0 -1px 0 rgba(255,255,255,.20)!important;
+  backdrop-filter:blur(26px) saturate(1.48);
+  -webkit-backdrop-filter:blur(26px) saturate(1.48);
+  color:#0f172a!important;
+}
+
+/* Option rationales and review box: glossy colored glass */
+.optionRats,
+.reviewBox{
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.38), rgba(219,234,254,.32), rgba(237,233,254,.30)) !important;
+  border:1px solid rgba(255,255,255,.52)!important;
+  box-shadow:
+    0 20px 50px rgba(15,23,42,.15),
+    inset 0 1px 0 rgba(255,255,255,.70)!important;
+  backdrop-filter:blur(22px) saturate(1.38);
+  -webkit-backdrop-filter:blur(22px) saturate(1.38);
+}
+
+/* Flashcards: keep colored cards, but add focused word-emphasis styles */
+.fcFocusBlue{
+  color:#0b4bd4!important;
+  font-weight:950!important;
+  text-decoration:underline;
+  text-decoration-color:#60a5fa;
+  text-decoration-thickness:3px;
+  text-underline-offset:4px;
+}
+.fcFocusPurple{
+  color:#6d28d9!important;
+  font-weight:950!important;
+  background:linear-gradient(180deg, transparent 56%, rgba(196,181,253,.55) 56%);
+  border-radius:5px;
+  padding:0 3px;
+}
+.fcFocusOrange{
+  color:#c2410c!important;
+  font-weight:950!important;
+  background:linear-gradient(180deg, transparent 56%, rgba(251,146,60,.45) 56%);
+  border-radius:5px;
+  padding:0 3px;
+}
+.fcFocusRed{
+  color:#be123c!important;
+  font-weight:950!important;
+  text-decoration:underline;
+  text-decoration-color:#fb7185;
+  text-decoration-thickness:3px;
+  text-underline-offset:4px;
+}
+.fcFocusGreen{
+  color:#047857!important;
+  font-weight:950!important;
+  background:linear-gradient(180deg, transparent 56%, rgba(52,211,153,.40) 56%);
+  border-radius:5px;
+  padding:0 3px;
+}
+
+/* Apply a subtle readable glass to flashcard internal boxes */
+.segBlock .flip.topicTone .studyItem,
+.segBlock .flip.topicTone .checkBox,
+.segBlock .flip.topicTone .promptChip,
+.segBlock .flip.topicTone .tapCue,
+.segBlock .flip.topicTone .mustList span{
+  background:rgba(255,255,255,.42)!important;
+  border-color:rgba(255,255,255,.55)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.65), 0 8px 22px rgba(15,23,42,.08)!important;
+  backdrop-filter:blur(14px) saturate(1.22);
+  -webkit-backdrop-filter:blur(14px) saturate(1.22);
+}
+
+/* Slightly stronger text contrast inside flashcards */
+.flip.topicTone .cardFrontTerm,
+.flip.topicTone h3{
+  text-shadow:0 1px 0 rgba(255,255,255,.55);
+}
+.flip.topicTone .studyItem,
+.flip.topicTone .checkBox,
+.flip.topicTone .promptChip{
+  color:#09111f!important;
+}
+
+</style>
+</head>
+<body>
+<div class="orb" style="width:180px;height:180px;background:#a855f7;left:5%;top:15%"></div><div class="orb" style="width:240px;height:240px;background:#22d3ee;right:2%;top:28%;animation-delay:2s"></div><div class="orb" style="width:150px;height:150px;background:#ec4899;left:45%;bottom:10%;animation-delay:4s"></div>
+<div class="app"><header><div class="hdr"><div class="brand"><div class="logo">CC</div><div><div class="title">CCMA Clinical Mastery Lab</div><div class="sub">Interactive baseline test review · Concept builder · Guided practice · Challenge · Exam simulation</div></div></div><div class="stats"><span class="pill">XP <b id="xp">0</b></span><span class="pill">Correct <b id="correct">0</b></span><span class="pill">Streak <b id="streak">0</b></span><span class="pill">Local Save On</span></div></div><nav id="nav"></nav></header>
+<main>
+<section class="section active" id="home"><div class="hero"><span class="kicker">Premium CCMA Exam Prep Platform</span><h1>Teach it. Practice it. Test it. Reflect.</h1><p>This single HTML app turns your 90-question CCMA baseline into a colorful clinical reasoning experience. Students build concepts first, practice with rationales, enter timed challenge mode, take an exam simulation, and review weak areas.</p><p class="mini"><b>Instructional Design:</b> Hilary Homaii · All rights reserved.</p><div class="btnrow"><button class="btn" data-go="builder">Start Concept Builder</button><button class="btn alt" data-go="practice">Begin Guided Practice</button><button class="btn alt" data-go="exam">Exam Simulation</button></div></div><div class="grid"><div class="card"><span class="topic t-vitals">Vitals</span><h3>Clinical signal recognition</h3><p>Blood pressure, pulse quality, oxygenation, BMI, pediatric measurement, and temperature logic.</p></div><div class="card"><span class="topic t-lab">Labs & Procedures</span><h3>Specimen and procedure safety</h3><p>Order of draw, capillary puncture, venipuncture, CLIA-waived testing, sterile technique, and chain of custody.</p></div><div class="card"><span class="topic t-law">Law, Ethics, Admin</span><h3>Real office judgment</h3><p>Consent, torts, Medicare, referrals, ACO/PCMH, documentation, scheduling, and scope of practice.</p></div></div></section>
+<section class="section" id="builder"><h2>Concept Builder</h2><p class="mini">Concepts are grouped into color-coded learning segments. Open one segment at a time, flip the cards, and complete the micro-check on the back before moving to Guided Practice.</p><div class="segmentWrap" id="builderGrid"></div></section>
+<section class="section" id="practice"><div class="card"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><h2>Guided Practice</h2><p class="mini">Click words in the question to highlight keywords. Then choose an answer and read full reasoning.</p></div><button class="btn alt" id="nextPracticeBtn">Next Question</button></div><div class="bar" style="margin:14px 0"><div class="fill" id="practiceFill"></div></div></div><div id="practiceBox"></div></section>
+<section class="section" id="challenge"><div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div><h2>Challenge Mode</h2><p class="mini">Timed, no hints. Feedback appears only after selection.</p></div><div class="timer" id="timer">45</div></div><div class="btnrow"><button class="btn" id="restartChallenge">Restart Challenge</button></div></div><div id="challengeBox"></div></section>
+<section class="section" id="exam"><div class="card"><h2>90-Question Exam Simulation</h2><p class="mini">One question at a time. Students answer, see immediate correct/incorrect feedback with the correct answer, then the app automatically moves to the next item.</p><div class="btnrow"><button class="btn" id="loadExam">Start / Restart Exam</button><button class="btn alt" id="examDashBtn">Open Dashboard</button></div></div><div id="examBox" class="examList"></div></section>
+<section class="section" id="dashboard"><h2>Reflection Dashboard</h2><div class="dash"><div class="metric"><b id="mAcc">0%</b><p>Accuracy</p></div><div class="metric"><b id="mDone">0</b><p>Answered</p></div><div class="metric"><b id="mXP">0</b><p>XP</p></div><div class="metric"><b id="mWeak">0</b><p>Weak Areas</p></div></div><div class="card" style="margin-top:16px"><h3>Personalized Feedback</h3><p id="advice" class="mini">Start practice to generate feedback.</p><div id="topicBreakdown" style="margin-top:12px"></div><button class="btn red" id="resetBtn" style="margin-top:12px">Reset Progress</button></div></section>
+</main><div class="footerRights">Instructional Design by <b>Hilary Homaii</b>. All rights reserved.</div></div>
+<script id="question-data" type="application/json">[{"id": 1, "question": "When taking a patient's blood pressure, which of the following is the highest pressure level that occurs, as indicated by the first sound heard?", "options": ["Systolic pressure", "Blood volume", "Diastolic pressure", "Pulse pressure"], "answer": "Systolic pressure", "topic": "Vitals", "concept": "Blood pressure: systolic vs diastolic", "microLesson": "Systolic = top number; pressure when heart contracts; first Korotkoff sound. Diastolic = bottom number; pressure when heart relaxes; sound disappears. Pulse pressure = systolic minus diastolic.", "clinicalReasoning": "Highest pressure and first sound = systolic. Bottom number and disappearance of sound = diastolic.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "The cuff deflates and the first clear tapping sound appears. Which value is being recorded?", "checkRight": "Systolic: top number / contraction", "checkWrong": "Diastolic: bottom number / relaxation", "checkResult": "Correct: the first Korotkoff sound is systolic pressure. Diastolic is recorded when sounds disappear."}, {"id": 2, "question": "Which of the following examples of patient coaching addresses disease prevention?", "options": ["Explaining how to correctly take prescribed medication", "Showing an instructional video based on the patient's treatment plan", "Providing information on the importance of recommended vaccines", "Supplying a patient with information about self-exams"], "answer": "Providing information on the importance of recommended vaccines", "topic": "Patient Communication", "concept": "Disease prevention coaching", "microLesson": "Prevention teaching helps avoid disease before it starts. Vaccines prevent infection. Medication teaching and treatment-plan videos help manage an existing condition. Self-exams detect problems early but do not prevent disease.", "clinicalReasoning": "Recommended vaccines are primary prevention because they reduce risk before illness occurs.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Disease prevention coaching?", "checkRight": "Providing information on the importance of recommended vaccines", "checkWrong": "Explaining how to correctly take prescribed medication", "checkResult": "Correct: Providing information on the importance of recommended vaccines matches the tested rule. Recommended vaccines are primary prevention because they reduce risk before illness occurs."}, {"id": 3, "question": "Patient comes to the clinic with dysuria, discharge from the penis, and pain in the lower abdomen. A medical assistant should recognize these as manifestations of which of the following disorders?", "options": ["Gonorrhea", "Appendicitis", "Irritable bowel syndrome", "Inguinal hernia"], "answer": "Gonorrhea", "topic": "Infection Control", "concept": "Gonorrhea manifestations", "microLesson": "Gonorrhea can cause dysuria, penile discharge, and lower abdominal or pelvic pain. Think STI/urogenital symptoms. Appendicitis is RLQ abdominal pain. IBS changes bowel pattern. Hernia is a bulge/pain in groin.", "clinicalReasoning": "Dysuria plus penile discharge points to gonorrhea, a sexually transmitted infection.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Gonorrhea manifestations?", "checkRight": "Gonorrhea", "checkWrong": "Appendicitis", "checkResult": "Correct: Gonorrhea matches the tested rule. Dysuria plus penile discharge points to gonorrhea, a sexually transmitted infection."}, {"id": 4, "question": "A medical assistant is collecting a forensic specimen at the request of an employer. Which of the following people should sign the documentation for the specimen, according to the chain of custody protocol?", "options": ["All personnel that come in contact with the specimen", "The employer who requested the specimen", "The patient who gives the specimen", "The front office staff who checked in the patient"], "answer": "All personnel that come in contact with the specimen", "topic": "Law & Ethics", "concept": "Chain of custody", "microLesson": "Forensic specimens require documented control. Every person who handles or transfers the specimen signs. This proves the sample was not altered, misplaced, or substituted.", "clinicalReasoning": "Chain of custody follows the specimen through every handoff, so all handlers must sign.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Chain of custody?", "checkRight": "All personnel that come in contact with the specimen", "checkWrong": "The employer who requested the specimen", "checkResult": "Correct: All personnel that come in contact with the specimen matches the tested rule. Chain of custody follows the specimen through every handoff, so all handlers must sign."}, {"id": 5, "question": "A medical assistant is preparing to administer buccal medication to a patient. The assistant should instruct the patient to place the medication in which of the following places?", "options": ["Under the patient's tongue", "Sprayed into the patient's nose", "Between the cheek and gums", "In the patient's skin"], "answer": "Between the cheek and gums", "topic": "Core CCMA Reasoning", "concept": "Buccal medication route", "microLesson": "Buccal = between cheek and gums. Sublingual = under tongue. Intranasal = sprayed into nose. Intradermal = placed in the skin.", "clinicalReasoning": "Buccal medication is absorbed through the cheek/gum mucosa.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Buccal medication route?", "checkRight": "Between the cheek and gums", "checkWrong": "Under the patient's tongue", "checkResult": "Correct: Between the cheek and gums matches the tested rule. Buccal medication is absorbed through the cheek/gum mucosa."}, {"id": 6, "question": "Which of the following spatial considerations should the medical assistant make when checking in a patient?", "options": ["4 to 12 feet", "0 to 18 inches", "12 or more feet", "18 inches to 4 feet"], "answer": "18 inches to 4 feet", "topic": "Core CCMA Reasoning", "concept": "Personal space distance", "microLesson": "Personal space is about 18 inches to 4 feet. Intimate = 0 to 18 inches. Social = 4 to 12 feet. Public = 12+ feet. Check-in usually uses personal distance.", "clinicalReasoning": "The best patient check-in distance is personal space: 18 inches to 4 feet.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Personal space distance?", "checkRight": "18 inches to 4 feet", "checkWrong": "4 to 12 feet", "checkResult": "Correct: 18 inches to 4 feet matches the tested rule. The best patient check-in distance is personal space: 18 inches to 4 feet."}, {"id": 7, "question": "In which of the following positions should a medical assistant place an 18-month-old patient when administering ear drops to the right ear?", "options": ["Right ear facing up with the earlobe pulled down and back", "Right ear facing down with the pinna pulled up and back", "Right ear facing up with the pinna pulled up and back", "Right ear facing down with the earlobe pulled down and back"], "answer": "Right ear facing up with the earlobe pulled down and back", "topic": "Clinical Procedures", "concept": "Ear drops: child under 3", "microLesson": "For children under 3 years, pull earlobe down and back. Position affected ear up so drops flow into canal. For adults/older children, pull pinna up and back.", "clinicalReasoning": "An 18-month-old needs right ear up, earlobe down and back.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Ear drops: child under 3?", "checkRight": "Right ear facing up with the earlobe pulled down and back", "checkWrong": "Right ear facing down with the pinna pulled up and back", "checkResult": "Correct: Right ear facing up with the earlobe pulled down and back matches the tested rule. An 18-month-old needs right ear up, earlobe down and back."}, {"id": 8, "question": "In addition to receiving a paper copy of their prescription, a patient has requested that the prescription be called in to their pharmacy. After calling the pharmacy, which of the following actions should the medical assistant take to complete this request?", "options": ["Inform the patient that a copy of the prescription cannot legally be made.", "Provide the patient with a copy of the prescription that reads \"Dispense as written.\"", "Provide the patient with a copy of the prescription with \"Copy only\" written on it.", "Provide the patient with an unaltered copy of the prescription."], "answer": "Provide the patient with a copy of the prescription with \"Copy only\" written on it.", "topic": "Clinical Procedures", "concept": "Prescription copy after phone-in", "microLesson": "If prescription is called into the pharmacy, the paper copy must be marked “Copy only.” This prevents duplicate filling. “Dispense as written” means no generic substitution.", "clinicalReasoning": "After calling in a prescription, give the patient a paper copy labeled Copy only.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Prescription copy after phone-in?", "checkRight": "Provide the patient with a copy of the prescription with \"Copy only\" written on it.", "checkWrong": "Inform the patient that a copy of the prescription cannot legally be made.", "checkResult": "Correct: Provide the patient with a copy of the prescription with \"Copy only\" written on it. matches the tested rule. After calling in a prescription, give the patient a paper copy labeled Copy only."}, {"id": 9, "question": "An insurer denied payment for a patient's cholecystectomy. The denial reason states, “preauthorization required.” If the provider documents the procedure as emergent, which action should the medical assistant take?", "options": ["Submit an appeal for the denied claim.", "Submit a new claim for the same procedure.", "Resubmit using a different procedure code.", "Instruct the patient to contact the insurer."], "answer": "Submit an appeal for the denied claim.", "topic": "Vitals", "concept": "Preauthorization denial appeal", "microLesson": "If a claim is denied for missing preauthorization but the provider deems the procedure emergent, submit an appeal. Do not change codes or simply resubmit the same claim.", "clinicalReasoning": "Emergent procedure without prior authorization needs an appeal explaining medical necessity.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Preauthorization denial appeal?", "checkRight": "Submit an appeal for the denied claim.", "checkWrong": "Submit a new claim for the same procedure.", "checkResult": "Correct: Submit an appeal for the denied claim. matches the tested rule. Emergent procedure without prior authorization needs an appeal explaining medical necessity."}, {"id": 10, "question": "A medical assistant works at a practice that is part of an Accountable Care Organization (ACO). This designation means the practice's health care team will focus on improving care for patients who have which of the following types of medical coverage?", "options": ["Medicaid", "Preferred provider organization (PPO)", "Health maintenance organization (HMO)", "Medicare"], "answer": "Medicare", "topic": "Administrative & Insurance", "concept": "ACO and Medicare", "microLesson": "ACO = Accountable Care Organization. It focuses on coordinated, quality, cost-effective care for Medicare patients. PPO/HMO are private insurance models. Medicaid is state/federal coverage for eligible low-income patients.", "clinicalReasoning": "ACO questions on CCMA commonly point to Medicare.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches ACO and Medicare?", "checkRight": "Medicare", "checkWrong": "Medicaid", "checkResult": "Correct: Medicare matches the tested rule. ACO questions on CCMA commonly point to Medicare."}, {"id": 11, "question": "Which of the following can prevent a patient from comprehending an informed consent?", "options": ["Cultural competence", "Acceptance", "Active listening", "Language barrier"], "answer": "Language barrier", "topic": "Law & Ethics", "concept": "Informed consent barrier", "microLesson": "Informed consent requires understanding. A language barrier can prevent comprehension unless interpretation is provided. Cultural competence, acceptance, and active listening help understanding.", "clinicalReasoning": "Language barrier is the obstacle to informed consent comprehension.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Informed consent barrier?", "checkRight": "Language barrier", "checkWrong": "Cultural competence", "checkResult": "Correct: Language barrier matches the tested rule. Language barrier is the obstacle to informed consent comprehension."}, {"id": 12, "question": "Which of the following is defined by 9 calories per gram?", "options": ["The number of calories in the entire container", "The number of calories from carbohydrates", "The number of calories per serving", "The number of calories from fat"], "answer": "The number of calories from fat", "topic": "Core CCMA Reasoning", "concept": "Calories from fat", "microLesson": "Fat provides 9 calories per gram. Carbohydrates and protein provide 4 calories per gram. Alcohol provides 7 calories per gram. This helps interpret nutrition labels and calculate calories from macronutrients.", "clinicalReasoning": "9 kcal/g identifies calories from fat.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "A label lists 10 g of fat. How many calories come from fat?", "checkRight": "90 calories", "checkWrong": "40 calories", "checkResult": "Correct: fat = 9 calories/gram, so 10 × 9 = 90 calories."}, {"id": 13, "question": "A 24-year-old patient has a BMI of 30.5 based on their height and weight. Which of the following describes their BMI weight status category?", "options": ["Healthy weight", "Overweight", "Obese class I", "Obese class II"], "answer": "Obese class I", "topic": "Vitals", "concept": "BMI categories", "microLesson": "BMI = Body Mass Index. Uses weight and height to estimate weight category. Adult categories: 18.5–24.9 normal; 25–29.9 overweight; 30–34.9 obese class I; 35–39.9 obese class II; 40+ obese class III.", "clinicalReasoning": "BMI 30.5 falls in obese class I, not overweight.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "A patient has BMI 27.8. Which category is correct?", "checkRight": "Overweight", "checkWrong": "Obese class I", "checkResult": "Correct: 25–29.9 = overweight. Obese class I starts at 30."}, {"id": 14, "question": "Which of the following assessments of a patient's pulse is demonstrated by an extremely strong and full feeling?", "options": ["Bounding pulse", "Bradycardia", "Thready pulse", "Dysrhythmia"], "answer": "Bounding pulse", "topic": "Vitals", "concept": "Pulse strength: bounding", "microLesson": "Bounding pulse = extremely strong, full pulse. Thready pulse = weak, difficult to feel. Bradycardia = slow rate. Dysrhythmia = irregular rhythm.", "clinicalReasoning": "Strong and full describes pulse amplitude, specifically bounding pulse.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Pulse strength: bounding?", "checkRight": "Bounding pulse", "checkWrong": "Bradycardia", "checkResult": "Correct: Bounding pulse matches the tested rule. Strong and full describes pulse amplitude, specifically bounding pulse."}, {"id": 15, "question": "medical assistant is speaking with a patient about their social history and the assistant notices the patient is fidgeting and appears anxious. Which of the following nonverbal communication styles is the patient exhibiting?", "options": ["Manipulative communication", "Passive-aggressive communication", "Assertive communication", "Passive communication"], "answer": "Passive communication", "topic": "Infection Control", "concept": "Nonverbal anxiety behavior", "microLesson": "Fidgeting and anxious appearance are nonverbal cues. Passive, assertive, manipulative, and passive-aggressive are communication styles, not the best label for fidgeting.", "clinicalReasoning": "The item tests recognizing patient anxiety through body language.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Nonverbal anxiety behavior?", "checkRight": "Passive communication", "checkWrong": "Manipulative communication", "checkResult": "Correct: Passive communication matches the tested rule. The item tests recognizing patient anxiety through body language."}, {"id": 16, "question": "According to the Controlled Substances Act, which of the following is true regarding the storage of controlled substances in the office?", "options": ["Controlled medications and non-narcotic medications should be stored together.", "Controlled medications should be stored in the examining room.", "Controlled medications should be stored in a locked cabinet.", "Controlled medications should be stored in sunlight."], "answer": "Controlled medications should be stored in a locked cabinet.", "topic": "Law & Ethics", "concept": "Controlled substance storage", "microLesson": "Controlled substances must be stored securely, usually in a locked cabinet or locked area with limited access. Do not store them with regular medications, in exam rooms, or in sunlight.", "clinicalReasoning": "The Controlled Substances Act emphasizes secure locked storage.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Controlled substance storage?", "checkRight": "Controlled medications should be stored in a locked cabinet.", "checkWrong": "Controlled medications and non-narcotic medications should be stored together.", "checkResult": "Correct: Controlled medications should be stored in a locked cabinet. matches the tested rule. The Controlled Substances Act emphasizes secure locked storage."}, {"id": 17, "question": "A medical assistant is preparing to perform a capillary collection from a patient who has poor circulation in their hands. Which of the following techniques should the assistant use to increase circulation at the collection site?", "options": ["Hold the patient's hand above their heart.", "Squeeze the patient's finger.", "Warm the patient's hand.", "Apply a tourniquet above the patient's wrist."], "answer": "Warm the patient's hand.", "topic": "Infection Control", "concept": "Capillary puncture: increase circulation", "microLesson": "Warm the hand to increase blood flow before capillary collection. Do not squeeze the finger; it can cause hemolysis/tissue fluid contamination. Do not hold above heart.", "clinicalReasoning": "Poor circulation at puncture site: warm the hand.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Capillary puncture: increase circulation?", "checkRight": "Warm the patient's hand.", "checkWrong": "Hold the patient's hand above their heart.", "checkResult": "Correct: Warm the patient's hand. matches the tested rule. Poor circulation at puncture site: warm the hand."}, {"id": 18, "question": "Which of the following tasks should a medical assistant have a patient complete prior to gowning for a physical examination to ensure that the patient is more comfortable and to make the examination easier for the provider?", "options": ["Listen to soothing music while waiting", "Have the patient empty their bladder", "Finish reading educational materials", "Drink a full glass of water"], "answer": "Have the patient empty their bladder", "topic": "Core CCMA Reasoning", "concept": "Before gowning: empty bladder", "microLesson": "Before a physical exam, ask patient to empty bladder. This improves comfort and makes abdominal/pelvic examination easier. Music or reading does not prepare the body for exam.", "clinicalReasoning": "Empty bladder is the practical pre-exam task.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Before gowning: empty bladder?", "checkRight": "Have the patient empty their bladder", "checkWrong": "Listen to soothing music while waiting", "checkResult": "Correct: Have the patient empty their bladder matches the tested rule. Empty bladder is the practical pre-exam task."}, {"id": 19, "question": "Which of the following parts of Medicare covers durable medical equipment (DME)?", "options": ["Part A", "Part B", "Part C", "Part D"], "answer": "Part B", "topic": "Administrative & Insurance", "concept": "Medicare Part B and DME", "microLesson": "Medicare Part B covers outpatient services, provider services, preventive care, and durable medical equipment (DME). Part A = hospital/inpatient. Part D = prescriptions. Part C = Medicare Advantage plan.", "clinicalReasoning": "DME is covered under Medicare Part B.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Medicare Part B and DME?", "checkRight": "Part B", "checkWrong": "Part A", "checkResult": "Correct: Part B matches the tested rule. DME is covered under Medicare Part B."}, {"id": 20, "question": "A medical assistant has a provider order to draw blood for a lead level on an 18-month-old toddler. Which of the following sites should the assistant choose for the venipuncture?", "options": ["Femoral vein", "Deep brachial veins", "Scalp vein", "Superficial dorsal hand veins"], "answer": "Superficial dorsal hand veins", "topic": "Infection Control", "concept": "Toddler venipuncture site", "microLesson": "For an 18-month-old needing venipuncture, superficial dorsal hand veins are appropriate. Avoid deep brachial/femoral/scalp veins unless specialized setting/provider.", "clinicalReasoning": "Use accessible superficial veins for toddler venipuncture.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Toddler venipuncture site?", "checkRight": "Superficial dorsal hand veins", "checkWrong": "Femoral vein", "checkResult": "Correct: Superficial dorsal hand veins matches the tested rule. Use accessible superficial veins for toddler venipuncture."}, {"id": 21, "question": "A medical assistant fails to document a patient's preference for not using any blood products during their procedure. This error falls under which of the following legal principles?", "options": ["Breach of contract", "Negligent torts", "Implied consent", "Intentional torts"], "answer": "Negligent torts", "topic": "Law & Ethics", "concept": "Negligent tort: documentation omission", "microLesson": "Negligence = failure to use reasonable care. Failing to document refusal/preference, such as no blood products, can cause harm and is a negligent tort. Intentional torts involve purposeful violation.", "clinicalReasoning": "The error is failure to document important patient preference, so negligence.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Negligent tort: documentation omission?", "checkRight": "Negligent torts", "checkWrong": "Breach of contract", "checkResult": "Correct: Negligent torts matches the tested rule. The error is failure to document important patient preference, so negligence."}, {"id": 22, "question": "Prior to running an EKG tracing, which of the following is the final step a medical assistant should take to ensure the tracing will be clear with a horizontal baseline?", "options": ["Remove artifacts", "Cover the patient with a blanket", "Double-check the electrodes' attachment", "Enter patient information into the EKG machine"], "answer": "Double-check the electrodes' attachment", "topic": "Clinical Procedures", "concept": "EKG clear tracing: final check", "microLesson": "Before running EKG, final check is electrode attachment/contact. Loose electrodes cause artifact and wandering baseline. Patient info and blanket matter, but baseline clarity depends on electrode connection.", "clinicalReasoning": "Clear horizontal baseline requires electrodes attached properly.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches EKG clear tracing: final check?", "checkRight": "Double-check the electrodes' attachment", "checkWrong": "Remove artifacts", "checkResult": "Correct: Double-check the electrodes' attachment matches the tested rule. Clear horizontal baseline requires electrodes attached properly."}, {"id": 23, "question": "Which of the following types of advance directives provide information about the person that a patient delegated to make health care decisions on their behalf if they are unable to do so?", "options": ["Organ donation", "Living will", "Health care proxy", "Do not resuscitate (DNR)"], "answer": "Health care proxy", "topic": "Law & Ethics", "concept": "Health care proxy", "microLesson": "Health care proxy names the person delegated to make healthcare decisions if patient cannot. Living will states treatment wishes. DNR limits resuscitation. Organ donation gives donation preference.", "clinicalReasoning": "The person delegated is the healthcare proxy.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Health care proxy?", "checkRight": "Health care proxy", "checkWrong": "Organ donation", "checkResult": "Correct: Health care proxy matches the tested rule. The person delegated is the healthcare proxy."}, {"id": 24, "question": "Which of the following is a CLIA-waived laboratory test?", "options": ["Blood typing and crossmatching", "Papanicolaou (Pap) test", "Human chorionic gonadotropin (hCG) test", "Fecal leukocyte test"], "answer": "Human chorionic gonadotropin (hCG) test", "topic": "Clinical Procedures", "concept": "CLIA-waived laboratory tests", "microLesson": "CLIA = Clinical Laboratory Improvement Amendments. Waived tests are simple, low-risk tests approved for point-of-care use. Examples: urine hCG pregnancy, urine dipstick, rapid strep, glucose, fecal occult blood. Non-waived/lab-required examples: blood typing/crossmatch, Pap cytology, fecal leukocytes.", "clinicalReasoning": "hCG pregnancy testing can be CLIA-waived. Pap tests, blood typing/crossmatching, and fecal leukocyte testing require more complex laboratory processing.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Which test best fits CLIA-waived point-of-care testing?", "checkRight": "Urine hCG pregnancy test", "checkWrong": "Blood typing and crossmatching", "checkResult": "Correct: hCG pregnancy testing is commonly CLIA-waived. Blood typing/crossmatching is not a simple waived test."}, {"id": 25, "question": "During which of the following activities is it necessary for a medical assistant to use personal protective equipment (PPE)?", "options": ["Administering injections", "Performing an EKG", "Assisting a patient with gowning", "Performing vital signs"], "answer": "Administering injections", "topic": "Infection Control", "concept": "PPE for injections", "microLesson": "Use PPE when exposure to blood or body fluids is possible. Injections involve sharps and possible blood exposure. Routine EKG/vitals/gowning may not require gloves unless exposure risk exists.", "clinicalReasoning": "Injection administration requires PPE.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches PPE for injections?", "checkRight": "Administering injections", "checkWrong": "Performing an EKG", "checkResult": "Correct: Administering injections matches the tested rule. Injection administration requires PPE."}, {"id": 26, "question": "Which of the following diseases should a medical assistant recognize as mandatorily reportable to the state?", "options": ["Gestational diabetes", "Respiratory syncytial virus (RSV)", "Influenza", "Tuberculosis"], "answer": "Tuberculosis", "topic": "Infection Control", "concept": "Reportable disease: tuberculosis", "microLesson": "Tuberculosis is reportable to the state/local health department. Reportable diseases are tracked to protect public health and prevent spread. Influenza/RSV reporting varies, but TB is classic mandatory reporting.", "clinicalReasoning": "TB is the state-reportable condition.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Reportable disease: tuberculosis?", "checkRight": "Tuberculosis", "checkWrong": "Gestational diabetes", "checkResult": "Correct: Tuberculosis matches the tested rule. TB is the state-reportable condition."}, {"id": 27, "question": "According to the stages of hypertension, which of the following blood pressure readings is considered to be in the elevated stage?", "options": ["116/74 mm Hg", "182/124 mm Hg", "128/78 mm Hg", "140/90 mm Hg"], "answer": "128/78 mm Hg", "topic": "Vitals", "concept": "Blood pressure categories", "microLesson": "Adult BP categories: normal <120/<80. Elevated = systolic 120–129 AND diastolic <80. Stage 1 = systolic 130–139 OR diastolic 80–89. Stage 2 = systolic ≥140 OR diastolic ≥90. Crisis = >180 and/or >120.", "clinicalReasoning": "128/78 is elevated because systolic is 120-129 and diastolic is under 80.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Which BP pattern is elevated, not stage 1?", "checkRight": "128/78 mm Hg", "checkWrong": "140/90 mm Hg", "checkResult": "Correct: elevated = 120–129 systolic with diastolic under 80. 140/90 is stage 2."}, {"id": 28, "question": "Which of the following is an advantage of using an electronic practice management software for scheduling appointments?", "options": ["Single user access at one time", "Ability to generate reports", "Extended patient wait time when scheduling", "Limited search features"], "answer": "Ability to generate reports", "topic": "Administrative & Insurance", "concept": "Scheduling software reports", "microLesson": "Electronic practice management software can generate reports, search appointments, allow multiple functions, and improve scheduling. It should not increase wait time or limit search.", "clinicalReasoning": "Ability to generate reports is an advantage.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Scheduling software reports?", "checkRight": "Ability to generate reports", "checkWrong": "Single user access at one time", "checkResult": "Correct: Ability to generate reports matches the tested rule. Ability to generate reports is an advantage."}, {"id": 29, "question": "Which of the following measurements would a medical assistant take during a routine well-child exam when determining if the child has microcephaly?", "options": ["Body mass index (BMI)", "Weight", "Head circumference", "Length"], "answer": "Head circumference", "topic": "Vitals", "concept": "Microcephaly measurement", "microLesson": "Microcephaly is small head size. Measure head circumference during well-child exams. BMI, weight, and length assess growth but not head size specifically.", "clinicalReasoning": "Head circumference screens for microcephaly.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Microcephaly measurement?", "checkRight": "Head circumference", "checkWrong": "Body mass index (BMI)", "checkResult": "Correct: Head circumference matches the tested rule. Head circumference screens for microcephaly."}, {"id": 30, "question": "Which of the following terms should a medical assistant use to tell a provider that a patient is having discomfort and difficulty with breathing?", "options": ["Dyspnea", "Eupnea", "Pneumonia", "Pneumothorax"], "answer": "Dyspnea", "topic": "Vitals", "concept": "Dyspnea definition", "microLesson": "Dyspnea = difficult or uncomfortable breathing. Eupnea = normal breathing. Pneumonia = lung infection. Pneumothorax = air in pleural space/collapsed lung.", "clinicalReasoning": "Discomfort and difficulty breathing should be reported as dyspnea.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Dyspnea definition?", "checkRight": "Dyspnea", "checkWrong": "Eupnea", "checkResult": "Correct: Dyspnea matches the tested rule. Discomfort and difficulty breathing should be reported as dyspnea."}, {"id": 31, "question": "Which of the following eating disorders is demonstrated by purging, use of laxatives, and mood swings?", "options": ["Compulsive overeating", "Bulimia nervosa", "Anorexia nervosa", "Binge eating disorder"], "answer": "Bulimia nervosa", "topic": "Anatomy & Disease", "concept": "Bulimia nervosa signs", "microLesson": "Bulimia nervosa involves binge eating with compensatory behaviors such as purging or laxative use. Mood changes may occur. Anorexia centers on restriction/low weight; binge eating disorder lacks purging.", "clinicalReasoning": "Purging and laxative use point to bulimia.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Bulimia nervosa signs?", "checkRight": "Bulimia nervosa", "checkWrong": "Compulsive overeating", "checkResult": "Correct: Bulimia nervosa matches the tested rule. Purging and laxative use point to bulimia."}, {"id": 32, "question": "A medical assistant is administering an intradermal injection for allergy testing. Which of the following actions should the assistant take?", "options": ["Pinch the skin between the thumb and forefinger.", "Locate the middle portion of the anterior forearm.", "Inject the solution rapidly with the needle positioned at a 30° angle to the skin.", "Insert the needle with the bevel pointed down."], "answer": "Locate the middle portion of the anterior forearm.", "topic": "Clinical Procedures", "concept": "Intradermal injection site/technique", "microLesson": "Intradermal injections are placed just under epidermis, commonly middle anterior forearm, bevel up, shallow angle about 5-15 degrees, small wheal. Do not inject rapidly at 30 degrees.", "clinicalReasoning": "For allergy testing, locate the middle anterior forearm.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Intradermal injection site/technique?", "checkRight": "Locate the middle portion of the anterior forearm.", "checkWrong": "Pinch the skin between the thumb and forefinger.", "checkResult": "Correct: Locate the middle portion of the anterior forearm. matches the tested rule. For allergy testing, locate the middle anterior forearm."}, {"id": 33, "question": "A medical assistant is removing sutures from a patient who has a laceration on their left lower leg. After setting up the sterile field, which of the following actions should the assistant take?", "options": ["Grasp and lift the knot away from the skin.", "Discard each suture immediately after removal.", "Cut the knot to remove it from the suture.", "Use bandage scissors to cut the suture"], "answer": "Grasp and lift the knot away from the skin.", "topic": "Clinical Procedures", "concept": "Suture removal first action", "microLesson": "After sterile setup, grasp and lift the knot away from skin. Cut close to skin on one side, then pull suture out without dragging contaminated external thread through tissue.", "clinicalReasoning": "Lift knot first to remove suture safely.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Suture removal first action?", "checkRight": "Grasp and lift the knot away from the skin.", "checkWrong": "Discard each suture immediately after removal.", "checkResult": "Correct: Grasp and lift the knot away from the skin. matches the tested rule. Lift knot first to remove suture safely."}, {"id": 34, "question": "Which of the following should a medical assistant do to assist with hemostasis following completion of a venipuncture procedure?", "options": ["The assistant should instruct the patient to bend their elbow to help place pressure on the site.", "The assistant should tell the patient to hold pressure on the site and elevate their arm.", "The patient should place the bandage themselves and leave immediately after the procedure.", "The assistant should tell the patient to hold pressure on the site with their arm below their heart."], "answer": "The assistant should tell the patient to hold pressure on the site and elevate their arm.", "topic": "Clinical Procedures", "concept": "Hemostasis after venipuncture", "microLesson": "After needle removal, patient holds firm pressure and elevates arm. Do not bend elbow; it can cause hematoma. Keep pressure until bleeding stops.", "clinicalReasoning": "Pressure plus elevation promotes hemostasis.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Hemostasis after venipuncture?", "checkRight": "The assistant should tell the patient to hold pressure on the site and elevate their arm.", "checkWrong": "The assistant should instruct the patient to bend their elbow to help place pressure on the site.", "checkResult": "Correct: The assistant should tell the patient to hold pressure on the site and elevate their arm. matches the tested rule. Pressure plus elevation promotes hemostasis."}, {"id": 35, "question": "Which of the following defines the process of sterilization?", "options": ["Killing pathogenic organisms and rendering them ineffective", "Killing all pathogenic organisms and spores", "Cleansing instruments using ultrasonic sound waves in a bath of cleanser and water", "Cleansing instruments to reduce microorganisms to a safe level"], "answer": "Killing all pathogenic organisms and spores", "topic": "Infection Control", "concept": "Sterilization definition", "microLesson": "Sterilization destroys all microorganisms including spores. Disinfection kills many pathogens but not necessarily spores. Sanitization reduces microbes to safe levels. Ultrasonic cleaning removes debris before sterilization.", "clinicalReasoning": "All pathogens and spores = sterilization.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Sterilization definition?", "checkRight": "Killing all pathogenic organisms and spores", "checkWrong": "Killing pathogenic organisms and rendering them ineffective", "checkResult": "Correct: Killing all pathogenic organisms and spores matches the tested rule. All pathogens and spores = sterilization."}, {"id": 36, "question": "Which of the following pulmonary function tests involves measuring the oxygen saturation of a patient's blood by placing a probe on their finger?", "options": ["Spirometry test", "Lung volume test", "Peak flow monitor", "Pulse oximetry"], "answer": "Pulse oximetry", "topic": "Vitals", "concept": "Pulse oximetry", "microLesson": "Pulse oximetry measures oxygen saturation (SpO2) using a finger probe and light absorption. It is not spirometry, peak flow, or lung volume testing. Good peripheral circulation is needed for accuracy.", "clinicalReasoning": "A finger probe measuring oxygen saturation describes pulse oximetry.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "A device clips on the finger and reports SpO2. Which test is it?", "checkRight": "Pulse oximetry", "checkWrong": "Spirometry", "checkResult": "Correct: pulse oximetry measures oxygen saturation with a probe. Spirometry measures air movement/volume."}, {"id": 37, "question": "A medical assistant is preparing to perform venipuncture for a patient. According to order of draw, which of the following tubes should the assistant draw after obtaining blood cultures?", "options": ["Light blue", "Green", "SST", "Lavender"], "answer": "Light blue", "topic": "Clinical Procedures", "concept": "Order of draw after blood cultures", "microLesson": "Order of draw prevents additive contamination. Standard order: blood cultures first, then light blue coagulation tube, then serum/SST, then green, lavender, gray. After blood cultures, draw light blue.", "clinicalReasoning": "After blood cultures, draw light blue tube.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Blood cultures are drawn first. Which tube comes next?", "checkRight": "Light blue", "checkWrong": "Lavender", "checkResult": "Correct: light blue follows blood cultures in order of draw."}, {"id": 38, "question": "Which of the following information should a medical assistant verify at every office visit?", "options": ["Allergies", "Blood pressure", "Surgeries", "Major illnesses"], "answer": "Allergies", "topic": "Vitals", "concept": "Verify allergies every visit", "microLesson": "Allergies must be verified at every office visit because they affect medication, contrast, latex exposure, and treatment safety. Surgeries and illnesses are history but not every-visit safety checks.", "clinicalReasoning": "Allergy verification prevents avoidable harm.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Verify allergies every visit?", "checkRight": "Allergies", "checkWrong": "Blood pressure", "checkResult": "Correct: Allergies matches the tested rule. Allergy verification prevents avoidable harm."}, {"id": 39, "question": "Which of the following types of allergy testing involves applying an allergen to the skin to help detect delayed allergic reactions?", "options": ["Patch testing", "Intradermal testing", "Percutaneous testing", "Radioallergosorbent testing"], "answer": "Patch testing", "topic": "Clinical Procedures", "concept": "Patch allergy testing", "microLesson": "Patch testing applies allergen to skin to detect delayed hypersensitivity reactions. Percutaneous/scratch and intradermal test more immediate reactions. RAST is blood testing.", "clinicalReasoning": "Delayed reaction skin test = patch testing.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Patch allergy testing?", "checkRight": "Patch testing", "checkWrong": "Intradermal testing", "checkResult": "Correct: Patch testing matches the tested rule. Delayed reaction skin test = patch testing."}, {"id": 40, "question": "Which of the following letter formats uses indented paragraphs?", "options": ["A semi-block letter", "A simplified letter", "A full block letter", "A modified block letter"], "answer": "A semi-block letter", "topic": "Administrative & Insurance", "concept": "Semi-block letter format", "microLesson": "Semi-block letters use indented paragraphs. Full block has all lines flush left. Modified block aligns date/closing differently but paragraphs usually not indented. Simplified omits salutation/closing.", "clinicalReasoning": "Indented paragraphs identify semi-block style.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Semi-block letter format?", "checkRight": "A semi-block letter", "checkWrong": "A simplified letter", "checkResult": "Correct: A semi-block letter matches the tested rule. Indented paragraphs identify semi-block style."}, {"id": 41, "question": "According to the CDC, which of the following should be done if a medical assistant's hands are visibly soiled?", "options": ["Use an alcohol-based hand sanitizer for a minimum of 15 seconds.", "Use an alcohol-based hand sanitizer for a maximum of 15 seconds.", "Use soap and water, and scrub for a maximum of 15 seconds.", "Use soap and water, and scrub for a minimum of 15 seconds."], "answer": "Use soap and water, and scrub for a minimum of 15 seconds.", "topic": "Infection Control", "concept": "Handwashing visibly soiled hands", "microLesson": "If hands are visibly soiled, use soap and water. Scrub at least 15 seconds. Alcohol sanitizer is for hands not visibly dirty.", "clinicalReasoning": "Visible soil requires soap and water, minimum 15 seconds.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Handwashing visibly soiled hands?", "checkRight": "Use soap and water, and scrub for a minimum of 15 seconds.", "checkWrong": "Use an alcohol-based hand sanitizer for a minimum of 15 seconds.", "checkResult": "Correct: Use soap and water, and scrub for a minimum of 15 seconds. matches the tested rule. Visible soil requires soap and water, minimum 15 seconds."}, {"id": 42, "question": "A medical assistant is aiding a provider with a colposcopy procedure. In which of the following positions should the assistant place the patient?", "options": ["Dorsal recumbent position", "Supine position", "Lithotomy position", "Lateral semi-prone recumbent position"], "answer": "Lithotomy position", "topic": "Clinical Procedures", "concept": "Colposcopy position", "microLesson": "Colposcopy examines cervix/vagina. Patient is placed in lithotomy position, typically with feet in stirrups. Supine/dorsal recumbent are not the best procedure position.", "clinicalReasoning": "Colposcopy requires lithotomy.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Colposcopy position?", "checkRight": "Lithotomy position", "checkWrong": "Dorsal recumbent position", "checkResult": "Correct: Lithotomy position matches the tested rule. Colposcopy requires lithotomy."}, {"id": 43, "question": "The abbreviation PRN stands for which of the following?", "options": ["As needed", "Before eating", "Twice per day", "Nothing by mouth"], "answer": "As needed", "topic": "Core CCMA Reasoning", "concept": "PRN abbreviation", "microLesson": "PRN means as needed. AC = before meals. BID = twice daily. NPO = nothing by mouth.", "clinicalReasoning": "PRN = as needed.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches PRN abbreviation?", "checkRight": "As needed", "checkWrong": "Before eating", "checkResult": "Correct: As needed matches the tested rule. PRN = as needed."}, {"id": 44, "question": "A medical assistant has acquired a preauthorization for a patient's referral to a specialist. Which of the following is a reason for the insurer to deny the claim submitted by the specialist?", "options": ["The preauthorization does not include the specialty provider's National Provider Identifier (NPI).", "The specialist provided the service after the expiration date of the preauthorization.", "The patient previously submitted and received a self-referral.", "The approved visits are listed in the preauthorization comments section."], "answer": "The specialist provided the service after the expiration date of the preauthorization.", "topic": "Vitals", "concept": "Preauthorization expiration", "microLesson": "Preauthorization approval has limits: provider, service, number of visits, dates, and sometimes NPI. If service occurs after expiration, the claim can be denied.", "clinicalReasoning": "Expired authorization is a valid denial reason.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Preauthorization expiration?", "checkRight": "The specialist provided the service after the expiration date of the preauthorization.", "checkWrong": "The preauthorization does not include the specialty provider's National Provider Identifier (NPI).", "checkResult": "Correct: The specialist provided the service after the expiration date of the preauthorization. matches the tested rule. Expired authorization is a valid denial reason."}, {"id": 45, "question": "When performing routine follow-up calls to patients, which of the following actions should a medical assistant take first to notify the provider if the patient provides an unsatisfactory progress report?", "options": ["Add a note to the patient's appointment file.", "Document the phone call.", "Notify the provider on the next business day.", "Notify the provider immediately."], "answer": "Notify the provider immediately.", "topic": "Core CCMA Reasoning", "concept": "Unsatisfactory follow-up report", "microLesson": "If patient reports unsatisfactory progress, notify provider immediately. Document the call, but provider notification comes first for possible clinical action.", "clinicalReasoning": "Report concerning follow-up results immediately.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Unsatisfactory follow-up report?", "checkRight": "Notify the provider immediately.", "checkWrong": "Add a note to the patient's appointment file.", "checkResult": "Correct: Notify the provider immediately. matches the tested rule. Report concerning follow-up results immediately."}, {"id": 46, "question": "A medical assistant is preparing a patient for a urine creatinine test. Over which of the following periods of time should the assistant instruct the patient to collect the specimen?", "options": ["24 hr", "6 hr", "12 hr", "48 hr"], "answer": "24 hr", "topic": "Laboratory", "concept": "24-hour urine creatinine", "microLesson": "Urine creatinine clearance/creatinine testing commonly requires 24-hour urine collection. Patient discards first void, then collects all urine for 24 hours, including final void.", "clinicalReasoning": "Creatinine urine collection period = 24 hours.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches 24-hour urine creatinine?", "checkRight": "24 hr", "checkWrong": "6 hr", "checkResult": "Correct: 24 hr matches the tested rule. Creatinine urine collection period = 24 hours."}, {"id": 47, "question": "A medical assistant is performing a drug test on a patient. The temperature of the urine sample should be within which of the following temperature ranges for the sample to be usable?", "options": ["41° to 46° C (105° to 115° F)", "32° to 38° C (90° to 100° F)", "18° to 24° C (65° to 75° F)", "27° to 32° C (80° to 90° F)"], "answer": "32° to 38° C (90° to 100° F)", "topic": "Vitals", "concept": "Urine drug screen temperature", "microLesson": "Fresh urine for drug testing should be within 32°–38°C (90°–100°F) soon after collection. Temperature outside range may suggest delay, substitution, or tampering.", "clinicalReasoning": "Usable urine drug screen temperature is 32°-38°C.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Which temperature range supports a usable fresh urine drug-test sample?", "checkRight": "32° to 38° C (90° to 100° F)", "checkWrong": "18° to 24° C (65° to 75° F)", "checkResult": "Correct: fresh urine should be about body-temperature range, 32°–38°C."}, {"id": 48, "question": "A medical assistant drops an instrument on the floor while setting up a sterile tray for a procedure. They pick up the instrument and place it back on the sterile field. A few days after the procedure, the patient calls the office concerned that the area surrounding the procedure site is infected. Which of the following torts has the assistant committed?", "options": ["Abandonment", "Defamation", "Battery", "Negligence"], "answer": "Negligence", "topic": "Law & Ethics", "concept": "Negligence and sterile field", "microLesson": "Putting a dropped instrument back on sterile field breaches duty of care and can lead to infection. This is negligence, not battery/defamation/abandonment.", "clinicalReasoning": "Contaminated instrument use = negligence.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Negligence and sterile field?", "checkRight": "Negligence", "checkWrong": "Abandonment", "checkResult": "Correct: Negligence matches the tested rule. Contaminated instrument use = negligence."}, {"id": 49, "question": "A medical assistant in an outpatient facility is preparing a patient for a venipuncture. Which of the following actions should the assistant take to confirm the patient's identity?", "options": ["Ask the patient for their provider's name.", "Ask the patient to state and spell their full name and provide their date of birth.", "Ask the patient to verify their examination room number.", "Ask the patient to state their age and address."], "answer": "Ask the patient to state and spell their full name and provide their date of birth.", "topic": "Clinical Procedures", "concept": "Patient identification", "microLesson": "Use two identifiers: ask patient to state and spell full name and provide date of birth. Do not use room number alone. Identity confirmation prevents wrong-patient errors.", "clinicalReasoning": "Full name plus date of birth confirms identity.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Patient identification?", "checkRight": "Ask the patient to state and spell their full name and provide their date of birth.", "checkWrong": "Ask the patient for their provider's name.", "checkResult": "Correct: Ask the patient to state and spell their full name and provide their date of birth. matches the tested rule. Full name plus date of birth confirms identity."}, {"id": 50, "question": "Which of the following aseptic techniques involves using sound waves to vibrate and cleanse surgical instruments?", "options": ["Chemical disinfection", "Sterilization", "Ultrasonic sanitization", "Autoclave"], "answer": "Ultrasonic sanitization", "topic": "Infection Control", "concept": "Ultrasonic sanitization", "microLesson": "Ultrasonic cleaning uses sound waves in a cleaning solution to vibrate debris off instruments. It does not sterilize. Autoclave uses steam under pressure for sterilization.", "clinicalReasoning": "Sound-wave instrument cleaning = ultrasonic sanitization.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Ultrasonic sanitization?", "checkRight": "Ultrasonic sanitization", "checkWrong": "Chemical disinfection", "checkResult": "Correct: Ultrasonic sanitization matches the tested rule. Sound-wave instrument cleaning = ultrasonic sanitization."}, {"id": 51, "question": "When a medical assistant is performing a patient interview, it is important they understand the patient's message so that they can relay it accurately to the provider. Which of the following techniques is the assistant using when they state, \"I hear that you are saying…\"", "options": ["Reflection", "Paraphrasing", "Summarizing", "Clarification"], "answer": "Reflection", "topic": "Patient Communication", "concept": "Reflection communication technique", "microLesson": "Reflection repeats or mirrors the patient’s message/feeling: “I hear that you are saying…” Paraphrasing restates in your own words. Clarification asks for more information. Summarizing condenses main points.", "clinicalReasoning": "The quoted phrase demonstrates reflection.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Reflection communication technique?", "checkRight": "Reflection", "checkWrong": "Paraphrasing", "checkResult": "Correct: Reflection matches the tested rule. The quoted phrase demonstrates reflection."}, {"id": 52, "question": "Which of the following is used to collect the specimen during a Pap test?", "options": ["Uterine dilator", "Cervical spatula", "Vaginal speculum", "Uterine sound(s)"], "answer": "Cervical spatula", "topic": "Clinical Procedures", "concept": "Pap test collection instrument", "microLesson": "Pap test collects cervical cells using a cervical spatula/brush. Vaginal speculum opens the vagina for visualization but does not collect the specimen.", "clinicalReasoning": "Cervical spatula collects the Pap specimen.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Pap test collection instrument?", "checkRight": "Cervical spatula", "checkWrong": "Uterine dilator", "checkResult": "Correct: Cervical spatula matches the tested rule. Cervical spatula collects the Pap specimen."}, {"id": 53, "question": "A medical assistant has a blood pressure cuff inflated and partially opens the valve to deflate as they listen with a stethoscope. When should they read the diastolic pressure?", "options": ["When the sounds change from swishing to sharp", "When the sound disappears", "When repetitive sounds begin", "When the sounds change from strong to muffled"], "answer": "When the sound disappears", "topic": "Vitals", "concept": "Diastolic blood pressure reading", "microLesson": "Systolic = first sound. Diastolic = sound disappears. Deflate slowly while listening. Record systolic/diastolic as top/bottom numbers.", "clinicalReasoning": "Diastolic pressure is read when Korotkoff sounds disappear.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "During BP measurement, the tapping sounds disappear. Which value is being recorded?", "checkRight": "Diastolic pressure", "checkWrong": "Systolic pressure", "checkResult": "Correct: sound disappearance = diastolic. First sound = systolic."}, {"id": 54, "question": "Which of the following methods aids in gathering additional details from the patient regarding their chief complaint?", "options": ["Using an audio tool", "Asking open-ended questions", "Asking closed-ended questions", "Using visual diagrams"], "answer": "Asking open-ended questions", "topic": "Patient Communication", "concept": "Open-ended questions", "microLesson": "Open-ended questions gather more detail about chief complaint because the patient explains in their own words. Closed-ended questions limit answer to yes/no or brief facts.", "clinicalReasoning": "More detail requires open-ended questions.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Open-ended questions?", "checkRight": "Asking open-ended questions", "checkWrong": "Using an audio tool", "checkResult": "Correct: Asking open-ended questions matches the tested rule. More detail requires open-ended questions."}, {"id": 55, "question": "Which of the following instructions should a medical assistant give a patient when administering an enteric-coated tablet?", "options": ["Chew the tablet thoroughly before swallowing.", "Swallow the tablet whole with a glass of water.", "Crush the tablet and mix it with applesauce.", "Dissolve the tablet in a glass of water before drinking."], "answer": "Swallow the tablet whole with a glass of water.", "topic": "Core CCMA Reasoning", "concept": "Enteric-coated tablets", "microLesson": "Enteric-coated tablets are designed to dissolve in the intestine, not stomach. Swallow whole with water. Do not crush, chew, or dissolve; that destroys the coating and can irritate stomach or alter absorption.", "clinicalReasoning": "Swallow enteric-coated tablets whole.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "How should a patient take an enteric-coated tablet?", "checkRight": "Swallow whole with water", "checkWrong": "Crush and mix with food", "checkResult": "Correct: enteric-coated tablets must be swallowed whole."}, {"id": 56, "question": "When assisting a provider with a punch biopsy of a mole, which of the following tasks should a medical assistant anticipate?", "options": ["Receive and prepare tissue specimens for processing.", "Place sutures at the incision site.", "Swab fluids from the biopsy site.", "Retract the edges of the biopsy site."], "answer": "Receive and prepare tissue specimens for processing.", "topic": "Clinical Procedures", "concept": "Punch biopsy MA role", "microLesson": "During punch biopsy, MA may receive and prepare tissue specimen for processing. Suturing and biopsy incision tasks are provider responsibilities depending on scope.", "clinicalReasoning": "Specimen handling is the expected MA task.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Punch biopsy MA role?", "checkRight": "Receive and prepare tissue specimens for processing.", "checkWrong": "Place sutures at the incision site.", "checkResult": "Correct: Receive and prepare tissue specimens for processing. matches the tested rule. Specimen handling is the expected MA task."}, {"id": 57, "question": "A medical assistant is performing an EKG on a patient. Which of the following describes the appropriate placement of the electrodes?", "options": ["Tabs downward on the lower leg", "Tabs upward on the chest", "Tabs downward on the arm", "Tabs downward on the knee"], "answer": "Tabs downward on the lower leg", "topic": "Clinical Procedures", "concept": "EKG electrode tab direction", "microLesson": "For standard EKG placement, electrode tabs are positioned downward on arms/legs to reduce tension and artifact; chest tabs often face downward/outward depending setup. The tested answer is lower leg tabs downward.", "clinicalReasoning": "Appropriate limb electrode placement includes tabs downward on lower leg.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches EKG electrode tab direction?", "checkRight": "Tabs downward on the lower leg", "checkWrong": "Tabs upward on the chest", "checkResult": "Correct: Tabs downward on the lower leg matches the tested rule. Appropriate limb electrode placement includes tabs downward on lower leg."}, {"id": 58, "question": "In which of the following quadrants is the gallbladder located?", "options": ["Right lower quadrant", "Right upper quadrant", "Left lower quadrant", "Left upper quadrant"], "answer": "Right upper quadrant", "topic": "Infection Control", "concept": "Gallbladder quadrant", "microLesson": "Gallbladder is in the right upper quadrant (RUQ), under liver. Appendix is RLQ. Spleen/stomach are LUQ.", "clinicalReasoning": "Gallbladder = RUQ.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Gallbladder quadrant?", "checkRight": "Right upper quadrant", "checkWrong": "Right lower quadrant", "checkResult": "Correct: Right upper quadrant matches the tested rule. Gallbladder = RUQ."}, {"id": 59, "question": "When a medical assistant is communicating with a patient who is upset, which of the following mechanisms indicates the assistant is receptive and listening?", "options": ["Rubbing the patient's back", "Staring at the patient", "Smiling at the patient", "Maintaining an open posture toward the patient"], "answer": "Maintaining an open posture toward the patient", "topic": "Core CCMA Reasoning", "concept": "Open posture listening", "microLesson": "Open posture communicates receptiveness and listening. Staring can feel intimidating. Rubbing the patient’s back may cross boundaries. Smiling alone may not show active listening.", "clinicalReasoning": "Open posture is the therapeutic nonverbal behavior.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Open posture listening?", "checkRight": "Maintaining an open posture toward the patient", "checkWrong": "Rubbing the patient's back", "checkResult": "Correct: Maintaining an open posture toward the patient matches the tested rule. Open posture is the therapeutic nonverbal behavior."}, {"id": 60, "question": "A medical assistant is providing instructions to a patient who is hard of hearing. Which of the following positions should the assistant choose when speaking to the patient?", "options": ["Face the patient, speaking toward their bad ear", "Speak very low when talking to the patient", "Turn away from the patient", "Face the patient when speaking"], "answer": "Face the patient when speaking", "topic": "Patient Communication", "concept": "Hard-of-hearing communication", "microLesson": "Face the patient when speaking so they can read lips/facial cues. Speak clearly, not exaggeratedly. Do not turn away or speak toward the bad ear.", "clinicalReasoning": "Face the patient while speaking.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Hard-of-hearing communication?", "checkRight": "Face the patient when speaking", "checkWrong": "Face the patient, speaking toward their bad ear", "checkResult": "Correct: Face the patient when speaking matches the tested rule. Face the patient while speaking."}, {"id": 61, "question": "A medical assistant is performing a scratch allergy test on a patient's back. Which of the following distances describes the correct spacing for the small amounts of allergen scratched onto the skin?", "options": ["3 ½ to 4 inches", "2 ½ to 3 inches", "2 to 3 ½ inches", "1 ½ to 2 inches"], "answer": "1 ½ to 2 inches", "topic": "Clinical Procedures", "concept": "Scratch allergy spacing", "microLesson": "Scratch/percutaneous allergy test sites are spaced about 1½ to 2 inches apart to prevent overlap of reactions.", "clinicalReasoning": "Allergen scratches should be spaced 1½ to 2 inches.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Scratch allergy spacing?", "checkRight": "1 ½ to 2 inches", "checkWrong": "3 ½ to 4 inches", "checkResult": "Correct: 1 ½ to 2 inches matches the tested rule. Allergen scratches should be spaced 1½ to 2 inches."}, {"id": 62, "question": "Which of the following is the appropriate instrument for removing stitches?", "options": ["A retractor", "Suture scissors", "A probe", "A dilator"], "answer": "Suture scissors", "topic": "Clinical Procedures", "concept": "Suture removal instrument", "microLesson": "Suture scissors are designed to cut stitches for removal. Retractors hold tissue, probes explore, dilators widen openings.", "clinicalReasoning": "Stitches are removed with suture scissors.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Suture removal instrument?", "checkRight": "Suture scissors", "checkWrong": "A retractor", "checkResult": "Correct: Suture scissors matches the tested rule. Stitches are removed with suture scissors."}, {"id": 63, "question": "medical assistant is preparing hemostats for sterilization after an invasive procedure. Which of the following techniques should the assistant use?", "options": ["Dry Heat", "Autoclave", "Gas", "Chemical"], "answer": "Autoclave", "topic": "Infection Control", "concept": "Hemostat sterilization", "microLesson": "Hemostats are metal instruments for invasive procedures and should be sterilized by autoclave when heat/moisture-safe. Autoclave uses steam under pressure.", "clinicalReasoning": "Autoclave is appropriate for hemostats.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Hemostat sterilization?", "checkRight": "Autoclave", "checkWrong": "Dry Heat", "checkResult": "Correct: Autoclave matches the tested rule. Autoclave is appropriate for hemostats."}, {"id": 64, "question": "Which of the following supplies are required for proper handwashing technique?", "options": ["Cold water", "An oil-based lotion", "Paper towels", "Bar soap"], "answer": "Paper towels", "topic": "Infection Control", "concept": "Handwashing supplies", "microLesson": "Proper handwashing needs running water, soap, and paper towels. Paper towels dry hands and turn off faucet. Bar soap/oil lotion/cold water alone are not the required supply.", "clinicalReasoning": "Paper towels are required for proper handwashing.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Handwashing supplies?", "checkRight": "Paper towels", "checkWrong": "Cold water", "checkResult": "Correct: Paper towels matches the tested rule. Paper towels are required for proper handwashing."}, {"id": 65, "question": "A patient arrives at the provider's office with a laceration on their right forearm, and the provider determines the patient will need sutures. Which of the following supplies should the medical assistant hand to the provider?", "options": ["The needle holder with the suture attached", "Only the sutures", "The needle holder and the suture, separately", "Only the needle holder"], "answer": "The needle holder with the suture attached", "topic": "Infection Control", "concept": "Passing suturing supplies", "microLesson": "When provider needs sutures, hand needle holder with suture attached. This supports sterile technique and efficient provider workflow.", "clinicalReasoning": "Needle holder with suture attached is the correct supply handoff.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Passing suturing supplies?", "checkRight": "The needle holder with the suture attached", "checkWrong": "Only the sutures", "checkResult": "Correct: The needle holder with the suture attached matches the tested rule. Needle holder with suture attached is the correct supply handoff."}, {"id": 66, "question": "When obtaining a rectal temperature from an infant, which of the following describes how far a medical assistant should insert the probe?", "options": ["The thermometer should be inserted ⅝ inch into the rectum.", "A rectal temperature should not be taken on an infant.", "The thermometer should be inserted ½ inch into the rectum.", "The thermometer should be inserted 1 inch into the rectum."], "answer": "The thermometer should be inserted ½ inch into the rectum.", "topic": "Vitals", "concept": "Infant rectal temperature depth", "microLesson": "For infant rectal temperature, insert lubricated probe about ½ inch. Too deep risks injury. Follow facility policy and use gentle technique.", "clinicalReasoning": "Infant rectal probe depth = ½ inch.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Infant rectal temperature depth?", "checkRight": "The thermometer should be inserted ½ inch into the rectum.", "checkWrong": "The thermometer should be inserted ⅝ inch into the rectum.", "checkResult": "Correct: The thermometer should be inserted ½ inch into the rectum. matches the tested rule. Infant rectal probe depth = ½ inch."}, {"id": 67, "question": "Which of the following aseptic techniques can be achieved using dry heat, moist heat, ultraviolet light, gas, chemicals, or ionizing radiation?", "options": ["Disinfection", "Sanitization", "Sterilization", "Hand hygiene"], "answer": "Sterilization", "topic": "Infection Control", "concept": "Sterilization methods", "microLesson": "Sterilization can be achieved by dry heat, moist heat, gas, chemicals, ultraviolet light, or ionizing radiation. It destroys all microorganisms including spores.", "clinicalReasoning": "Those methods describe sterilization.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Sterilization methods?", "checkRight": "Sterilization", "checkWrong": "Disinfection", "checkResult": "Correct: Sterilization matches the tested rule. Those methods describe sterilization."}, {"id": 68, "question": "Which of the following coaching recommendations should a medical assistant provide when educating a patient and their family on reducing the spread of infection?", "options": ["Routinely wash hands before and after meals.", "Use only high-level disinfectants on supplies for sanitization purposes.", "Avoid using hand sanitizer.", "Cough or sneeze into the open air."], "answer": "Routinely wash hands before and after meals.", "topic": "Infection Control", "concept": "Reducing spread of infection", "microLesson": "Hand hygiene reduces infection spread. Wash hands routinely, especially before eating and after contamination. Cough into tissue/elbow, not open air. Sanitizer is useful when hands not visibly soiled.", "clinicalReasoning": "Handwashing is the correct coaching recommendation.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Reducing spread of infection?", "checkRight": "Routinely wash hands before and after meals.", "checkWrong": "Use only high-level disinfectants on supplies for sanitization purposes.", "checkResult": "Correct: Routinely wash hands before and after meals. matches the tested rule. Handwashing is the correct coaching recommendation."}, {"id": 69, "question": "Which of the following is the purpose of utilizing a clinical centrifuge?", "options": ["To separate a specimen into different components", "To transfer plasma to another tube", "To aspirate plasma off the cells", "To avoid hemolysis of the specimen"], "answer": "To separate a specimen into different components", "topic": "Laboratory", "concept": "Clinical centrifuge purpose", "microLesson": "Centrifuge spins specimens to separate components by density, such as serum/plasma from cells. It does not aspirate or transfer by itself.", "clinicalReasoning": "Centrifuge separates specimen components.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Clinical centrifuge purpose?", "checkRight": "To separate a specimen into different components", "checkWrong": "To transfer plasma to another tube", "checkResult": "Correct: To separate a specimen into different components matches the tested rule. Centrifuge separates specimen components."}, {"id": 70, "question": "If a medical assistant experiences an exposure to an infectious disease via a human bite, which of the following steps should they take first?", "options": ["Report the exposure incident to the supervisor within 48 to 72 hr.", "Utilize an alcohol-based hand sanitizer to cleanse the exposed area.", "Immediately flush the exposed area following the exposure.", "Write an incident report to be included in the employee's personal file."], "answer": "Immediately flush the exposed area following the exposure.", "topic": "Infection Control", "concept": "Exposure incident first step", "microLesson": "For exposure to blood/body fluid or human bite: immediate first aid first. Wash or flush the exposed area right away. Then report to supervisor, document, and follow exposure-control protocol.", "clinicalReasoning": "First priority after exposure is flush/cleanse.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "After a human bite exposure, what comes first?", "checkRight": "Flush or wash the exposed area immediately", "checkWrong": "Write the incident report first", "checkResult": "Correct: immediate cleansing/flushing comes before paperwork."}, {"id": 71, "question": "Which of the following do team members take into consideration within a patient-centered medical home (PCMH)?", "options": ["Providing a network of contracted providers", "Administering gynecologic and prenatal labor and birth care", "Respecting a patient's culture with their health care needs", "Allowing the inclusion of preexisting condition coverage"], "answer": "Respecting a patient's culture with their health care needs", "topic": "Patient Communication", "concept": "PCMH patient-centered care", "microLesson": "Patient-Centered Medical Home considers the whole patient, including culture, preferences, coordination, access, and team-based care. It is not mainly a payer network.", "clinicalReasoning": "Respecting culture aligns with PCMH.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches PCMH patient-centered care?", "checkRight": "Respecting a patient's culture with their health care needs", "checkWrong": "Providing a network of contracted providers", "checkResult": "Correct: Respecting a patient's culture with their health care needs matches the tested rule. Respecting culture aligns with PCMH."}, {"id": 72, "question": "Which of the following cardiac procedures is within a medical assistant's scope of practice and does not require a licensed technician or provider to assist with or perform the procedure?", "options": ["An angiogram", "A nuclear stress test", "A Holter monitor application", "A cardiac Doppler ultrasound"], "answer": "A Holter monitor application", "topic": "Clinical Procedures", "concept": "MA scope: Holter monitor", "microLesson": "Applying a Holter monitor is within MA scope in many outpatient settings. Angiogram, nuclear stress test, and cardiac Doppler require licensed/specialized staff/provider.", "clinicalReasoning": "Holter monitor application is the MA-scope cardiac procedure.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches MA scope: Holter monitor?", "checkRight": "A Holter monitor application", "checkWrong": "An angiogram", "checkResult": "Correct: A Holter monitor application matches the tested rule. Holter monitor application is the MA-scope cardiac procedure."}, {"id": 73, "question": "Which of the following diagnostic statements is appropriate in the outpatient setting?", "options": ["Suspected strep throat", "Fever of unknown origin", "Probable urinary tract infection", "Knee pain and arthritis"], "answer": "Fever of unknown origin", "topic": "Infection Control", "concept": "Outpatient diagnostic coding", "microLesson": "In outpatient coding, do not code uncertain diagnoses as confirmed: suspected, probable, rule out. Code signs/symptoms or confirmed conditions. “Knee pain and arthritis” includes documented symptom/condition.", "clinicalReasoning": "Appropriate outpatient statement avoids uncertain diagnosis coding.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Outpatient diagnostic coding?", "checkRight": "Fever of unknown origin", "checkWrong": "Suspected strep throat", "checkResult": "Correct: Fever of unknown origin matches the tested rule. Appropriate outpatient statement avoids uncertain diagnosis coding."}, {"id": 74, "question": "A medical assistant calls a patient from the waiting area to obtain a specimen. Which of the following actions should the assistant do first?", "options": ["Identify the patient.", "Educate the patient about correct specimen collection technique.", "Proceed with obtaining the specimen.", "Provide the patient with the lab requisition form."], "answer": "Identify the patient.", "topic": "Laboratory", "concept": "Specimen collection first step", "microLesson": "Before specimen collection, identify the patient first. Then explain technique, requisition, and collection steps. Identity prevents wrong-patient specimen errors.", "clinicalReasoning": "First action is identify the patient.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Specimen collection first step?", "checkRight": "Identify the patient.", "checkWrong": "Educate the patient about correct specimen collection technique.", "checkResult": "Correct: Identify the patient. matches the tested rule. First action is identify the patient."}, {"id": 75, "question": "Which of the following vaccinations should patients receive at 7 years of age or older?", "options": ["Tetanus, diphtheria, and pertussis (Tdap)", "Varicella", "Hepatitis B", "Measles, mumps, and rubella (MMR)"], "answer": "Tetanus, diphtheria, and pertussis (Tdap)", "topic": "Core CCMA Reasoning", "concept": "Tdap age 7 or older", "microLesson": "Tdap is given at age 7 years or older when indicated. DTaP is used for younger children. MMR, varicella, hepatitis B are given earlier in routine schedules.", "clinicalReasoning": "For 7+ years, think Tdap.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Tdap age 7 or older?", "checkRight": "Tetanus, diphtheria, and pertussis (Tdap)", "checkWrong": "Varicella", "checkResult": "Correct: Tetanus, diphtheria, and pertussis (Tdap) matches the tested rule. For 7+ years, think Tdap."}, {"id": 76, "question": "Which of the following formulas is used to convert a patient's weight from kilograms to pounds?", "options": ["Divide the number of kilograms by 2.2", "Multiply the number of kilograms by 1.2", "Multiply the number of kilograms by 2.2", "Divide the number of kilograms by 1.2"], "answer": "Multiply the number of kilograms by 2.2", "topic": "Vitals", "concept": "Kilograms to pounds formula", "microLesson": "Convert kilograms to pounds by multiplying kg × 2.2. Convert pounds to kilograms by dividing lb ÷ 2.2.", "clinicalReasoning": "kg to lb = multiply by 2.2.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Kilograms to pounds formula?", "checkRight": "Multiply the number of kilograms by 2.2", "checkWrong": "Divide the number of kilograms by 2.2", "checkResult": "Correct: Multiply the number of kilograms by 2.2 matches the tested rule. kg to lb = multiply by 2.2."}, {"id": 77, "question": "When a procedure requires informed consent, which of the following steps should occur prior to the patient signing the form?", "options": ["The provider should review the patient's insurance coverage for the procedure.", "The medical assistant should explain the procedure to the patient.", "The medical assistant should describe the risks of the procedure to the patient.", "The provider should include information about alternative procedures before informed consent is obtained from the patient."], "answer": "The provider should include information about alternative procedures before informed consent is obtained from the patient.", "topic": "Law & Ethics", "concept": "Informed consent provider role", "microLesson": "Before signing informed consent, provider explains procedure, risks, benefits, and alternatives. MA may witness signature but does not explain risks or alternatives.", "clinicalReasoning": "Provider must include alternative procedures before consent.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Informed consent provider role?", "checkRight": "The provider should include information about alternative procedures before informed consent is obtained from the patient.", "checkWrong": "The provider should review the patient's insurance coverage for the procedure.", "checkResult": "Correct: The provider should include information about alternative procedures before informed consent is obtained from the patient. matches the tested rule. Provider must include alternative procedures before consent."}, {"id": 78, "question": "A medical assistant is preparing the exam room for a patient's general physical examination. Which of the following instruments should be available to the provider for the examination?", "options": ["Curette", "Otoscope", "Forceps", "Endoscope"], "answer": "Otoscope", "topic": "Core CCMA Reasoning", "concept": "General physical exam instrument", "microLesson": "Otoscope is standard for general physical exam to inspect ears. Curette, forceps, endoscope are not routine general exam instruments.", "clinicalReasoning": "Otoscope should be available.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches General physical exam instrument?", "checkRight": "Otoscope", "checkWrong": "Curette", "checkResult": "Correct: Otoscope matches the tested rule. Otoscope should be available."}, {"id": 79, "question": "A medical assistant administers an injection and the patient faints. Which of the following actions should the assistant take?", "options": ["Apply a warm washcloth to the patient's neck.", "Elevate the patient's head above their heart.", "Place the patient in a supine position.", "Offer the patient something to drink."], "answer": "Place the patient in a supine position.", "topic": "Clinical Procedures", "concept": "Syncope after injection", "microLesson": "If patient faints, place in supine position to increase cerebral blood flow and prevent injury. Do not give drink until alert. Do not elevate head.", "clinicalReasoning": "Fainting after injection: supine position.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Syncope after injection?", "checkRight": "Place the patient in a supine position.", "checkWrong": "Apply a warm washcloth to the patient's neck.", "checkResult": "Correct: Place the patient in a supine position. matches the tested rule. Fainting after injection: supine position."}, {"id": 80, "question": "Convert the 72 Kg to Pounds", "options": ["158.4", "185.9", "72", "98.2"], "answer": "158.4", "topic": "Vitals", "concept": "72 kg to pounds", "microLesson": "Use kg × 2.2 = pounds. 72 × 2.2 = 158.4 lb.", "clinicalReasoning": "72 kg equals 158.4 pounds.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches 72 kg to pounds?", "checkRight": "158.4", "checkWrong": "185.9", "checkResult": "Correct: 158.4 matches the tested rule. 72 kg equals 158.4 pounds."}, {"id": 81, "question": "Which of the following actions is within the scope of practice for a medical assistant?", "options": ["Diagnosing symptoms", "Providing first aid procedures", "Performing a physical examination", "Giving medical advice"], "answer": "Providing first aid procedures", "topic": "Law & Ethics", "concept": "Medical assistant scope", "microLesson": "Medical assistants may provide first aid procedures within training and policy. They do not diagnose, perform provider physical exams, or give medical advice.", "clinicalReasoning": "First aid is within MA scope; diagnosis/advice is not.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Medical assistant scope?", "checkRight": "Providing first aid procedures", "checkWrong": "Diagnosing symptoms", "checkResult": "Correct: Providing first aid procedures matches the tested rule. First aid is within MA scope; diagnosis/advice is not."}, {"id": 82, "question": "A pulse oximeter can register an artificially low oxygen saturation measurement for a patient with which of the following conditions?", "options": ["Hyperventilation syndrome", "Carbon monoxide poisoning", "Cold fingers", "Anemia"], "answer": "Cold fingers", "topic": "Vitals", "concept": "Falsely low pulse oximetry", "microLesson": "Pulse ox needs blood flow at the probe site. Cold fingers, poor circulation, movement, or nail polish can lower accuracy. Carbon monoxide can look falsely normal/high because the device misreads carboxyhemoglobin.", "clinicalReasoning": "Cold fingers reduce peripheral perfusion and can cause artificially low SpO2.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Which condition can make a finger pulse ox read falsely low?", "checkRight": "Cold fingers / poor perfusion", "checkWrong": "Carbon monoxide poisoning", "checkResult": "Correct: cold fingers reduce perfusion and can lower the reading. Carbon monoxide may falsely reassure."}, {"id": 83, "question": "A medical assistant is talking with a patient who is experiencing home displacement following a hurricane. To which of the following resources should the assistant refer the patient for information, support, and links to community services?", "options": ["American Red Cross", "Department of Health and Human Services (HHS)", "Centers for Disease Control and Prevention (CDC)", "National Council on Aging"], "answer": "American Red Cross", "topic": "Core CCMA Reasoning", "concept": "Disaster displacement resource", "microLesson": "American Red Cross provides disaster relief, shelter, support, and community service connections after events like hurricanes. CDC gives disease guidance; HHS is broad federal agency.", "clinicalReasoning": "Hurricane displacement referral = American Red Cross.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Disaster displacement resource?", "checkRight": "American Red Cross", "checkWrong": "Department of Health and Human Services (HHS)", "checkResult": "Correct: American Red Cross matches the tested rule. Hurricane displacement referral = American Red Cross."}, {"id": 84, "question": "When a medical assistant is performing a venipuncture procedure, which of the following is a preanalytical error that can affect the test results?", "options": ["Identification of the patient", "Applying the tourniquet 3 inches above the elbow", "Adjusting the order of draw", "Reading the requisition order"], "answer": "Adjusting the order of draw", "topic": "Clinical Procedures", "concept": "Preanalytical venipuncture errors", "microLesson": "Preanalytical errors happen before testing: wrong patient ID, wrong tube/order of draw, poor specimen handling, hemolysis, wrong timing, prolonged tourniquet, incorrect labeling. Adjusting order of draw can contaminate tubes and alter results.", "clinicalReasoning": "Changing order of draw can contaminate additives and alter results.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Which action can create a preanalytical error?", "checkRight": "Changing the order of draw", "checkWrong": "Reading the requisition order", "checkResult": "Correct: changing order of draw can contaminate specimens."}, {"id": 85, "question": "Which of the following sections of the clinical medical record includes a collection of the patient's subjective data obtained by a medical assistant during the clinical intake process?", "options": ["Anthropometric measurements", "Vital signs", "Radiology reports", "Health history"], "answer": "Health history", "topic": "Core CCMA Reasoning", "concept": "Health history section", "microLesson": "Subjective intake data reported by the patient belongs in health history. Vital signs and anthropometrics are objective measurements. Radiology reports are diagnostic results.", "clinicalReasoning": "Patient-reported subjective data = health history.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Health history section?", "checkRight": "Health history", "checkWrong": "Anthropometric measurements", "checkResult": "Correct: Health history matches the tested rule. Patient-reported subjective data = health history."}, {"id": 86, "question": "Which of the following cell structures is instrumental in helping the body mobilize and secrete mucus from the respiratory tract?", "options": ["Mitochondria", "Ribosomes", "Cilia", "Centrioles"], "answer": "Cilia", "topic": "Anatomy & Disease", "concept": "Cilia function", "microLesson": "Cilia are hairlike cell structures that move mucus and trapped particles out of the respiratory tract. Mitochondria make energy; ribosomes make protein; centrioles help cell division.", "clinicalReasoning": "Respiratory mucus mobilization depends on cilia.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Cilia function?", "checkRight": "Cilia", "checkWrong": "Mitochondria", "checkResult": "Correct: Cilia matches the tested rule. Respiratory mucus mobilization depends on cilia."}, {"id": 87, "question": "A medical assistant has a prescription to obtain a CBC, basic metabolic panel, lactic acid, and a PT/INR from an older adult patient who has small veins. Which of the followings methods of draw should the assistant use?", "options": ["Capillary method", "Butterfly method", "Syringe method", "Evacuated system method"], "answer": "Butterfly method", "topic": "Clinical Procedures", "concept": "Small veins draw method", "microLesson": "Butterfly method uses a winged infusion set and is useful for small or fragile veins, common in older adults. Syringe may control pressure but butterfly is the best listed method.", "clinicalReasoning": "Small veins: butterfly method.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Small veins draw method?", "checkRight": "Butterfly method", "checkWrong": "Capillary method", "checkResult": "Correct: Butterfly method matches the tested rule. Small veins: butterfly method."}, {"id": 88, "question": "A medical assistant is composing business correspondence using the simplified letter style. Which of the following features should the assistant use?", "options": ["A complimentary closing", "Center aligned dateline and salutation", "Indented paragraphs in the body of the letter", "The sender's name is in all capital letters"], "answer": "The sender's name is in all capital letters", "topic": "Administrative & Insurance", "concept": "Simplified letter style", "microLesson": "Simplified letter style omits salutation and complimentary closing; subject line often replaces salutation; sender’s name may appear in all capitals.", "clinicalReasoning": "Sender’s name in all capitals is the simplified-letter feature.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Simplified letter style?", "checkRight": "The sender's name is in all capital letters", "checkWrong": "A complimentary closing", "checkResult": "Correct: The sender's name is in all capital letters matches the tested rule. Sender’s name in all capitals is the simplified-letter feature."}, {"id": 89, "question": "Which of the following is a positive nonverbal behavior?", "options": ["Leaning away from the other person", "Leaning towards the other person", "Turning your back towards the other person", "Displaying stiff posture towards the other person"], "answer": "Leaning towards the other person", "topic": "Patient Communication", "concept": "Positive nonverbal behavior", "microLesson": "Leaning toward the person shows interest and engagement. Leaning away, stiff posture, and turning back are negative or closed nonverbal cues.", "clinicalReasoning": "Leaning toward the person is positive nonverbal behavior.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "Based on the concept, which choice best matches Positive nonverbal behavior?", "checkRight": "Leaning towards the other person", "checkWrong": "Leaning away from the other person", "checkResult": "Correct: Leaning towards the other person matches the tested rule. Leaning toward the person is positive nonverbal behavior."}, {"id": 90, "question": "A medical assistant is preparing to perform a capillary puncture on an adult. Which of the following fingers should they choose?", "options": ["Middle", "Thumb", "Pinky", "Index"], "answer": "Middle", "topic": "Clinical Procedures", "concept": "Capillary puncture finger choice", "microLesson": "Adult fingerstick: use middle or ring finger, usually lateral side of distal fingertip. Avoid thumb; avoid index if possible; avoid pinky because tissue is thin and bone is close.", "clinicalReasoning": "Middle finger is acceptable for an adult capillary puncture.", "trap": "", "application": "Use the concept first. Match the decisive clue to the rule; do not pick an answer because it sounds familiar.", "checkQuestion": "For an adult capillary puncture, which choice is safest?", "checkRight": "Middle or ring finger", "checkWrong": "Thumb or pinky", "checkResult": "Correct: middle/ring are preferred. Thumb and pinky are avoided."}]</script>
+<script>
+(function(){
+'use strict';
+const QUESTIONS = JSON.parse(document.getElementById('question-data').textContent);
+const SECTIONS = [['home','Home'],['builder','Concept Builder'],['practice','Guided Practice'],['challenge','Challenge'],['exam','Exam Simulation'],['dashboard','Dashboard']];
+const $ = id => document.getElementById(id);
+let defaultState = {xp:0, correct:0, streak:0, answered:0, topic:{}, history:[], timeByTopic:{}, slowItems:[]};
+let state;
+try { state = JSON.parse(localStorage.getItem('ccmaState') || JSON.stringify(defaultState)); } catch(e) { state = defaultState; }
+let practiceIndex = Number(localStorage.getItem('practiceIndex') || 0);
+let challengeOrder = [], challengeIndex = 0, timerInt = null, timeLeft = 45;
+let examOrder = [], examIndex = 0, examCorrect = 0, examAnswered = 0, examStartedAt = null;
+function escapeHTML(str) { return String(str).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
+function save() { localStorage.setItem('ccmaState', JSON.stringify(state)); localStorage.setItem('practiceIndex', String(practiceIndex)); updateStats(); }
+function updateStats() {
+  $('xp').textContent = state.xp; $('correct').textContent = state.correct; $('streak').textContent = state.streak;
+  $('mXP').textContent = state.xp; $('mDone').textContent = state.answered;
+  const acc = state.answered ? Math.round(state.correct / state.answered * 100) : 0; $('mAcc').textContent = acc + '%';
+  const weak = Object.entries(state.topic).filter(([k,v]) => v.total >= 2 && v.correct / v.total < .7);
+  $('mWeak').textContent = weak.length;
+  let timingNote=''; if(state.timeByTopic){ const slow=Object.entries(state.timeByTopic).filter(([k,v])=>v.count && (v.total/v.count)>35).map(([k,v])=>k); const fast=Object.entries(state.timeByTopic).filter(([k,v])=>v.count && (v.total/v.count)<12).map(([k,v])=>k); if(slow.length) timingNote+=' Timing: slowest areas are '+slow.slice(0,3).join(', ')+'. Practice spotting decisive words faster.'; if(fast.length) timingNote+=' Fast areas: '+fast.slice(0,3).join(', ')+'. Keep verifying accuracy before clicking.'; } $('advice').textContent = (weak.length ? 'Review these weak areas: ' + weak.map(x => x[0]).join(', ') + '. Use review links after each question to jump back to Concept Builder.' : (state.answered ? 'Strong start. Increase difficulty with Challenge Mode and the full Exam Simulation.' : 'Start Guided Practice to generate personal recommendations.')) + timingNote;
+  const timeStats=state.timeByTopic||{}; $('topicBreakdown').innerHTML = Object.entries(state.topic).map(([k,v]) => { const ts=timeStats[k]; const avg=ts?Math.round(ts.total/ts.count):null; const timeMsg=avg?` · avg ${avg}s${avg>35?' · slow area':avg<12?' · fast area':' · steady pace'}`:''; return `<div class="card" style="margin:8px 0;padding:12px"><b>${escapeHTML(k)}</b><div class="mini">${v.correct}/${v.total} correct · ${Math.round(v.correct/v.total*100)}%${timeMsg}</div></div>`; }).join(''); const slow=(state.slowItems||[]).slice(-5).reverse(); if(slow.length){ $('topicBreakdown').innerHTML += `<div class="speedBox"><h3>Timing reflection</h3>${slow.map(x=>`<div class="speedRow"><span>Q${x.id} · ${escapeHTML(x.topic)}</span><b>${x.time}s</b></div>`).join('')}<p class="mini">You need to work on time for these question types. Read the stem once for meaning, highlight the decisive clue, then eliminate.</p></div>`; }
+}
+function topicClass(t) { t=(t||'').toLowerCase(); if(t.includes('vital')) return 't-vitals'; if(t.includes('law')||t.includes('ethic')) return 't-law'; if(t.includes('lab')||t.includes('infection')) return 't-lab'; if(t.includes('admin')||t.includes('insurance')) return 't-admin'; if(t.includes('pharm')||t.includes('medication')) return 't-pharm'; return 't-general'; }
+function segmentInfo(topic){ const t=(topic||'Core CCMA Reasoning').toLowerCase(); if(t.includes('vital')) return {key:'vitals',name:'Vitals & Measurement Logic',note:'Blood pressure, pulse, BMI, oxygenation, temperature, pediatric growth, and unit conversion. Students must interpret numbers and clinical wording precisely.', cls:'seg-vitals'}; if(t.includes('procedure')||t.includes('lab')||t.includes('infection')) return {key:'clinical',name:'Clinical Procedures, Lab & Infection Control',note:'Specimen handling, order of draw, capillary collection, sterile field, PPE, CLIA-waived testing, and exposure response.', cls:'seg-clinical'}; if(t.includes('law')||t.includes('ethic')) return {key:'law',name:'Law, Ethics & Patient Rights',note:'Consent, torts, advance directives, chain of custody, scope boundaries, and legally safe documentation.', cls:'seg-law'}; if(t.includes('admin')||t.includes('insurance')) return {key:'admin',name:'Administrative, Insurance & Office Systems',note:'Medicare, ACO/PCMH, referral authorization, scheduling software, business letters, and claim logic.', cls:'seg-admin'}; if(t.includes('communication')) return {key:'comm',name:'Patient Communication & Coaching',note:'Therapeutic language, open-ended questions, hearing accommodations, nonverbal behavior, health teaching, and prevention.', cls:'seg-comm'}; if(t.includes('pharm')||t.includes('medication')) return {key:'pharm',name:'Medication Safety & Routes',note:'Routes, dosage wording, controlled substance storage, coated tablets, buccal administration, and safe patient instructions.', cls:'seg-pharm'}; if(t.includes('anatomy')||t.includes('disease')) return {key:'body',name:'Anatomy, Disease Recognition & Clinical Terms',note:'Disease manifestations, body systems, anatomic landmarks, reportable diseases, and diagnostic vocabulary.', cls:'seg-body'}; return {key:'general',name:'Core CCMA Reasoning & Mixed Safety Rules',note:'Mixed baseline concepts that require careful reading, exact wording, safety prioritization, and elimination of tempting distractors.', cls:'seg-general'}; }
+function strongFocus(q){ const focus=escapeHTML(q.clinicalReasoning||q.answer); return `<div class="focusLine"><b>High-yield clue</b><br><u>${focus}</u></div>`; }
+
+function shortParts(text){ text=(text||'').trim(); let parts=text.split(/\.\s+/).filter(Boolean).slice(0,5).map(x=>x.replace(/\.$/,'')); return parts.length?parts:[text]; }
+function splitLesson(q){
+  const text=(q.microLesson||'').replace(/\s+/g,' ').trim();
+  const parts=text.split(/\.\s+/).map(x=>x.trim().replace(/\.$/,'')).filter(Boolean);
+  const definition=parts[0]||q.concept;
+  const keyFacts=parts.slice(1,5);
+  const test=q.clinicalReasoning||q.answer;
+  const memory=(q.checkResult||'').replace(/^Correct:\s*/,'') || test;
+  return {definition,keyFacts,test,memory};
+}
+function lessonHTML(q){
+  const s=splitLesson(q);
+  const facts=s.keyFacts.length?s.keyFacts:[s.test];
+  return `<div class="studyGrid">
+    <div class="studyItem definitionBox"><b>Definition</b>${escapeHTML(s.definition)}.</div>
+    <div class="studyItem keyBox"><b>Key facts</b><div class="mustList">${facts.slice(0,5).map(x=>`<span>${escapeHTML(x)}</span>`).join('')}</div></div>
+    <div class="studyItem testBox"><b>Test focus</b>${escapeHTML(s.test)}</div>
+    <div class="studyItem memoryBox"><b>Memory clue</b>${escapeHTML(s.memory)}</div>
+  </div>`;
+}
+
+function conceptCheckHTML(q){ const right=escapeHTML(q.checkRight||q.answer); const wrong=escapeHTML(q.checkWrong||(q.options||[]).find(o=>o!==q.answer)||'Another choice'); return `<div class="checkBox"><h4>Micro concept check</h4><p class="mini">${escapeHTML(q.checkQuestion||('Choose the statement that correctly applies this concept.'))}</p><div class="choicePair"><button class="checkBtn" data-ok="1">${right}</button><button class="checkBtn" data-ok="0">${wrong}</button></div><div class="checkResult">${escapeHTML(q.checkResult||('Correct: '+right+' matches the rule.'))}</div></div>`; }
+
+function optionRationaleHTML(q){ return `<div class="optionRats"><h4>Rationale for every option</h4>${(q.options||[]).map(o=>{ const ok=o===q.answer; const why=ok ? (q.clinicalReasoning||('This option directly matches the tested concept: '+q.concept+'.')) : `This does not match the decisive clue in the stem. Correct concept: ${q.concept}. Correct answer: ${q.answer}.`; return `<div><span class="${ok?'correctText':'wrongText'}">${ok?'Correct':'Incorrect'}:</span> <b>${escapeHTML(o)}</b> — ${escapeHTML(why)}</div>`; }).join('')}</div>`; }
+
+function wireConceptChecks(root){ root.querySelectorAll('.checkBtn').forEach(btn=>btn.addEventListener('click',e=>{ e.stopPropagation(); const box=btn.closest('.checkBox'); box.querySelector('.checkResult').classList.add('show'); btn.style.borderColor = btn.dataset.ok==='1' ? 'var(--green)' : 'var(--red)'; })); }
+let practiceStartedAt=Date.now();
+const SPECIAL_REVIEW = {21:'cb-legal-2',23:'cb-legal-4',48:'cb-legal-2',77:'cb-legal-8'};
+
+function shuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
+function showSec(id) { document.querySelectorAll('.section').forEach(s=>s.classList.remove('active')); $(id).classList.add('active'); document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.sec===id)); window.scrollTo({top:0,behavior:'smooth'}); if(id==='practice') renderPractice(); if(id==='builder') renderBuilder(); if(id==='challenge') startChallenge(); if(id==='dashboard') updateStats(); }
+function buildNav() { const nav=$('nav'); nav.innerHTML=''; SECTIONS.forEach(([id,label])=>{ const b=document.createElement('button'); b.className='tab'+(id==='home'?' active':''); b.dataset.sec=id; b.textContent=label; b.addEventListener('click',()=>showSec(id)); nav.appendChild(b); }); document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>showSec(b.dataset.go))); }
+function legalDeepDiveCards(){
+  const cards=[
+    {id:'cb-legal-1',num:'Legal Card 1',title:'Types of Torts',focus:'Tort = civil wrongdoing that causes harm.',lesson:'A tort can be intentional or unintentional. Intentional means the act was done on purpose. Unintentional means harm happened because someone failed to use reasonable care.',check:'A medication error happens by mistake and causes harm. Which label fits best?',yes:false,no:true,yesLabel:'Intentional tort',noLabel:'Negligence / malpractice',result:'Correct: a mistake is not intentional; in healthcare it may be negligence or malpractice depending on duty, harm, and causation.'},
+    {id:'cb-legal-2',num:'Legal Card 2',title:'Negligence vs Malpractice',focus:'Negligence = failure of reasonable care. Malpractice = professional negligence.',lesson:'Malpractice is negligence committed by a healthcare professional while providing care. The basic legal chain is duty, breach, harm, and causation.',check:'A trained healthcare worker gives the wrong dose and the patient is harmed. Which term is stronger?',yes:true,no:false,yesLabel:'Malpractice',noLabel:'Simple scheduling error',result:'Correct: professional negligence that harms a patient is malpractice.'},
+    {id:'cb-legal-3',num:'Legal Card 3',title:'Assault vs Battery',focus:'Assault = threat. Battery = unauthorized touching.',lesson:'Assault can occur without physical contact. Battery requires contact without consent, such as performing a procedure after the patient refused.',check:'A patient refuses an injection, but the injection is given anyway. Which tort?',yes:false,no:true,yesLabel:'Assault',noLabel:'Battery',result:'Correct: unwanted touching or procedure without consent is battery.'},
+    {id:'cb-legal-4',num:'Legal Card 4',title:'Advance Directives',focus:'Advance directive = umbrella term for future healthcare decisions.',lesson:'Advance directives include living wills and healthcare proxies. A medical power of attorney can also name someone to make decisions depending on state law and document type.',check:'Which document names a person to make healthcare decisions?',yes:true,no:false,yesLabel:'Healthcare proxy',noLabel:'Living will',result:'Correct: healthcare proxy names the decision-maker. Living will states treatment wishes.'},
+    {id:'cb-legal-5',num:'Legal Card 5',title:'Living Will',focus:'Living will = treatment wishes when the patient cannot speak.',lesson:'A living will states what care the patient wants or does not want, such as life support, ventilation, or artificial nutrition in certain situations.',check:'Which statement matches a living will?',yes:true,no:false,yesLabel:'Treatment wishes',noLabel:'Person chosen to decide',result:'Correct: living will = treatment preferences; proxy = person.'},
+    {id:'cb-legal-6',num:'Legal Card 6',title:'Healthcare Proxy',focus:'Healthcare proxy = person chosen to make healthcare decisions.',lesson:'A healthcare proxy or surrogate decision-maker speaks for the patient if the patient cannot make decisions. It is about who decides, not the treatment list itself.',check:'A patient writes: “My sister should decide for me.” Which concept?',yes:true,no:false,yesLabel:'Healthcare proxy',noLabel:'Living will',result:'Correct: naming a person is healthcare proxy.'},
+    {id:'cb-legal-7',num:'Legal Card 7',title:'Power of Attorney',focus:'POA = legal authority to act for another person.',lesson:'Power of attorney may involve financial or healthcare authority depending on the document. Medical power of attorney relates to healthcare decisions.',check:'Which is broader legal authority, depending on the document?',yes:true,no:false,yesLabel:'Power of attorney',noLabel:'Pulse pressure',result:'Correct: POA gives legal authority to act for someone; scope depends on the document.'},
+    {id:'cb-legal-8',num:'Legal Card 8',title:'Ethical Principles',focus:'Autonomy, beneficence, nonmaleficence, veracity, justice.',lesson:'Autonomy = patient chooses. Beneficence = do good. Nonmaleficence = do no harm. Veracity = tell truth. Justice = fair treatment.',check:'A patient refuses a procedure after explanation. Which principle is most relevant?',yes:true,no:false,yesLabel:'Autonomy',noLabel:'Veracity',result:'Correct: autonomy means the patient has the right to decide.'}
+  ];
+  return cards.map(c=>`<div class="flip topicTone" id="${c.id}"><div class="flipIn"><div class="front"><span class="topic t-law">Law & Ethics</span><span class="directLegalTag">${c.num}</span><div class="lessonTitle">Focused Legal/Ethics Study</div><div class="cardFrontTerm">${escapeHTML(c.title)}</div><div class="frontPrompt"><div class="promptChip">${escapeHTML(c.focus)}</div></div><div class="tapCue">Click to study the structured card</div></div><div class="back"><div class="lessonTitle">Organized Micro-Lesson</div><h3>${escapeHTML(c.title)}</h3><div class="studyGrid"><div class="studyItem definitionBox"><b>Definition</b>${escapeHTML(c.lesson)}</div><div class="studyItem testBox"><b>Test focus</b>${escapeHTML(c.focus)}</div></div><div class="checkBox"><h4>Micro concept check</h4><p class="mini">${escapeHTML(c.check)}</p><div class="choicePair"><button class="checkBtn" data-ok="${c.yes?'1':'0'}">${escapeHTML(c.yesLabel||'Choice A')}</button><button class="checkBtn" data-ok="${c.no?'1':'0'}">${escapeHTML(c.noLabel||'Choice B')}</button></div><div class="checkResult">${escapeHTML(c.result)}</div></div></div></div></div>`).join('') + `<div class="legalDistinctions"><h3>High-Yield Legal & Ethical Distinctions</h3><div class="distGrid"><div class="distItem"><b>Assault</b> = threat or fear of unwanted contact.<br><b>Battery</b> = physical contact without consent.</div><div class="distItem"><b>Negligence</b> = failure of reasonable care.<br><b>Malpractice</b> = professional negligence causing harm.</div><div class="distItem"><b>Living will</b> = treatment wishes.<br><b>Healthcare proxy</b> = decision-maker.<br><b>POA</b> = legal authority to act.</div><div class="distItem"><b>Autonomy</b> = patient decides.<br><b>Beneficence</b> = do good.<br><b>Nonmaleficence</b> = do no harm.<br><b>Veracity</b> = truth.</div></div></div>`;
+}
+
+function frontPromptHTML(q){
+  const s=splitLesson(q);
+  const terms=[];
+  if(q.id===1) terms.push('Systolic = top / contraction / first sound','Diastolic = bottom / relaxation / sound disappears');
+  else if(q.id===13) terms.push('BMI = Body Mass Index','25–29.9 overweight · 30+ obese');
+  else if(q.id===24) terms.push('CLIA = Clinical Laboratory Improvement Amendments','Waived = simple point-of-care test');
+  else if(q.id===90) terms.push('Adult fingerstick: middle or ring','Avoid thumb, index, pinky');
+  else terms.push(s.definition, s.test);
+  return `<div class="frontPrompt">${terms.slice(0,2).map(x=>`<div class="promptChip">${escapeHTML(x)}</div>`).join('')}</div>`;
+}
+function renderBuilder() { const grid=$('builderGrid'); grid.innerHTML=''; const groups={}; QUESTIONS.forEach(q=>{ const inf=segmentInfo(q.topic); groups[inf.key]=groups[inf.key]||{info:inf,items:[]}; groups[inf.key].items.push(q); }); const order=['vitals','clinical','pharm','body','comm','law','admin','general']; order.forEach(key=>{ if(!groups[key]) return; const g=groups[key]; const block=document.createElement('div'); block.className='segBlock '+g.info.cls; block.id='segment-'+g.info.key; const extraCount=key==='law' ? 8 : 0; block.innerHTML=`<div class="segHead"><div><div class="segTitle"><span>${escapeHTML(g.info.name)}</span></div><div class="segNote">${escapeHTML(g.info.note)}</div></div><div class="segMeta">${g.items.length+extraCount} concept cards · Study Zone</div></div><div class="segGrid"></div>`; const sg=block.querySelector('.segGrid'); if(key==='law'){ const holder=document.createElement('div'); holder.style.display='contents'; holder.innerHTML=legalDeepDiveCards(); Array.from(holder.children).forEach(child=>{ if(child.classList.contains('flip')){ child.addEventListener('click',()=>child.classList.toggle('on')); wireConceptChecks(child); } sg.appendChild(child); }); }
+  g.items.forEach(q=>{ const flip=document.createElement('div'); flip.className='flip topicTone'; flip.id='concept-card-'+q.id; flip.dataset.segment='segment-'+g.info.key; flip.innerHTML=`<div class="flipIn"><div class="front"><span class="topic ${topicClass(q.topic)}">${escapeHTML(q.topic)}</span><div class="lessonTitle">Concept ${q.id}</div><div class="cardFrontTerm">${escapeHTML(q.concept)}</div>${frontPromptHTML(q)}<div class="tapCue">Click to study the structured card</div></div><div class="back"><div class="lessonTitle">Micro-Lesson</div><h3>${escapeHTML(q.concept)}</h3>${lessonHTML(q)}${conceptCheckHTML(q)}</div></div>`; flip.addEventListener('click',()=>flip.classList.toggle('on')); wireConceptChecks(flip); sg.appendChild(flip); }); grid.appendChild(block); }); }
+
+function highlightable(text) { const frag=document.createDocumentFragment(); String(text).split(/(\s+)/).forEach(w=>{ if(w.trim()){ const s=document.createElement('span'); s.className='word'; s.textContent=w; s.addEventListener('click',()=>s.classList.toggle('mark')); frag.appendChild(s); } else { frag.appendChild(document.createTextNode(w)); } }); return frag; }
+function balancedOptions(q) { return shuffle(q.options.map(o=>({text:o,correct:o===q.answer}))); }
+function renderPractice() { practiceStartedAt=Date.now(); const q=QUESTIONS[practiceIndex % QUESTIONS.length], opts=balancedOptions(q); $('practiceFill').style.width = Math.round((practiceIndex % QUESTIONS.length) / QUESTIONS.length * 100) + '%'; const box=$('practiceBox'); box.innerHTML=''; const wrap=document.createElement('div'); wrap.className='qbox'; const left=document.createElement('div'); left.className='card'; left.innerHTML=`<span class="topic ${topicClass(q.topic)}">${escapeHTML(q.topic)}</span> <span class="timeChip">⏱ Timing quietly tracked</span><h2>Question ${q.id}</h2><div class="questionText" id="qtext"></div><div class="mini">Strategy: highlight the decisive words first; then choose the safest, most standard CCMA action.</div>`; left.querySelector('#qtext').appendChild(highlightable(q.question)); const right=document.createElement('div'); right.className='card'; right.innerHTML='<h3>Answer Choices</h3>'; opts.forEach((o,i)=>{ const b=document.createElement('button'); b.className='option'; b.textContent=String.fromCharCode(65+i)+'. '+o.text; b.addEventListener('click',()=>answerPractice(b,o.correct,q)); right.appendChild(b); }); const fb=document.createElement('div'); fb.className='feedback'; fb.id='fb'; fb.innerHTML=`<b>Clinical Reasoning</b><br>${escapeHTML(q.clinicalReasoning)}${q.trap?'<br><br><b>Testing distinction:</b> '+escapeHTML(q.trap):''}<br><br><b>Real-world application:</b> ${escapeHTML(q.application)}${optionRationaleHTML(q)}<br><br><span id="timeFeedback" class="timeChip"></span><div class="reviewBox"><h4>Core Concept to Review</h4><p><b>${escapeHTML(q.concept)}</b><br>Use this link to return to the matching Concept Builder card and study the exact idea behind this question.</p><button class="btn small" data-review-q="${q.id}">Review this concept card</button></div>`; right.appendChild(fb); wrap.append(left,right); box.appendChild(wrap); }
+function record(q,ok,elapsed) { state.timeByTopic=state.timeByTopic||{}; state.slowItems=state.slowItems||[]; state.answered++; if(ok){ state.correct++; state.streak++; state.xp += 10 + Math.min(state.streak*2,20); } else { state.streak=0; state.xp += 2; } const t=q.topic||'General'; state.topic[t]=state.topic[t]||{correct:0,total:0}; state.topic[t].total++; if(ok) state.topic[t].correct++; if(typeof elapsed==='number'){ state.timeByTopic[t]=state.timeByTopic[t]||{total:0,count:0,slow:0,fast:0}; state.timeByTopic[t].total+=elapsed; state.timeByTopic[t].count++; if(elapsed>35){ state.timeByTopic[t].slow++; state.slowItems.push({id:q.id,topic:t,time:elapsed}); } if(elapsed<12) state.timeByTopic[t].fast++; }
+  state.history.push({id:q.id,ok,topic:t,time:Date.now(),seconds:elapsed||null}); save(); }
+function goToConceptCard(qid){ const targetId=SPECIAL_REVIEW[qid] || ('concept-card-'+qid); showSec('builder'); setTimeout(()=>{ const card=document.getElementById(targetId); if(card){ card.scrollIntoView({behavior:'smooth',block:'center'}); card.classList.add('cardSpotlight'); if(card.classList.contains('flip') && !card.classList.contains('on')) card.classList.add('on'); setTimeout(()=>card.classList.remove('cardSpotlight'),1900); } },420); }
+function answerPractice(btn,ok,q) { document.querySelectorAll('#practiceBox .option').forEach(b=>b.disabled=true); btn.classList.add(ok?'correct':'wrong'); document.querySelectorAll('#practiceBox .option').forEach(b=>{ if(b.textContent.includes(q.answer)) b.classList.add('correct'); }); const elapsed=Math.round((Date.now()-practiceStartedAt)/1000); const tf=$('timeFeedback'); if(tf) tf.textContent = elapsed>35 ? 'Time note: '+elapsed+' sec. Work on speed for this type.' : (elapsed<12 ? 'Time note: '+elapsed+' sec. Fast response; still verify accuracy.' : 'Time note: '+elapsed+' sec. Good working pace.'); $('fb').classList.add('show'); const reviewBtn=document.querySelector('#practiceBox [data-review-q]'); if(reviewBtn){ reviewBtn.addEventListener('click',()=>goToConceptCard(reviewBtn.dataset.reviewQ)); } record(q,ok,elapsed); }
+function nextPractice() { practiceIndex=(practiceIndex+1)%QUESTIONS.length; save(); renderPractice(); }
+function startChallenge() { clearInterval(timerInt); challengeOrder=shuffle(QUESTIONS).slice(0,10); challengeIndex=0; renderChallenge(); }
+function renderChallenge() { clearInterval(timerInt); timeLeft=45; $('timer').textContent=timeLeft; const q=challengeOrder[challengeIndex]; const box=$('challengeBox'); box.innerHTML=''; if(!q){ box.innerHTML='<div class="card"><h2>Challenge Complete</h2><p class="mini">Check your dashboard for weak areas.</p><button class="btn" id="openDash">Open Dashboard</button></div>'; $('openDash').addEventListener('click',()=>showSec('dashboard')); return; } const wrap=document.createElement('div'); wrap.className='qbox'; const left=document.createElement('div'); left.className='card'; left.innerHTML=`<span class="topic ${topicClass(q.topic)}">${escapeHTML(q.topic)}</span><h2>Challenge ${challengeIndex+1} / ${challengeOrder.length}</h2><div class="questionText">${escapeHTML(q.question)}</div>`; const right=document.createElement('div'); right.className='card'; balancedOptions(q).forEach((o,i)=>{ const b=document.createElement('button'); b.className='option'; b.textContent=String.fromCharCode(65+i)+'. '+o.text; b.addEventListener('click',()=>answerChallenge(b,o.correct,q)); right.appendChild(b); }); const fb=document.createElement('div'); fb.className='feedback'; fb.id='cfb'; fb.textContent=q.clinicalReasoning; right.appendChild(fb); wrap.append(left,right); box.appendChild(wrap); timerInt=setInterval(()=>{ timeLeft--; $('timer').textContent=timeLeft; if(timeLeft<=0){ clearInterval(timerInt); challengeIndex++; renderChallenge(); } },1000); }
+function answerChallenge(btn,ok,q) { clearInterval(timerInt); document.querySelectorAll('#challengeBox .option').forEach(b=>b.disabled=true); btn.classList.add(ok?'correct':'wrong'); $('cfb').classList.add('show'); record(q,ok,45-timeLeft); setTimeout(()=>{ challengeIndex++; renderChallenge(); },1200); }
+function startExam() {
+  clearInterval(timerInt);
+  examOrder = shuffle(QUESTIONS.slice());
+  examIndex = 0;
+  examCorrect = 0;
+  examAnswered = 0;
+  renderExamQuestion();
+}
+function renderExamQuestion() {
+  const box=$('examBox');
+  box.innerHTML='';
+  const q=examOrder[examIndex];
+  if(!q){
+    const pct=examAnswered?Math.round(examCorrect/examAnswered*100):0;
+    box.innerHTML=`<div class="card"><h2>Exam Complete</h2><div class="dash" style="margin-top:14px"><div class="metric"><b>${examCorrect}</b><div class="mini">Correct</div></div><div class="metric"><b>${examAnswered}</b><div class="mini">Answered</div></div><div class="metric"><b>${pct}%</b><div class="mini">Accuracy</div></div><div class="metric"><b>${state.xp}</b><div class="mini">Total XP</div></div></div><p class="note">Open the Dashboard to see weak areas and timing patterns. Missed items are already recorded into your cumulative learning data.</p><div class="btnrow"><button class="btn" id="examRestartFinal">Restart Exam</button><button class="btn green" id="examOpenDashFinal">Open Dashboard</button></div></div>`;
+    $('examRestartFinal').addEventListener('click',startExam);
+    $('examOpenDashFinal').addEventListener('click',()=>showSec('dashboard'));
+    return;
+  }
+  examStartedAt=Date.now();
+  const pct=Math.round((examIndex/examOrder.length)*100);
+  const card=document.createElement('div');
+  card.className='card examQ';
+  card.dataset.id=q.id;
+  card.innerHTML=`<div class="examTop"><span class="topic ${topicClass(q.topic)}">${escapeHTML(q.topic)}</span><span class="examBadge">Question ${examIndex+1} of ${examOrder.length}</span><span class="examBadge">Score ${examCorrect}/${examAnswered}</span></div><div class="bar" style="margin-bottom:16px"><div class="fill" style="width:${pct}%"></div></div><h2>Question ${q.id}</h2><p class="questionText">${escapeHTML(q.question)}</p><div id="examOptions"></div><div class="examFeedback" id="examFeedback"></div>`;
+  box.appendChild(card);
+  const opts=balancedOptions(q);
+  const optionBox=card.querySelector('#examOptions');
+  opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='option';
+    b.textContent=String.fromCharCode(65+i)+'. '+o.text;
+    b.addEventListener('click',()=>answerExam(b,o.correct,q));
+    optionBox.appendChild(b);
+  });
+}
+function answerExam(btn,ok,q) {
+  document.querySelectorAll('#examBox .option').forEach(b=>b.disabled=true);
+  btn.classList.add(ok?'correct':'wrong');
+  document.querySelectorAll('#examBox .option').forEach(b=>{ if(b.textContent.includes(q.answer)) b.classList.add('correct'); });
+  const elapsed=Math.round((Date.now()-examStartedAt)/1000);
+  examAnswered++;
+  if(ok) examCorrect++;
+  record(q,ok,elapsed);
+  const fb=$('examFeedback');
+  fb.className='examFeedback show '+(ok?'good':'bad');
+  fb.innerHTML=`<b>${ok?'Correct':'Incorrect'}</b><br><span class="answerReveal">Correct answer: ${escapeHTML(q.answer)}</span><br><span class="mini">Core concept: ${escapeHTML(q.concept)}</span><div class="autoNext">Moving to the next question automatically...</div>`;
+  setTimeout(()=>{ examIndex++; renderExamQuestion(); },1700);
+}
+$('nextPracticeBtn').addEventListener('click',nextPractice); $('restartChallenge').addEventListener('click',startChallenge); $('loadExam').addEventListener('click',startExam); $('examDashBtn').addEventListener('click',()=>showSec('dashboard')); $('resetBtn').addEventListener('click',()=>{ if(confirm('Reset all saved progress?')){ state=defaultState; practiceIndex=0; localStorage.removeItem('ccmaState'); localStorage.removeItem('practiceIndex'); updateStats(); renderPractice(); } });
+buildNav(); renderBuilder(); renderPractice(); updateStats();
+})();
+</script>
+
+<script>
+/* === automatic high-yield emphasis for rationale text === */
+function polishRationaleText(root){
+  if(!root) return;
+  const targets = root.querySelectorAll('.feedback, .examFeedback, .optionRats, .reviewBox');
+  const patterns = [
+    [/systolic/gi, '<span class="accent-blue">Systolic</span>'],
+    [/diastolic/gi, '<span class="accent-blue">Diastolic</span>'],
+    [/first sound/gi, '<span class="accent-orange">first sound</span>'],
+    [/disappears/gi, '<span class="accent-orange">disappears</span>'],
+    [/obese|obesity/gi, '<span class="accent-purple">$&</span>'],
+    [/overweight/gi, '<span class="accent-orange">overweight</span>'],
+    [/CLIA-waived|CLIA waived/gi, '<span class="accent-purple">$&</span>'],
+    [/locked cabinet/gi, '<span class="accent-orange">locked cabinet</span>'],
+    [/consent/gi, '<span class="accent-blue">consent</span>'],
+    [/negligence|malpractice|battery|assault/gi, '<span class="accent-purple">$&</span>'],
+    [/Medicare|Medicaid|PPO|HMO|ACO|PCMH/gi, '<span class="accent-blue">$&</span>']
+  ];
+  targets.forEach(el => {
+    if(el.dataset.polished === '1') return;
+    let html = el.innerHTML;
+    patterns.forEach(([rx, rep]) => { html = html.replace(rx, rep); });
+    el.innerHTML = html;
+    el.dataset.polished = '1';
+  });
+}
+const __oldAnswerPractice = window.answerPractice;
+if(typeof __oldAnswerPractice === 'function'){
+  window.answerPractice = function(){
+    const result = __oldAnswerPractice.apply(this, arguments);
+    setTimeout(()=>polishRationaleText(document), 30);
+    return result;
+  };
+}
+const __oldRenderPractice = window.renderPractice;
+if(typeof __oldRenderPractice === 'function'){
+  window.renderPractice = function(){
+    const result = __oldRenderPractice.apply(this, arguments);
+    setTimeout(()=>polishRationaleText(document), 30);
+    return result;
+  };
+}
+const __oldRenderExamQuestion = window.renderExamQuestion;
+if(typeof __oldRenderExamQuestion === 'function'){
+  window.renderExamQuestion = function(){
+    const result = __oldRenderExamQuestion.apply(this, arguments);
+    setTimeout(()=>polishRationaleText(document), 30);
+    return result;
+  };
+}
+document.addEventListener('click',()=>setTimeout(()=>polishRationaleText(document),40));
+document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>polishRationaleText(document),80));
+</script>
+
+
+<script>
+/* === Flashcard word emphasis: targeted, readable, non-random === */
+function highlightFlashcardWords(){
+  const cards = document.querySelectorAll('.flip.topicTone');
+  const patterns = [
+    // Vitals / measurement
+    [/\bSystolic\b/g, '<span class="fcFocusBlue">Systolic</span>'],
+    [/\bDiastolic\b/g, '<span class="fcFocusBlue">Diastolic</span>'],
+    [/\btop number\b/gi, '<span class="fcFocusOrange">$&</span>'],
+    [/\bbottom number\b/gi, '<span class="fcFocusOrange">$&</span>'],
+    [/\bfirst sound\b/gi, '<span class="fcFocusOrange">$&</span>'],
+    [/\bdisappears\b/gi, '<span class="fcFocusOrange">$&</span>'],
+    [/\bBMI\b/g, '<span class="fcFocusPurple">BMI</span>'],
+    [/\b25–29\.9\b/g, '<span class="fcFocusOrange">25–29.9</span>'],
+    [/\b≥30\b/g, '<span class="fcFocusRed">≥30</span>'],
+    [/\b95–100%\b/g, '<span class="fcFocusGreen">95–100%</span>'],
+    [/\bfalsely low\b/gi, '<span class="fcFocusRed">$&</span>'],
+
+    // Lab / clinical
+    [/\bCLIA\b/g, '<span class="fcFocusPurple">CLIA</span>'],
+    [/\bwaived\b/gi, '<span class="fcFocusGreen">$&</span>'],
+    [/\bhCG\b/g, '<span class="fcFocusPurple">hCG</span>'],
+    [/\bBlood typing\b/gi, '<span class="fcFocusRed">$&</span>'],
+    [/\bPap test\b/gi, '<span class="fcFocusRed">$&</span>'],
+    [/\bfecal leukocyte\b/gi, '<span class="fcFocusRed">$&</span>'],
+    [/\bmiddle finger\b/gi, '<span class="fcFocusGreen">$&</span>'],
+    [/\bring finger\b/gi, '<span class="fcFocusGreen">$&</span>'],
+    [/\bthumb\b/gi, '<span class="fcFocusRed">$&</span>'],
+    [/\bpinky\b/gi, '<span class="fcFocusRed">$&</span>'],
+    [/\blight blue\b/gi, '<span class="fcFocusBlue">$&</span>'],
+    [/\bblood cultures\b/gi, '<span class="fcFocusPurple">$&</span>'],
+
+    // Medication
+    [/\bbuccal\b/gi, '<span class="fcFocusPurple">$&</span>'],
+    [/\bcheek and gums\b/gi, '<span class="fcFocusOrange">$&</span>'],
+    [/\benteric-coated\b/gi, '<span class="fcFocusPurple">$&</span>'],
+    [/\bswallow whole\b/gi, '<span class="fcFocusGreen">$&</span>'],
+    [/\blocked cabinet\b/gi, '<span class="fcFocusOrange">$&</span>'],
+
+    // Law / ethics
+    [/\bAssault\b/g, '<span class="fcFocusPurple">Assault</span>'],
+    [/\bBattery\b/g, '<span class="fcFocusPurple">Battery</span>'],
+    [/\bNegligence\b/g, '<span class="fcFocusPurple">Negligence</span>'],
+    [/\bMalpractice\b/g, '<span class="fcFocusPurple">Malpractice</span>'],
+    [/\bLiving will\b/gi, '<span class="fcFocusBlue">$&</span>'],
+    [/\bHealthcare proxy\b/gi, '<span class="fcFocusBlue">$&</span>'],
+    [/\bAutonomy\b/g, '<span class="fcFocusPurple">Autonomy</span>'],
+    [/\bNonmaleficence\b/g, '<span class="fcFocusRed">Nonmaleficence</span>'],
+    [/\bBeneficence\b/g, '<span class="fcFocusGreen">Beneficence</span>'],
+    [/\bVeracity\b/g, '<span class="fcFocusOrange">Veracity</span>'],
+
+    // Admin / insurance
+    [/\bMedicare\b/g, '<span class="fcFocusBlue">Medicare</span>'],
+    [/\bPart B\b/g, '<span class="fcFocusOrange">Part B</span>'],
+    [/\bACO\b/g, '<span class="fcFocusPurple">ACO</span>'],
+    [/\bPCMH\b/g, '<span class="fcFocusPurple">PCMH</span>'],
+    [/\bpreauthorization\b/gi, '<span class="fcFocusOrange">$&</span>']
+  ];
+
+  cards.forEach(card => {
+    if(card.dataset.fcHighlighted === '1') return;
+    const targets = card.querySelectorAll('.cardFrontTerm, .promptChip, .studyItem, .mustList span, .checkBox p, .checkBtn');
+    targets.forEach(el => {
+      let h = el.innerHTML;
+      patterns.forEach(([rx, rep]) => { h = h.replace(rx, rep); });
+      el.innerHTML = h;
+    });
+    card.dataset.fcHighlighted = '1';
+  });
+}
+
+/* Hook into builder rendering without breaking existing code */
+const __oldRenderBuilderForFocus = window.renderBuilder;
+if(typeof __oldRenderBuilderForFocus === 'function'){
+  window.renderBuilder = function(){
+    const result = __oldRenderBuilderForFocus.apply(this, arguments);
+    setTimeout(highlightFlashcardWords, 40);
+    return result;
+  };
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(highlightFlashcardWords, 100);
+  setTimeout(highlightFlashcardWords, 500);
+});
+document.addEventListener('click', () => setTimeout(highlightFlashcardWords, 80));
+</script>
+
+</body>
+</html>
