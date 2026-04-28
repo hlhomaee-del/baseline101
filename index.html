@@ -1268,6 +1268,86 @@ header{background:linear-gradient(135deg,rgba(2,6,23,.96),rgba(15,23,42,.94),rgb
   /* no override here */
 }
 
+
+/* === Clean rationale language/display: selective emphasis only === */
+.feedback,
+.examFeedback,
+.optionRats,
+.reviewBox{
+  color:#071126!important;
+}
+.feedback b,
+.examFeedback b,
+.optionRats h4,
+.reviewBox h4{
+  color:#172554!important;
+  text-decoration:none!important;
+}
+.feedback strong,
+.examFeedback strong{
+  color:#172554!important;
+  text-decoration:none!important;
+}
+.optionRats div{
+  color:#0f172a!important;
+  font-weight:650!important;
+  border-top:1px solid rgba(15,23,42,.10)!important;
+}
+.optionRats div:first-of-type{border-top:0!important}
+.correctText{
+  color:#047857!important;
+  font-weight:900!important;
+  text-decoration:none!important;
+}
+.wrongText{
+  color:#334155!important;
+  font-weight:800!important;
+  text-decoration:none!important;
+}
+.accent-blue{
+  color:#1d4ed8!important;
+  font-weight:950!important;
+  text-decoration:underline!important;
+  text-decoration-color:#60a5fa!important;
+  text-decoration-thickness:3px!important;
+  text-underline-offset:4px!important;
+}
+.accent-orange{
+  color:#c2410c!important;
+  font-weight:950!important;
+  background:linear-gradient(180deg,transparent 58%,rgba(251,146,60,.38) 58%)!important;
+  border-radius:4px!important;
+  padding:0 3px!important;
+}
+.accent-purple{
+  color:#6d28d9!important;
+  font-weight:950!important;
+  background:linear-gradient(180deg,transparent 58%,rgba(196,181,253,.45) 58%)!important;
+  border-radius:4px!important;
+  padding:0 3px!important;
+}
+.accent-green{
+  color:#047857!important;
+  font-weight:950!important;
+  background:linear-gradient(180deg,transparent 58%,rgba(52,211,153,.38) 58%)!important;
+  border-radius:4px!important;
+  padding:0 3px!important;
+}
+.accent-red{
+  color:#be123c!important;
+  font-weight:950!important;
+  background:linear-gradient(180deg,transparent 58%,rgba(251,113,133,.32) 58%)!important;
+  border-radius:4px!important;
+  padding:0 3px!important;
+}
+.feedback em,
+.examFeedback em{
+  color:#0f172a!important;
+  background:none!important;
+  font-style:normal!important;
+  font-weight:700!important;
+}
+
 </style>
 </head>
 <body>
@@ -1332,24 +1412,54 @@ function lessonHTML(q){
 
 function conceptCheckHTML(q){ const right=escapeHTML(q.checkRight||q.answer); const wrong=escapeHTML(q.checkWrong||(q.options||[]).find(o=>o!==q.answer)||'Another choice'); return `<div class="checkBox"><h4>Micro concept check</h4><p class="mini">${escapeHTML(q.checkQuestion||('Choose the statement that correctly applies this concept.'))}</p><div class="choicePair"><button class="checkBtn" data-ok="1">${right}</button><button class="checkBtn" data-ok="0">${wrong}</button></div><div class="checkResult">${escapeHTML(q.checkResult||('Correct: '+right+' matches the rule.'))}</div></div>`; }
 
-function optionRationaleHTML(q){ return `<div class="optionRats"><h4>Rationale for every option</h4>${(q.options||[]).map(o=>{ const ok=o===q.answer; const why=ok ? (q.clinicalReasoning||('This option directly matches the tested concept: '+q.concept+'.')) : `This does not match the decisive clue in the stem. Correct concept: ${q.concept}. Correct answer: ${q.answer}.`; return `<div><span class="${ok?'correctText':'wrongText'}">${ok?'Correct':'Incorrect'}:</span> <b>${escapeHTML(o)}</b> — ${escapeHTML(why)}</div>`; }).join('')}</div>`; }
+function optionRationaleHTML(q){
+  const answer = q.answer;
+  const opts = q.options || [];
+  const meaningfulWrong = {
+    1: {
+      "Diastolic pressure":"Diastolic is the lower/resting pressure; it is read when Korotkoff sounds disappear, not at the first sound.",
+      "Pulse pressure":"Pulse pressure is the difference between systolic and diastolic values.",
+      "Blood volume":"Blood volume is not the pressure heard through the stethoscope."
+    },
+    13: {
+      "Overweight":"Overweight is BMI 25–29.9. A BMI of 30 or higher is obese.",
+      "Obese class II":"Class II begins at BMI 35.",
+      "Healthy weight":"Healthy weight is BMI 18.5–24.9."
+    },
+    24: {
+      "Blood typing and crossmatching":"Blood typing/crossmatching requires stricter lab control because transfusion compatibility is high risk.",
+      "Papanicolaou (Pap) test":"Pap testing requires specimen processing and microscopic evaluation.",
+      "Fecal leukocyte test":"Fecal leukocyte testing is not the simple low-risk waived test in this set."
+    },
+    53: {
+      "When repetitive sounds begin":"That is systolic pressure.",
+      "When the sounds change from strong to muffled":"Muffling can occur before the final diastolic endpoint.",
+      "When the sounds change from swishing to sharp":"This is not the standard diastolic endpoint."
+    },
+    90: {
+      "Thumb":"Avoid thumb for adult capillary puncture.",
+      "Pinky":"Avoid pinky because tissue is thin and bone is close.",
+      "Index":"Index finger is used frequently for touch; middle or ring is preferred."
+    }
+  };
 
-function wireConceptChecks(root){
-  root.querySelectorAll('.checkBtn').forEach(btn=>btn.addEventListener('click',e=>{
-    e.stopPropagation();
-    const box = btn.closest('.checkBox');
-    if(!box || box.classList.contains('answered')) return;
-    const buttons = [...box.querySelectorAll('.checkBtn')];
-    buttons.forEach(b=>{
-      b.classList.remove('correctGlow','wrongGlow');
-      if(b.dataset.ok==='1') b.classList.add('correctGlow');
-      else b.classList.add('wrongGlow');
-      b.disabled = true;
-    });
-    box.classList.add('answered');
-    const res = box.querySelector('.checkResult');
-    if(res) res.classList.add('show');
-  }));
+  let correctLine = `<div><span class="correctText">Correct:</span> ${escapeHTML(answer)}. ${escapeHTML(q.clinicalReasoning || 'This matches the tested rule.')}</div>`;
+  let wrongLines = [];
+  (opts||[]).forEach(opt=>{
+    if(opt === answer) return;
+    const specific = meaningfulWrong[q.id] && meaningfulWrong[q.id][opt];
+    if(specific){
+      wrongLines.push(`<div><span class="wrongText">${escapeHTML(opt)}:</span> ${escapeHTML(specific)}</div>`);
+    }
+  });
+
+  if(!wrongLines.length){
+    wrongLines.push(`<div><span class="wrongText">Other choices:</span> They do not match the key clue in this item.</div>`);
+  }else if(wrongLines.length < (opts.length-1)){
+    wrongLines.push(`<div><span class="wrongText">Remaining choices:</span> They do not match the tested clue closely enough.</div>`);
+  }
+
+  return `<div class="optionRats"><h4>Answer rationale</h4>${correctLine}${wrongLines.join('')}</div>`;
 }
 let practiceStartedAt=Date.now();
 const SPECIAL_REVIEW = {21:'cb-legal-2',23:'cb-legal-4',48:'cb-legal-2',77:'cb-legal-8'};
@@ -1455,17 +1565,24 @@ function polishRationaleText(root){
   if(!root) return;
   const targets = root.querySelectorAll('.feedback, .examFeedback, .optionRats, .reviewBox');
   const patterns = [
-    [/systolic/gi, '<span class="accent-blue">Systolic</span>'],
-    [/diastolic/gi, '<span class="accent-blue">Diastolic</span>'],
-    [/first sound/gi, '<span class="accent-orange">first sound</span>'],
-    [/disappears/gi, '<span class="accent-orange">disappears</span>'],
-    [/obese|obesity/gi, '<span class="accent-purple">$&</span>'],
-    [/overweight/gi, '<span class="accent-orange">overweight</span>'],
-    [/CLIA-waived|CLIA waived/gi, '<span class="accent-purple">$&</span>'],
-    [/locked cabinet/gi, '<span class="accent-orange">locked cabinet</span>'],
-    [/consent/gi, '<span class="accent-blue">consent</span>'],
-    [/negligence|malpractice|battery|assault/gi, '<span class="accent-purple">$&</span>'],
-    [/Medicare|Medicaid|PPO|HMO|ACO|PCMH/gi, '<span class="accent-blue">$&</span>']
+    [/Systolic/g, '<span class="accent-blue">Systolic</span>'],
+    [/Diastolic/g, '<span class="accent-blue">Diastolic</span>'],
+    [/first sound/gi, '<span class="accent-orange">first sound</span>'],
+    [/last sound/gi, '<span class="accent-orange">last sound</span>'],
+    [/disappears/gi, '<span class="accent-orange">disappears</span>'],
+    [/BMI/g, '<span class="accent-purple">BMI</span>'],
+    [/25–29\.9/g, '<span class="accent-orange">25–29.9</span>'],
+    [/≥30/g, '<span class="accent-red">≥30</span>'],
+    [/CLIA/g, '<span class="accent-purple">CLIA</span>'],
+    [/CLIA-waived/gi, '<span class="accent-purple">CLIA-waived</span>'],
+    [/hCG/g, '<span class="accent-purple">hCG</span>'],
+    [/middle finger/gi, '<span class="accent-green">middle finger</span>'],
+    [/ring finger/gi, '<span class="accent-green">ring finger</span>'],
+    [/consent/gi, '<span class="accent-blue">consent</span>'],
+    [/autonomy/gi, '<span class="accent-purple">autonomy</span>'],
+    [/nonmaleficence/gi, '<span class="accent-red">nonmaleficence</span>'],
+    [/beneficence/gi, '<span class="accent-green">beneficence</span>'],
+    [/veracity/gi, '<span class="accent-orange">veracity</span>']
   ];
   targets.forEach(el => {
     if(el.dataset.polished === '1') return;
