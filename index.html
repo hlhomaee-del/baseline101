@@ -3623,6 +3623,76 @@ window.FULL_RATIONALES = {"1": {"correct": "Systolic pressure", "why": "The firs
 }
 </style>
 
+
+<script id="randomize-concept-check-answers-final">
+/* === Final fix: randomize Concept Builder micro-check answer order === */
+(function(){
+  function shuffleInPlace(arr){
+    for(let i = arr.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  function randomizeConceptChecks(scope){
+    const root = scope || document;
+    root.querySelectorAll('#builder .checkBox .choicePair').forEach(pair => {
+      if(pair.dataset.randomized === '1') return;
+
+      const buttons = Array.from(pair.querySelectorAll('.checkBtn'));
+      if(buttons.length < 2) return;
+
+      const shuffled = shuffleInPlace(buttons.slice());
+      shuffled.forEach(btn => pair.appendChild(btn));
+
+      pair.dataset.randomized = '1';
+    });
+  }
+
+  function resetRandomizationFlags(){
+    document.querySelectorAll('#builder .checkBox .choicePair').forEach(pair => {
+      delete pair.dataset.randomized;
+    });
+  }
+
+  // Randomize after the builder is rendered.
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => randomizeConceptChecks(document), 150);
+  });
+
+  // Randomize whenever the Concept Builder tab is opened or rebuilt.
+  document.addEventListener('click', function(e){
+    const openBuilder = e.target.closest('.tab[data-sec="builder"], [data-go="builder"], .builderTab, .builderActionBtn');
+    if(openBuilder){
+      setTimeout(() => {
+        resetRandomizationFlags();
+        randomizeConceptChecks(document);
+      }, 120);
+    }
+  }, true);
+
+  // Catch dynamic rebuilds from renderBuilder/sub-tab scripts.
+  const observer = new MutationObserver(() => {
+    setTimeout(() => randomizeConceptChecks(document), 80);
+  });
+
+  function startObserver(){
+    const builder = document.getElementById('builder');
+    if(builder) observer.observe(builder, {childList:true, subtree:true});
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', startObserver);
+  } else {
+    startObserver();
+  }
+
+  // Make available if any later script wants to call it.
+  window.randomizeConceptChecks = randomizeConceptChecks;
+})();
+</script>
+
 </body>
 </html>
 
