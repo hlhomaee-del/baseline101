@@ -769,6 +769,505 @@ header{background:linear-gradient(135deg,rgba(2,6,23,.96),rgba(15,23,42,.94),rgb
   color:#09111f!important;
 }
 
+
+/* === Homepage feature cards: each one a different elegant glass color === */
+#home .grid>.card{
+  position:relative;
+  overflow:hidden;
+  border-radius:26px !important;
+  border:1px solid rgba(255,255,255,.34) !important;
+  backdrop-filter:blur(18px) saturate(1.25);
+  -webkit-backdrop-filter:blur(18px) saturate(1.25);
+  box-shadow:0 22px 58px rgba(15,23,42,.18), inset 0 1px 0 rgba(255,255,255,.55) !important;
+}
+#home .grid>.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(120deg, transparent 0%, rgba(255,255,255,.28) 36%, transparent 62%);
+  transform:translateX(-120%);
+  animation:homeCardSweep 8s infinite;
+}
+@keyframes homeCardSweep{45%,100%{transform:translateX(120%)}}
+#home .grid>.card:nth-child(1){
+  background:
+    linear-gradient(145deg, rgba(147,197,253,.34), rgba(191,219,254,.28), rgba(224,242,254,.30)),
+    radial-gradient(circle at 10% 0%, rgba(255,255,255,.48), transparent 28%),
+    radial-gradient(circle at 90% 10%, rgba(37,99,235,.18), transparent 35%) !important;
+  border-color:rgba(96,165,250,.42) !important;
+}
+#home .grid>.card:nth-child(2){
+  background:
+    linear-gradient(145deg, rgba(134,239,172,.34), rgba(187,247,208,.28), rgba(220,252,231,.30)),
+    radial-gradient(circle at 10% 0%, rgba(255,255,255,.48), transparent 28%),
+    radial-gradient(circle at 90% 10%, rgba(22,163,74,.18), transparent 35%) !important;
+  border-color:rgba(74,222,128,.42) !important;
+}
+#home .grid>.card:nth-child(3){
+  background:
+    linear-gradient(145deg, rgba(253,186,116,.28), rgba(221,214,254,.24), rgba(254,215,170,.26)),
+    radial-gradient(circle at 10% 0%, rgba(255,255,255,.48), transparent 28%),
+    radial-gradient(circle at 90% 10%, rgba(124,58,237,.16), transparent 35%) !important;
+  border-color:rgba(196,181,253,.42) !important;
+}
+#home .grid>.card h3{font-size:1.24rem !important}
+#home .grid>.card:nth-child(1) h3{color:#173ea5 !important}
+#home .grid>.card:nth-child(2) h3{color:#166534 !important}
+#home .grid>.card:nth-child(3) h3{color:#7c2d12 !important}
+#home .grid>.card p{
+  color:#1f2937 !important;
+  font-weight:700 !important;
+  line-height:1.7 !important;
+}
+#home .grid>.card:nth-child(1) .topic{
+  background:rgba(219,234,254,.72) !important;
+  color:#1d4ed8 !important;
+  border:1px solid rgba(96,165,250,.42) !important;
+}
+#home .grid>.card:nth-child(2) .topic{
+  background:rgba(220,252,231,.72) !important;
+  color:#15803d !important;
+  border:1px solid rgba(74,222,128,.42) !important;
+}
+#home .grid>.card:nth-child(3) .topic{
+  background:rgba(255,237,213,.72) !important;
+  color:#9a3412 !important;
+  border:1px solid rgba(196,181,253,.42) !important;
+}
+
+/* Optional: hero action buttons also differentiated */
+#home .hero .btnrow .btn:nth-child(1){
+  background:linear-gradient(135deg, rgba(59,130,246,.90), rgba(37,99,235,.82)) !important;
+}
+#home .hero .btnrow .btn:nth-child(2){
+  background:linear-gradient(135deg, rgba(34,197,94,.90), rgba(22,163,74,.82)) !important;
+}
+#home .hero .btnrow .btn:nth-child(3){
+  background:linear-gradient(135deg, rgba(139,92,246,.90), rgba(124,58,237,.82)) !important;
+}
+#home .hero .btnrow .btn{
+  border:1px solid rgba(255,255,255,.28) !important;
+  box-shadow:0 14px 30px rgba(15,23,42,.22), inset 0 1px 0 rgba(255,255,255,.26) !important;
+}
+
+/* === Concept-check answer glow states === */
+.checkBtn{
+  transition:all .2s ease, box-shadow .25s ease, border-color .25s ease !important;
+}
+.checkBtn.correctGlow{
+  background:linear-gradient(135deg, rgba(220,252,231,.96), rgba(187,247,208,.88)) !important;
+  color:#065f46 !important;
+  border:2px solid #22c55e !important;
+  box-shadow:
+    0 0 0 2px rgba(34,197,94,.22),
+    0 0 18px rgba(74,222,128,.75),
+    inset 0 1px 0 rgba(255,255,255,.72) !important;
+}
+.checkBtn.wrongGlow{
+  background:linear-gradient(135deg, rgba(255,228,230,.96), rgba(254,205,211,.88)) !important;
+  color:#9f1239 !important;
+  border:2px solid #fb7185 !important;
+  box-shadow:
+    0 0 0 2px rgba(244,63,94,.18),
+    0 0 16px rgba(251,113,133,.60),
+    inset 0 1px 0 rgba(255,255,255,.72) !important;
+}
+.checkBox.answered .checkBtn{cursor:default}
+.checkBox.answered .checkBtn:not(.correctGlow):not(.wrongGlow){opacity:1}
+.checkResult.show{
+  background:linear-gradient(135deg, rgba(220,252,231,.80), rgba(236,253,245,.70)) !important;
+  border-left:5px solid #22c55e !important;
+  box-shadow:0 10px 22px rgba(34,197,94,.14), inset 0 1px 0 rgba(255,255,255,.55) !important;
+}
+
+
+/* === Final polish: readability, faster scrolling, cleaner glass === */
+
+/* Performance: reduce expensive infinite shine/blur effects */
+.bg span{animation-duration:26s!important;opacity:.10!important}
+.segBlock::before,
+#home .grid>.card::before,
+.qbox .card::before,
+.card.examQ::before,
+.feedback::before,
+.examFeedback::before,
+.optionRats::before,
+.qbox .card::after,
+.card.examQ::after,
+.feedback::after,
+.examFeedback::after{
+  animation:none!important;
+  transform:none!important;
+  opacity:.22!important;
+}
+.qbox .card,
+.card.examQ,
+.feedback,
+.examFeedback,
+.option,
+.questionText,
+.optionRats,
+.reviewBox{
+  backdrop-filter:blur(12px) saturate(1.18)!important;
+  -webkit-backdrop-filter:blur(12px) saturate(1.18)!important;
+}
+.flip.topicTone .front,
+.flip.topicTone .back,
+.segBlock .flip.topicTone .studyItem,
+.segBlock .flip.topicTone .checkBox,
+.segBlock .flip.topicTone .promptChip,
+.segBlock .flip.topicTone .tapCue{
+  backdrop-filter:blur(8px) saturate(1.12)!important;
+  -webkit-backdrop-filter:blur(8px) saturate(1.12)!important;
+}
+
+/* First-page feature cards: brighter, readable, with shadowed text */
+#home .grid>.card{
+  min-height:190px;
+  padding:24px!important;
+  box-shadow:
+    0 22px 55px rgba(15,23,42,.24),
+    inset 0 1px 0 rgba(255,255,255,.70)!important;
+}
+#home .grid>.card:nth-child(1){
+  background:
+    linear-gradient(145deg, rgba(219,234,254,.88), rgba(147,197,253,.64)),
+    radial-gradient(circle at 10% 0%, rgba(255,255,255,.70), transparent 32%)!important;
+}
+#home .grid>.card:nth-child(2){
+  background:
+    linear-gradient(145deg, rgba(220,252,231,.88), rgba(134,239,172,.62)),
+    radial-gradient(circle at 10% 0%, rgba(255,255,255,.72), transparent 32%)!important;
+}
+#home .grid>.card:nth-child(3){
+  background:
+    linear-gradient(145deg, rgba(255,237,213,.88), rgba(221,214,254,.62)),
+    radial-gradient(circle at 10% 0%, rgba(255,255,255,.72), transparent 32%)!important;
+}
+#home .grid>.card h3{
+  color:#071126!important;
+  font-size:1.32rem!important;
+  font-weight:950!important;
+  letter-spacing:.01em;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.9),
+    0 2px 8px rgba(15,23,42,.22)!important;
+}
+#home .grid>.card p{
+  color:#0f172a!important;
+  font-size:.96rem!important;
+  font-weight:850!important;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.85),
+    0 2px 7px rgba(15,23,42,.18)!important;
+}
+#home .grid>.card .topic{
+  color:#08111f!important;
+  font-weight:950!important;
+  box-shadow:0 6px 15px rgba(15,23,42,.10), inset 0 1px 0 rgba(255,255,255,.75)!important;
+}
+
+/* Concept-check buttons: fill correct with clear green, wrong with light red */
+.checkBtn.correctGlow{
+  background:linear-gradient(135deg,#bbf7d0,#86efac)!important;
+  color:#064e3b!important;
+  border:2px solid #00ff75!important;
+  box-shadow:
+    0 0 0 3px rgba(34,197,94,.22),
+    0 0 22px rgba(0,255,117,.85),
+    inset 0 1px 0 rgba(255,255,255,.75)!important;
+}
+.checkBtn.wrongGlow{
+  background:linear-gradient(135deg,#ffe4e6,#fecdd3)!important;
+  color:#881337!important;
+  border:2px solid #ff6b9a!important;
+  box-shadow:
+    0 0 0 3px rgba(244,63,94,.18),
+    0 0 18px rgba(255,107,154,.68),
+    inset 0 1px 0 rgba(255,255,255,.75)!important;
+}
+
+/* Guided Practice + Challenge: glassy inside cards with darker text */
+.qbox .card,
+.card.examQ{
+  background:
+    linear-gradient(135deg, rgba(219,234,254,.50), rgba(191,219,254,.34), rgba(237,233,254,.36)),
+    radial-gradient(circle at 8% 0%, rgba(255,255,255,.62), transparent 28%),
+    radial-gradient(circle at 95% 4%, rgba(59,130,246,.22), transparent 34%)!important;
+  border:1px solid rgba(255,255,255,.56)!important;
+  color:#071126!important;
+}
+.qbox .card h2,
+.qbox .card h3,
+.card.examQ h2{
+  color:#071126!important;
+  font-weight:950!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.7)!important;
+}
+.qbox .card .mini,
+.card.examQ .mini{
+  color:#0f172a!important;
+  font-weight:850!important;
+}
+.questionText{
+  background:
+    linear-gradient(135deg, rgba(224,242,254,.46), rgba(219,234,254,.34), rgba(255,255,255,.18)),
+    radial-gradient(circle at 8% 0%, rgba(255,255,255,.58), transparent 30%)!important;
+  color:#071126!important;
+  font-weight:800!important;
+  border:1px solid rgba(255,255,255,.62)!important;
+  border-left:7px solid rgba(37,99,235,.92)!important;
+}
+
+/* Topic/timing chips inside question cards: more see-through glass but legible */
+.qbox .card .topic,
+.card.examQ .topic,
+.timeChip,
+.examBadge{
+  background:rgba(255,255,255,.34)!important;
+  color:#071126!important;
+  border:1px solid rgba(255,255,255,.62)!important;
+  box-shadow:0 8px 18px rgba(15,23,42,.10), inset 0 1px 0 rgba(255,255,255,.72)!important;
+  backdrop-filter:blur(10px) saturate(1.15)!important;
+  -webkit-backdrop-filter:blur(10px) saturate(1.15)!important;
+  font-weight:950!important;
+}
+
+/* Answer choices title + options darker */
+.qbox .card h3,
+#examOptions + .examFeedback,
+.option{
+  color:#071126!important;
+}
+.option{
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.42), rgba(219,234,254,.28), rgba(237,233,254,.24))!important;
+  color:#071126!important;
+  font-weight:850!important;
+  border:1px solid rgba(255,255,255,.62)!important;
+}
+.option:hover:not(:disabled){
+  color:#020617!important;
+  background:
+    linear-gradient(135deg, rgba(191,219,254,.58), rgba(221,214,254,.44))!important;
+}
+
+/* Rationale: shinier glass, darker font */
+.feedback,
+.examFeedback{
+  background:
+    linear-gradient(135deg, rgba(237,233,254,.46), rgba(219,234,254,.36), rgba(224,242,254,.30)),
+    radial-gradient(circle at 8% 0%, rgba(255,255,255,.64), transparent 30%),
+    radial-gradient(circle at 96% 5%, rgba(124,58,237,.25), transparent 36%)!important;
+  color:#071126!important;
+  border:1px solid rgba(255,255,255,.62)!important;
+  border-left:8px solid rgba(124,58,237,.92)!important;
+  box-shadow:
+    0 24px 62px rgba(76,29,149,.20),
+    inset 0 1px 0 rgba(255,255,255,.76)!important;
+  font-weight:750!important;
+}
+.feedback b,
+.feedback strong,
+.examFeedback b,
+.examFeedback strong{
+  color:#172554!important;
+  font-weight:950!important;
+}
+.optionRats{
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.40), rgba(224,242,254,.34), rgba(237,233,254,.30))!important;
+  color:#071126!important;
+  border:1px solid rgba(255,255,255,.62)!important;
+}
+.optionRats div{color:#0f172a!important;font-weight:750!important}
+.optionRats h4{color:#071126!important;font-weight:950!important}
+
+/* Strategy line readability */
+.qbox .card .mini{
+  background:rgba(255,255,255,.22);
+  border:1px solid rgba(255,255,255,.40);
+  border-radius:14px;
+  padding:9px 11px;
+  margin-top:10px;
+}
+
+/* Challenge timer/card readability */
+#timer,
+.ch-timer,
+#challengeBox .card h2,
+#challengeBox .questionText{
+  color:#071126!important;
+}
+
+
+/* === Targeted fix: make Guided Practice / Challenge large panels glassier only === */
+/* This changes the big question panel and answer-choices panel, NOT the actual answer option buttons. */
+
+#practiceBox .qbox > .card,
+#challengeBox .qbox > .card{
+  background:
+    linear-gradient(135deg,
+      rgba(224,242,254,.24),
+      rgba(219,234,254,.16) 38%,
+      rgba(237,233,254,.18) 74%,
+      rgba(255,255,255,.10)
+    ),
+    radial-gradient(circle at 8% 0%, rgba(255,255,255,.48), transparent 30%),
+    radial-gradient(circle at 92% 8%, rgba(125,211,252,.24), transparent 34%),
+    radial-gradient(circle at 100% 100%, rgba(168,85,247,.18), transparent 32%) !important;
+  border:1px solid rgba(255,255,255,.56) !important;
+  box-shadow:
+    0 28px 80px rgba(15,23,42,.22),
+    inset 0 1px 0 rgba(255,255,255,.72),
+    inset 0 -1px 0 rgba(255,255,255,.22) !important;
+  backdrop-filter:blur(28px) saturate(1.55) !important;
+  -webkit-backdrop-filter:blur(28px) saturate(1.55) !important;
+  color:#06111f !important;
+}
+
+/* Add a subtle glass highlight layer on the large panels */
+#practiceBox .qbox > .card::after,
+#challengeBox .qbox > .card::after{
+  content:"";
+  position:absolute;
+  inset:1px;
+  border-radius:inherit;
+  pointer-events:none;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.40), transparent 28%),
+    linear-gradient(315deg, rgba(255,255,255,.16), transparent 34%);
+  opacity:.55 !important;
+}
+
+/* Keep headings and labels dark over transparent glass */
+#practiceBox .qbox > .card h2,
+#practiceBox .qbox > .card h3,
+#challengeBox .qbox > .card h2,
+#challengeBox .qbox > .card h3{
+  color:#06111f !important;
+  text-shadow:0 1px 0 rgba(255,255,255,.78) !important;
+  font-weight:950 !important;
+}
+
+/* The title area that says Answer Choices should sit on glass, not a flat opaque block */
+#practiceBox .qbox > .card h3,
+#challengeBox .qbox > .card h3{
+  display:inline-block;
+  padding:8px 13px;
+  border-radius:999px;
+  background:rgba(255,255,255,.24) !important;
+  border:1px solid rgba(255,255,255,.54) !important;
+  box-shadow:
+    0 8px 20px rgba(15,23,42,.10),
+    inset 0 1px 0 rgba(255,255,255,.72) !important;
+  backdrop-filter:blur(16px) saturate(1.25) !important;
+  -webkit-backdrop-filter:blur(16px) saturate(1.25) !important;
+}
+
+/* Question stem remains readable inside the more transparent panel */
+#practiceBox .questionText,
+#challengeBox .questionText{
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.34), rgba(219,234,254,.20)),
+    radial-gradient(circle at 8% 0%, rgba(255,255,255,.48), transparent 34%) !important;
+  border:1px solid rgba(255,255,255,.56) !important;
+  border-left:7px solid rgba(37,99,235,.92) !important;
+  color:#06111f !important;
+  backdrop-filter:blur(18px) saturate(1.3) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(1.3) !important;
+}
+
+/* Leave answer option buttons as they already are. */
+#practiceBox .option,
+#challengeBox .option{
+  /* intentionally unchanged */
+}
+
+
+/* === Apply translucent glass styling to ALL question containers, not one question === */
+/* Applies to every Guided Practice question, every Challenge question, and Exam question panels. */
+
+.qbox > .card,
+.examQ,
+#practiceBox .qbox > .card,
+#challengeBox .qbox > .card,
+#examBox .examQ{
+  background:
+    linear-gradient(135deg,
+      rgba(224,242,254,.22),
+      rgba(219,234,254,.14) 38%,
+      rgba(237,233,254,.17) 74%,
+      rgba(255,255,255,.10)
+    ),
+    radial-gradient(circle at 8% 0%, rgba(255,255,255,.48), transparent 30%),
+    radial-gradient(circle at 92% 8%, rgba(125,211,252,.24), transparent 34%),
+    radial-gradient(circle at 100% 100%, rgba(168,85,247,.18), transparent 32%) !important;
+  border:1px solid rgba(255,255,255,.58) !important;
+  box-shadow:
+    0 28px 80px rgba(15,23,42,.22),
+    inset 0 1px 0 rgba(255,255,255,.72),
+    inset 0 -1px 0 rgba(255,255,255,.22) !important;
+  backdrop-filter:blur(28px) saturate(1.55) !important;
+  -webkit-backdrop-filter:blur(28px) saturate(1.55) !important;
+  color:#06111f !important;
+}
+
+/* ALL question-panel titles: Question number, Answer Choices, Challenge heading */
+.qbox > .card h2,
+.qbox > .card h3,
+.examQ h2,
+#practiceBox .qbox > .card h2,
+#practiceBox .qbox > .card h3,
+#challengeBox .qbox > .card h2,
+#challengeBox .qbox > .card h3,
+#examBox .examQ h2{
+  color:#06111f !important;
+  text-shadow:0 1px 0 rgba(255,255,255,.78) !important;
+  font-weight:950 !important;
+}
+
+/* The small heading chip such as “Answer Choices” */
+.qbox > .card h3,
+#practiceBox .qbox > .card h3,
+#challengeBox .qbox > .card h3{
+  display:inline-block;
+  padding:8px 13px;
+  border-radius:999px;
+  background:rgba(255,255,255,.24) !important;
+  border:1px solid rgba(255,255,255,.54) !important;
+  box-shadow:
+    0 8px 20px rgba(15,23,42,.10),
+    inset 0 1px 0 rgba(255,255,255,.72) !important;
+  backdrop-filter:blur(16px) saturate(1.25) !important;
+  -webkit-backdrop-filter:blur(16px) saturate(1.25) !important;
+}
+
+/* ALL question stems, not one specific question */
+.qbox .questionText,
+.examQ .questionText,
+#practiceBox .questionText,
+#challengeBox .questionText,
+#examBox .questionText{
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.34), rgba(219,234,254,.20)),
+    radial-gradient(circle at 8% 0%, rgba(255,255,255,.48), transparent 34%) !important;
+  border:1px solid rgba(255,255,255,.56) !important;
+  border-left:7px solid rgba(37,99,235,.92) !important;
+  color:#06111f !important;
+  backdrop-filter:blur(18px) saturate(1.3) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(1.3) !important;
+}
+
+/* Keep answer option buttons unchanged */
+.qbox .option,
+#practiceBox .option,
+#challengeBox .option,
+#examBox .option{
+  /* no override here */
+}
+
 </style>
 </head>
 <body>
@@ -835,7 +1334,23 @@ function conceptCheckHTML(q){ const right=escapeHTML(q.checkRight||q.answer); co
 
 function optionRationaleHTML(q){ return `<div class="optionRats"><h4>Rationale for every option</h4>${(q.options||[]).map(o=>{ const ok=o===q.answer; const why=ok ? (q.clinicalReasoning||('This option directly matches the tested concept: '+q.concept+'.')) : `This does not match the decisive clue in the stem. Correct concept: ${q.concept}. Correct answer: ${q.answer}.`; return `<div><span class="${ok?'correctText':'wrongText'}">${ok?'Correct':'Incorrect'}:</span> <b>${escapeHTML(o)}</b> — ${escapeHTML(why)}</div>`; }).join('')}</div>`; }
 
-function wireConceptChecks(root){ root.querySelectorAll('.checkBtn').forEach(btn=>btn.addEventListener('click',e=>{ e.stopPropagation(); const box=btn.closest('.checkBox'); box.querySelector('.checkResult').classList.add('show'); btn.style.borderColor = btn.dataset.ok==='1' ? 'var(--green)' : 'var(--red)'; })); }
+function wireConceptChecks(root){
+  root.querySelectorAll('.checkBtn').forEach(btn=>btn.addEventListener('click',e=>{
+    e.stopPropagation();
+    const box = btn.closest('.checkBox');
+    if(!box || box.classList.contains('answered')) return;
+    const buttons = [...box.querySelectorAll('.checkBtn')];
+    buttons.forEach(b=>{
+      b.classList.remove('correctGlow','wrongGlow');
+      if(b.dataset.ok==='1') b.classList.add('correctGlow');
+      else b.classList.add('wrongGlow');
+      b.disabled = true;
+    });
+    box.classList.add('answered');
+    const res = box.querySelector('.checkResult');
+    if(res) res.classList.add('show');
+  }));
+}
 let practiceStartedAt=Date.now();
 const SPECIAL_REVIEW = {21:'cb-legal-2',23:'cb-legal-4',48:'cb-legal-2',77:'cb-legal-8'};
 
@@ -1075,6 +1590,95 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(highlightFlashcardWords, 500);
 });
 document.addEventListener('click', () => setTimeout(highlightFlashcardWords, 80));
+</script>
+
+
+<script>
+/* === Lightweight UI sounds: no audio files needed === */
+(function(){
+  let audioCtx = null;
+
+  function getAudioCtx(){
+    if(!audioCtx){
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if(audioCtx.state === "suspended"){
+      audioCtx.resume();
+    }
+    return audioCtx;
+  }
+
+  function playTone({freq=440, duration=0.06, type="sine", gain=0.035, endFreq=null} = {}){
+    try{
+      const ctx = getAudioCtx();
+      const osc = ctx.createOscillator();
+      const vol = ctx.createGain();
+
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, ctx.currentTime);
+      if(endFreq){
+        osc.frequency.exponentialRampToValueAtTime(endFreq, ctx.currentTime + duration);
+      }
+
+      vol.gain.setValueAtTime(0.0001, ctx.currentTime);
+      vol.gain.exponentialRampToValueAtTime(gain, ctx.currentTime + 0.008);
+      vol.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+
+      osc.connect(vol);
+      vol.connect(ctx.destination);
+
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + duration + 0.015);
+    }catch(e){}
+  }
+
+  window.playClickSound = function(){
+    playTone({freq:520, endFreq:700, duration:0.055, type:"triangle", gain:0.028});
+  };
+
+  window.playFlipSound = function(){
+    playTone({freq:360, endFreq:760, duration:0.11, type:"sine", gain:0.034});
+    setTimeout(()=>playTone({freq:760, endFreq:520, duration:0.07, type:"triangle", gain:0.022}), 55);
+  };
+
+  window.playCorrectSound = function(){
+    playTone({freq:660, endFreq:880, duration:0.08, type:"sine", gain:0.035});
+    setTimeout(()=>playTone({freq:880, endFreq:1040, duration:0.08, type:"sine", gain:0.030}), 70);
+  };
+
+  window.playWrongSound = function(){
+    playTone({freq:260, endFreq:180, duration:0.10, type:"sawtooth", gain:0.020});
+  };
+
+  document.addEventListener("click", function(e){
+    const flip = e.target.closest(".flip.topicTone");
+    const checkBtn = e.target.closest(".checkBtn");
+    const optionBtn = e.target.closest(".option");
+    const regularBtn = e.target.closest("button, .tab, [data-go]");
+
+    if(checkBtn){
+      setTimeout(()=>{
+        if(checkBtn.dataset.ok === "1") window.playCorrectSound();
+        else window.playWrongSound();
+      }, 10);
+      return;
+    }
+
+    if(optionBtn){
+      window.playClickSound();
+      return;
+    }
+
+    if(flip && !e.target.closest("button")){
+      window.playFlipSound();
+      return;
+    }
+
+    if(regularBtn){
+      window.playClickSound();
+    }
+  }, true);
+})();
 </script>
 
 </body>
