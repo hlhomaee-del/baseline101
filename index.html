@@ -1348,6 +1348,29 @@ header{background:linear-gradient(135deg,rgba(2,6,23,.96),rgba(15,23,42,.94),rgb
   font-weight:700!important;
 }
 
+
+/* === Specific rationale emphasis: meaningful clues only === */
+.accent-red{
+  color:#be123c!important;
+  font-weight:950!important;
+  background:linear-gradient(180deg,transparent 58%,rgba(251,113,133,.32) 58%)!important;
+  border-radius:4px!important;
+  padding:0 3px!important;
+}
+.optionRats div{
+  line-height:1.7!important;
+}
+.optionRats .wrongText{
+  color:#334155!important;
+  font-weight:900!important;
+  text-decoration:none!important;
+}
+.optionRats .correctText{
+  color:#047857!important;
+  font-weight:950!important;
+  text-decoration:none!important;
+}
+
 </style>
 </head>
 <body>
@@ -1415,51 +1438,75 @@ function conceptCheckHTML(q){ const right=escapeHTML(q.checkRight||q.answer); co
 function optionRationaleHTML(q){
   const answer = q.answer;
   const opts = q.options || [];
+
   const meaningfulWrong = {
     1: {
-      "Diastolic pressure":"Diastolic is the lower/resting pressure; it is read when Korotkoff sounds disappear, not at the first sound.",
-      "Pulse pressure":"Pulse pressure is the difference between systolic and diastolic values.",
-      "Blood volume":"Blood volume is not the pressure heard through the stethoscope."
+      "Diastolic pressure":"Diastolic = bottom number; read when Korotkoff sounds disappear.",
+      "Pulse pressure":"Pulse pressure = systolic minus diastolic; it is not a pressure sound.",
+      "Blood volume":"Blood volume is amount of circulating blood, not the BP value heard first."
+    },
+    3: {
+      "Gonorrhea":"Urethral discharge + dysuria + lower abdominal/pelvic discomfort point to a sexually transmitted infection; this best fits gonorrhea.",
+      "Appendicitis":"Appendicitis usually presents with abdominal pain that can localize to the right lower quadrant, often with nausea, fever, or rebound tenderness; it does not explain penile discharge.",
+      "Irritable bowel syndrome":"IBS causes bowel-pattern changes such as cramping, diarrhea, constipation, or bloating; it does not cause dysuria or penile discharge.",
+      "Inguinal hernia":"An inguinal hernia is a groin bulge or pressure that may worsen with lifting/straining; it does not cause urethral discharge."
     },
     13: {
-      "Overweight":"Overweight is BMI 25–29.9. A BMI of 30 or higher is obese.",
-      "Obese class II":"Class II begins at BMI 35.",
-      "Healthy weight":"Healthy weight is BMI 18.5–24.9."
+      "Healthy weight":"Healthy weight = BMI 18.5–24.9.",
+      "Overweight":"Overweight = BMI 25–29.9. BMI 30 or higher is obese.",
+      "Obese class II":"Class II begins at BMI 35."
     },
     24: {
-      "Blood typing and crossmatching":"Blood typing/crossmatching requires stricter lab control because transfusion compatibility is high risk.",
-      "Papanicolaou (Pap) test":"Pap testing requires specimen processing and microscopic evaluation.",
-      "Fecal leukocyte test":"Fecal leukocyte testing is not the simple low-risk waived test in this set."
+      "Human chorionic gonadotropin (hCG) test":"hCG urine pregnancy testing is commonly CLIA-waived because it is simple, low-risk, and rapid.",
+      "Blood typing and crossmatching":"Blood typing/crossmatching is high-risk because transfusion compatibility must be exact; it is not CLIA-waived.",
+      "Papanicolaou (Pap) test":"A Pap test requires specimen processing and microscopic evaluation; it is not a simple waived point-of-care test.",
+      "Fecal leukocyte test":"Fecal leukocyte testing requires more lab interpretation than a waived rapid test."
     },
     53: {
-      "When repetitive sounds begin":"That is systolic pressure.",
+      "When the sound disappears":"Diastolic pressure is read when Korotkoff sounds disappear.",
+      "When repetitive sounds begin":"Repetitive sounds beginning = systolic pressure.",
       "When the sounds change from strong to muffled":"Muffling can occur before the final diastolic endpoint.",
       "When the sounds change from swishing to sharp":"This is not the standard diastolic endpoint."
     },
     90: {
+      "Middle":"Middle finger is appropriate for adult capillary puncture.",
       "Thumb":"Avoid thumb for adult capillary puncture.",
       "Pinky":"Avoid pinky because tissue is thin and bone is close.",
       "Index":"Index finger is used frequently for touch; middle or ring is preferred."
     }
   };
 
-  let correctLine = `<div><span class="correctText">Correct:</span> ${escapeHTML(answer)}. ${escapeHTML(q.clinicalReasoning || 'This matches the tested rule.')}</div>`;
-  let wrongLines = [];
-  (opts||[]).forEach(opt=>{
-    if(opt === answer) return;
-    const specific = meaningfulWrong[q.id] && meaningfulWrong[q.id][opt];
-    if(specific){
-      wrongLines.push(`<div><span class="wrongText">${escapeHTML(opt)}:</span> ${escapeHTML(specific)}</div>`);
-    }
-  });
-
-  if(!wrongLines.length){
-    wrongLines.push(`<div><span class="wrongText">Other choices:</span> They do not match the key clue in this item.</div>`);
-  }else if(wrongLines.length < (opts.length-1)){
-    wrongLines.push(`<div><span class="wrongText">Remaining choices:</span> They do not match the tested clue closely enough.</div>`);
+  function lineFor(opt){
+    const bank = meaningfulWrong[q.id] || {};
+    const text = bank[opt];
+    if(!text) return "";
+    const cls = opt === answer ? "correctText" : "wrongText";
+    const label = opt === answer ? "Correct" : escapeHTML(opt);
+    return `<div><span class="${cls}">${label}:</span> ${escapeHTML(text)}</div>`;
   }
 
-  return `<div class="optionRats"><h4>Answer rationale</h4>${correctLine}${wrongLines.join('')}</div>`;
+  let lines = [];
+
+  // Put correct answer first when specific teaching exists; otherwise use concise rule.
+  const correctSpecific = meaningfulWrong[q.id] && meaningfulWrong[q.id][answer];
+  if(correctSpecific){
+    lines.push(lineFor(answer));
+  }else{
+    lines.push(`<div><span class="correctText">Correct:</span> ${escapeHTML(answer)}. ${escapeHTML(q.clinicalReasoning || 'This matches the tested rule.')}</div>`);
+  }
+
+  opts.forEach(opt=>{
+    if(opt === answer) return;
+    const specific = meaningfulWrong[q.id] && meaningfulWrong[q.id][opt];
+    if(specific) lines.push(lineFor(opt));
+  });
+
+  // Only add a general line if there was no specific useful teaching.
+  if(lines.length === 1 && opts.length > 1){
+    lines.push(`<div><span class="wrongText">Other choices:</span> They do not fit the key clinical clue.</div>`);
+  }
+
+  return `<div class="optionRats"><h4>Answer rationale</h4>${lines.join('')}</div>`;
 }
 let practiceStartedAt=Date.now();
 const SPECIAL_REVIEW = {21:'cb-legal-2',23:'cb-legal-4',48:'cb-legal-2',77:'cb-legal-8'};
@@ -1565,24 +1612,29 @@ function polishRationaleText(root){
   if(!root) return;
   const targets = root.querySelectorAll('.feedback, .examFeedback, .optionRats, .reviewBox');
   const patterns = [
-    [/Systolic/g, '<span class="accent-blue">Systolic</span>'],
-    [/Diastolic/g, '<span class="accent-blue">Diastolic</span>'],
-    [/first sound/gi, '<span class="accent-orange">first sound</span>'],
-    [/last sound/gi, '<span class="accent-orange">last sound</span>'],
-    [/disappears/gi, '<span class="accent-orange">disappears</span>'],
-    [/BMI/g, '<span class="accent-purple">BMI</span>'],
-    [/25–29\.9/g, '<span class="accent-orange">25–29.9</span>'],
-    [/≥30/g, '<span class="accent-red">≥30</span>'],
-    [/CLIA/g, '<span class="accent-purple">CLIA</span>'],
-    [/CLIA-waived/gi, '<span class="accent-purple">CLIA-waived</span>'],
-    [/hCG/g, '<span class="accent-purple">hCG</span>'],
-    [/middle finger/gi, '<span class="accent-green">middle finger</span>'],
-    [/ring finger/gi, '<span class="accent-green">ring finger</span>'],
-    [/consent/gi, '<span class="accent-blue">consent</span>'],
-    [/autonomy/gi, '<span class="accent-purple">autonomy</span>'],
-    [/nonmaleficence/gi, '<span class="accent-red">nonmaleficence</span>'],
-    [/beneficence/gi, '<span class="accent-green">beneficence</span>'],
-    [/veracity/gi, '<span class="accent-orange">veracity</span>']
+    [/\bSystolic\b/g, '<span class="accent-blue">Systolic</span>'],
+    [/\bDiastolic\b/g, '<span class="accent-blue">Diastolic</span>'],
+    [/\btop number\b/gi, '<span class="accent-blue">top number</span>'],
+    [/\bbottom number\b/gi, '<span class="accent-blue">bottom number</span>'],
+    [/\bfirst sound\b/gi, '<span class="accent-orange">first sound</span>'],
+    [/\bdisappear(s)?\b/gi, '<span class="accent-orange">$&</span>'],
+    [/\burethral discharge\b/gi, '<span class="accent-purple">urethral discharge</span>'],
+    [/\bpenile discharge\b/gi, '<span class="accent-purple">penile discharge</span>'],
+    [/\bdysuria\b/gi, '<span class="accent-orange">dysuria</span>'],
+    [/\bsexually transmitted infection\b/gi, '<span class="accent-purple">sexually transmitted infection</span>'],
+    [/\bright lower quadrant\b/gi, '<span class="accent-blue">right lower quadrant</span>'],
+    [/\bbowel-pattern changes\b/gi, '<span class="accent-blue">bowel-pattern changes</span>'],
+    [/\bgroin bulge\b/gi, '<span class="accent-orange">groin bulge</span>'],
+    [/\bBMI\b/g, '<span class="accent-purple">BMI</span>'],
+    [/\b18\.5–24\.9\b/g, '<span class="accent-green">18.5–24.9</span>'],
+    [/\b25–29\.9\b/g, '<span class="accent-orange">25–29.9</span>'],
+    [/\b30 or higher\b/gi, '<span class="accent-red">30 or higher</span>'],
+    [/\bCLIA\b/g, '<span class="accent-purple">CLIA</span>'],
+    [/\bCLIA-waived\b/gi, '<span class="accent-purple">CLIA-waived</span>'],
+    [/\bhCG\b/g, '<span class="accent-purple">hCG</span>'],
+    [/\bmiddle finger\b/gi, '<span class="accent-green">middle finger</span>'],
+    [/\bring finger\b/gi, '<span class="accent-green">ring finger</span>'],
+    [/\bconsent\b/gi, '<span class="accent-blue">consent</span>']
   ];
   targets.forEach(el => {
     if(el.dataset.polished === '1') return;
