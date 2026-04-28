@@ -1269,39 +1269,24 @@ header{background:linear-gradient(135deg,rgba(2,6,23,.96),rgba(15,23,42,.94),rgb
 }
 
 
-/* === Clean rationale language/display: selective emphasis only === */
-.feedback,
-.examFeedback,
-.optionRats,
-.reviewBox{
-  color:#071126!important;
-}
+/* === Restored flashcards + clean selective guided-practice rationales === */
 .feedback b,
 .examFeedback b,
 .optionRats h4,
 .reviewBox h4{
-  color:#172554!important;
-  text-decoration:none!important;
-}
-.feedback strong,
-.examFeedback strong{
-  color:#172554!important;
   text-decoration:none!important;
 }
 .optionRats div{
-  color:#0f172a!important;
-  font-weight:650!important;
-  border-top:1px solid rgba(15,23,42,.10)!important;
+  line-height:1.7!important;
 }
-.optionRats div:first-of-type{border-top:0!important}
-.correctText{
-  color:#047857!important;
+.optionRats .wrongText{
+  color:#334155!important;
   font-weight:900!important;
   text-decoration:none!important;
 }
-.wrongText{
-  color:#334155!important;
-  font-weight:800!important;
+.optionRats .correctText{
+  color:#047857!important;
+  font-weight:950!important;
   text-decoration:none!important;
 }
 .accent-blue{
@@ -1340,36 +1325,52 @@ header{background:linear-gradient(135deg,rgba(2,6,23,.96),rgba(15,23,42,.94),rgb
   border-radius:4px!important;
   padding:0 3px!important;
 }
-.feedback em,
-.examFeedback em{
-  color:#0f172a!important;
-  background:none!important;
-  font-style:normal!important;
-  font-weight:700!important;
+
+
+/* === Full guided-practice rationale styling: neat, selective, readable === */
+.optionRats{
+  margin-top:16px!important;
+  padding:16px 17px!important;
+  border-radius:20px!important;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.42), rgba(219,234,254,.32), rgba(237,233,254,.30))!important;
+  border:1px solid rgba(255,255,255,.60)!important;
+  border-left:7px solid rgba(14,165,233,.88)!important;
+  box-shadow:0 18px 45px rgba(15,23,42,.13), inset 0 1px 0 rgba(255,255,255,.72)!important;
+  backdrop-filter:blur(18px) saturate(1.28)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(1.28)!important;
 }
-
-
-/* === Specific rationale emphasis: meaningful clues only === */
-.accent-red{
-  color:#be123c!important;
+.optionRats h4{
+  margin:0 0 10px!important;
+  color:#071126!important;
   font-weight:950!important;
-  background:linear-gradient(180deg,transparent 58%,rgba(251,113,133,.32) 58%)!important;
-  border-radius:4px!important;
-  padding:0 3px!important;
+  text-decoration:none!important;
 }
 .optionRats div{
-  line-height:1.7!important;
+  color:#0f172a!important;
+  font-weight:700!important;
+  line-height:1.72!important;
+  padding:8px 0!important;
+  border-top:1px solid rgba(15,23,42,.10)!important;
 }
-.optionRats .wrongText{
-  color:#334155!important;
-  font-weight:900!important;
-  text-decoration:none!important;
+.optionRats div:first-of-type{border-top:0!important}
+.optionRats .correctText{color:#047857!important;font-weight:950!important;text-decoration:none!important}
+.optionRats .wrongText{color:#334155!important;font-weight:950!important;text-decoration:none!important}
+.rationaleWatch{
+  margin-top:8px!important;
+  padding:10px 12px!important;
+  border-radius:15px!important;
+  background:rgba(255,247,237,.62)!important;
+  border:1px solid rgba(251,146,60,.35)!important;
+  border-left:5px solid #f97316!important;
 }
-.optionRats .correctText{
-  color:#047857!important;
-  font-weight:950!important;
-  text-decoration:none!important;
-}
+.rationaleWatch b{color:#9a3412!important}
+.feedback b,.examFeedback b,.reviewBox h4,.optionRats h4{text-decoration:none!important}
+.accent-blue{color:#1d4ed8!important;font-weight:950!important;text-decoration:underline!important;text-decoration-color:#60a5fa!important;text-decoration-thickness:3px!important;text-underline-offset:4px!important}
+.accent-orange{color:#c2410c!important;font-weight:950!important;background:linear-gradient(180deg,transparent 58%,rgba(251,146,60,.38) 58%)!important;border-radius:4px!important;padding:0 3px!important}
+.accent-purple{color:#6d28d9!important;font-weight:950!important;background:linear-gradient(180deg,transparent 58%,rgba(196,181,253,.45) 58%)!important;border-radius:4px!important;padding:0 3px!important}
+.accent-green{color:#047857!important;font-weight:950!important;background:linear-gradient(180deg,transparent 58%,rgba(52,211,153,.38) 58%)!important;border-radius:4px!important;padding:0 3px!important}
+.accent-red{color:#be123c!important;font-weight:950!important;background:linear-gradient(180deg,transparent 58%,rgba(251,113,133,.32) 58%)!important;border-radius:4px!important;padding:0 3px!important}
 
 </style>
 </head>
@@ -1435,78 +1436,24 @@ function lessonHTML(q){
 
 function conceptCheckHTML(q){ const right=escapeHTML(q.checkRight||q.answer); const wrong=escapeHTML(q.checkWrong||(q.options||[]).find(o=>o!==q.answer)||'Another choice'); return `<div class="checkBox"><h4>Micro concept check</h4><p class="mini">${escapeHTML(q.checkQuestion||('Choose the statement that correctly applies this concept.'))}</p><div class="choicePair"><button class="checkBtn" data-ok="1">${right}</button><button class="checkBtn" data-ok="0">${wrong}</button></div><div class="checkResult">${escapeHTML(q.checkResult||('Correct: '+right+' matches the rule.'))}</div></div>`; }
 
-function optionRationaleHTML(q){
-  const answer = q.answer;
-  const opts = q.options || [];
+function optionRationaleHTML(q){ return `<div class="optionRats"><h4>Rationale for every option</h4>${(q.options||[]).map(o=>{ const ok=o===q.answer; const why=ok ? (q.clinicalReasoning||('This option directly matches the tested concept: '+q.concept+'.')) : `This does not match the decisive clue in the stem. Correct concept: ${q.concept}. Correct answer: ${q.answer}.`; return `<div><span class="${ok?'correctText':'wrongText'}">${ok?'Correct':'Incorrect'}:</span> <b>${escapeHTML(o)}</b> — ${escapeHTML(why)}</div>`; }).join('')}</div>`; }
 
-  const meaningfulWrong = {
-    1: {
-      "Diastolic pressure":"Diastolic = bottom number; read when Korotkoff sounds disappear.",
-      "Pulse pressure":"Pulse pressure = systolic minus diastolic; it is not a pressure sound.",
-      "Blood volume":"Blood volume is amount of circulating blood, not the BP value heard first."
-    },
-    3: {
-      "Gonorrhea":"Urethral discharge + dysuria + lower abdominal/pelvic discomfort point to a sexually transmitted infection; this best fits gonorrhea.",
-      "Appendicitis":"Appendicitis usually presents with abdominal pain that can localize to the right lower quadrant, often with nausea, fever, or rebound tenderness; it does not explain penile discharge.",
-      "Irritable bowel syndrome":"IBS causes bowel-pattern changes such as cramping, diarrhea, constipation, or bloating; it does not cause dysuria or penile discharge.",
-      "Inguinal hernia":"An inguinal hernia is a groin bulge or pressure that may worsen with lifting/straining; it does not cause urethral discharge."
-    },
-    13: {
-      "Healthy weight":"Healthy weight = BMI 18.5–24.9.",
-      "Overweight":"Overweight = BMI 25–29.9. BMI 30 or higher is obese.",
-      "Obese class II":"Class II begins at BMI 35."
-    },
-    24: {
-      "Human chorionic gonadotropin (hCG) test":"hCG urine pregnancy testing is commonly CLIA-waived because it is simple, low-risk, and rapid.",
-      "Blood typing and crossmatching":"Blood typing/crossmatching is high-risk because transfusion compatibility must be exact; it is not CLIA-waived.",
-      "Papanicolaou (Pap) test":"A Pap test requires specimen processing and microscopic evaluation; it is not a simple waived point-of-care test.",
-      "Fecal leukocyte test":"Fecal leukocyte testing requires more lab interpretation than a waived rapid test."
-    },
-    53: {
-      "When the sound disappears":"Diastolic pressure is read when Korotkoff sounds disappear.",
-      "When repetitive sounds begin":"Repetitive sounds beginning = systolic pressure.",
-      "When the sounds change from strong to muffled":"Muffling can occur before the final diastolic endpoint.",
-      "When the sounds change from swishing to sharp":"This is not the standard diastolic endpoint."
-    },
-    90: {
-      "Middle":"Middle finger is appropriate for adult capillary puncture.",
-      "Thumb":"Avoid thumb for adult capillary puncture.",
-      "Pinky":"Avoid pinky because tissue is thin and bone is close.",
-      "Index":"Index finger is used frequently for touch; middle or ring is preferred."
-    }
-  };
-
-  function lineFor(opt){
-    const bank = meaningfulWrong[q.id] || {};
-    const text = bank[opt];
-    if(!text) return "";
-    const cls = opt === answer ? "correctText" : "wrongText";
-    const label = opt === answer ? "Correct" : escapeHTML(opt);
-    return `<div><span class="${cls}">${label}:</span> ${escapeHTML(text)}</div>`;
-  }
-
-  let lines = [];
-
-  // Put correct answer first when specific teaching exists; otherwise use concise rule.
-  const correctSpecific = meaningfulWrong[q.id] && meaningfulWrong[q.id][answer];
-  if(correctSpecific){
-    lines.push(lineFor(answer));
-  }else{
-    lines.push(`<div><span class="correctText">Correct:</span> ${escapeHTML(answer)}. ${escapeHTML(q.clinicalReasoning || 'This matches the tested rule.')}</div>`);
-  }
-
-  opts.forEach(opt=>{
-    if(opt === answer) return;
-    const specific = meaningfulWrong[q.id] && meaningfulWrong[q.id][opt];
-    if(specific) lines.push(lineFor(opt));
-  });
-
-  // Only add a general line if there was no specific useful teaching.
-  if(lines.length === 1 && opts.length > 1){
-    lines.push(`<div><span class="wrongText">Other choices:</span> They do not fit the key clinical clue.</div>`);
-  }
-
-  return `<div class="optionRats"><h4>Answer rationale</h4>${lines.join('')}</div>`;
+function wireConceptChecks(root){
+  root.querySelectorAll('.checkBtn').forEach(btn=>btn.addEventListener('click',e=>{
+    e.stopPropagation();
+    const box = btn.closest('.checkBox');
+    if(!box || box.classList.contains('answered')) return;
+    const buttons = [...box.querySelectorAll('.checkBtn')];
+    buttons.forEach(b=>{
+      b.classList.remove('correctGlow','wrongGlow');
+      if(b.dataset.ok==='1') b.classList.add('correctGlow');
+      else b.classList.add('wrongGlow');
+      b.disabled = true;
+    });
+    box.classList.add('answered');
+    const res = box.querySelector('.checkResult');
+    if(res) res.classList.add('show');
+  }));
 }
 let practiceStartedAt=Date.now();
 const SPECIAL_REVIEW = {21:'cb-legal-2',23:'cb-legal-4',48:'cb-legal-2',77:'cb-legal-8'};
@@ -1612,29 +1559,17 @@ function polishRationaleText(root){
   if(!root) return;
   const targets = root.querySelectorAll('.feedback, .examFeedback, .optionRats, .reviewBox');
   const patterns = [
-    [/\bSystolic\b/g, '<span class="accent-blue">Systolic</span>'],
-    [/\bDiastolic\b/g, '<span class="accent-blue">Diastolic</span>'],
-    [/\btop number\b/gi, '<span class="accent-blue">top number</span>'],
-    [/\bbottom number\b/gi, '<span class="accent-blue">bottom number</span>'],
-    [/\bfirst sound\b/gi, '<span class="accent-orange">first sound</span>'],
-    [/\bdisappear(s)?\b/gi, '<span class="accent-orange">$&</span>'],
-    [/\burethral discharge\b/gi, '<span class="accent-purple">urethral discharge</span>'],
-    [/\bpenile discharge\b/gi, '<span class="accent-purple">penile discharge</span>'],
-    [/\bdysuria\b/gi, '<span class="accent-orange">dysuria</span>'],
-    [/\bsexually transmitted infection\b/gi, '<span class="accent-purple">sexually transmitted infection</span>'],
-    [/\bright lower quadrant\b/gi, '<span class="accent-blue">right lower quadrant</span>'],
-    [/\bbowel-pattern changes\b/gi, '<span class="accent-blue">bowel-pattern changes</span>'],
-    [/\bgroin bulge\b/gi, '<span class="accent-orange">groin bulge</span>'],
-    [/\bBMI\b/g, '<span class="accent-purple">BMI</span>'],
-    [/\b18\.5–24\.9\b/g, '<span class="accent-green">18.5–24.9</span>'],
-    [/\b25–29\.9\b/g, '<span class="accent-orange">25–29.9</span>'],
-    [/\b30 or higher\b/gi, '<span class="accent-red">30 or higher</span>'],
-    [/\bCLIA\b/g, '<span class="accent-purple">CLIA</span>'],
-    [/\bCLIA-waived\b/gi, '<span class="accent-purple">CLIA-waived</span>'],
-    [/\bhCG\b/g, '<span class="accent-purple">hCG</span>'],
-    [/\bmiddle finger\b/gi, '<span class="accent-green">middle finger</span>'],
-    [/\bring finger\b/gi, '<span class="accent-green">ring finger</span>'],
-    [/\bconsent\b/gi, '<span class="accent-blue">consent</span>']
+    [/systolic/gi, '<span class="accent-blue">Systolic</span>'],
+    [/diastolic/gi, '<span class="accent-blue">Diastolic</span>'],
+    [/first sound/gi, '<span class="accent-orange">first sound</span>'],
+    [/disappears/gi, '<span class="accent-orange">disappears</span>'],
+    [/obese|obesity/gi, '<span class="accent-purple">$&</span>'],
+    [/overweight/gi, '<span class="accent-orange">overweight</span>'],
+    [/CLIA-waived|CLIA waived/gi, '<span class="accent-purple">$&</span>'],
+    [/locked cabinet/gi, '<span class="accent-orange">locked cabinet</span>'],
+    [/consent/gi, '<span class="accent-blue">consent</span>'],
+    [/negligence|malpractice|battery|assault/gi, '<span class="accent-purple">$&</span>'],
+    [/Medicare|Medicaid|PPO|HMO|ACO|PCMH/gi, '<span class="accent-blue">$&</span>']
   ];
   targets.forEach(el => {
     if(el.dataset.polished === '1') return;
@@ -1847,6 +1782,211 @@ document.addEventListener('click', () => setTimeout(highlightFlashcardWords, 80)
       window.playClickSound();
     }
   }, true);
+})();
+</script>
+
+
+<script>
+/* === Safe rationale override: does not touch flashcard rendering === */
+(function(){
+  const meaningfulWrong = {
+    1: {
+      "Diastolic pressure":"Diastolic = bottom number; read when Korotkoff sounds disappear.",
+      "Pulse pressure":"Pulse pressure = systolic minus diastolic; it is not a pressure sound.",
+      "Blood volume":"Blood volume is amount of circulating blood, not the BP value heard first."
+    },
+    3: {
+      "Gonorrhea":"Urethral discharge + dysuria + lower abdominal/pelvic discomfort point to a sexually transmitted infection; this best fits gonorrhea.",
+      "Appendicitis":"Appendicitis usually presents with abdominal pain that can localize to the right lower quadrant, often with nausea, fever, or rebound tenderness; it does not explain penile discharge.",
+      "Irritable bowel syndrome":"IBS causes bowel-pattern changes such as cramping, diarrhea, constipation, or bloating; it does not cause dysuria or penile discharge.",
+      "Inguinal hernia":"An inguinal hernia is a groin bulge or pressure that may worsen with lifting or straining; it does not cause urethral discharge."
+    },
+    13: {
+      "Healthy weight":"Healthy weight = BMI 18.5–24.9.",
+      "Overweight":"Overweight = BMI 25–29.9. BMI 30 or higher is obese.",
+      "Obese class II":"Class II begins at BMI 35."
+    },
+    24: {
+      "Human chorionic gonadotropin (hCG) test":"hCG urine pregnancy testing is commonly CLIA-waived because it is simple, low-risk, and rapid.",
+      "Blood typing and crossmatching":"Blood typing/crossmatching is high-risk because transfusion compatibility must be exact; it is not CLIA-waived.",
+      "Papanicolaou (Pap) test":"A Pap test requires specimen processing and microscopic evaluation; it is not a simple waived point-of-care test.",
+      "Fecal leukocyte test":"Fecal leukocyte testing requires more lab interpretation than a waived rapid test."
+    },
+    53: {
+      "When the sound disappears":"Diastolic pressure is read when Korotkoff sounds disappear.",
+      "When repetitive sounds begin":"Repetitive sounds beginning = systolic pressure.",
+      "When the sounds change from strong to muffled":"Muffling can occur before the final diastolic endpoint.",
+      "When the sounds change from swishing to sharp":"This is not the standard diastolic endpoint."
+    },
+    90: {
+      "Middle":"Middle finger is appropriate for adult capillary puncture.",
+      "Thumb":"Avoid thumb for adult capillary puncture.",
+      "Pinky":"Avoid pinky because tissue is thin and bone is close.",
+      "Index":"Index finger is used frequently for touch; middle or ring is preferred."
+    }
+  };
+
+  function safeEscape(s){
+    return String(s ?? "").replace(/[&<>"']/g, m => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[m]));
+  }
+
+  window.optionRationaleHTML = function(q){
+    const answer = q.answer;
+    const opts = q.options || [];
+    const bank = meaningfulWrong[q.id] || {};
+    const lines = [];
+
+    if(bank[answer]){
+      lines.push(`<div><span class="correctText">Correct:</span> ${safeEscape(bank[answer])}</div>`);
+    }else{
+      lines.push(`<div><span class="correctText">Correct:</span> ${safeEscape(answer)}. ${safeEscape(q.clinicalReasoning || "This matches the tested rule.")}</div>`);
+    }
+
+    opts.forEach(opt=>{
+      if(opt === answer) return;
+      if(bank[opt]){
+        lines.push(`<div><span class="wrongText">${safeEscape(opt)}:</span> ${safeEscape(bank[opt])}</div>`);
+      }
+    });
+
+    if(lines.length === 1 && opts.length > 1){
+      lines.push(`<div><span class="wrongText">Other choices:</span> They do not fit the key clue in this item.</div>`);
+    }
+
+    return `<div class="optionRats"><h4>Answer rationale</h4>${lines.join("")}</div>`;
+  };
+
+  window.polishRationaleText = function(root){
+    if(!root) return;
+    const targets = root.querySelectorAll('.feedback, .examFeedback, .optionRats, .reviewBox');
+    const patterns = [
+      [/\bSystolic\b/g, '<span class="accent-blue">Systolic</span>'],
+      [/\bDiastolic\b/g, '<span class="accent-blue">Diastolic</span>'],
+      [/\btop number\b/gi, '<span class="accent-blue">top number</span>'],
+      [/\bbottom number\b/gi, '<span class="accent-blue">bottom number</span>'],
+      [/\bfirst sound\b/gi, '<span class="accent-orange">first sound</span>'],
+      [/\bdisappear(s)?\b/gi, '<span class="accent-orange">$&</span>'],
+      [/\burethral discharge\b/gi, '<span class="accent-purple">urethral discharge</span>'],
+      [/\bpenile discharge\b/gi, '<span class="accent-purple">penile discharge</span>'],
+      [/\bdysuria\b/gi, '<span class="accent-orange">dysuria</span>'],
+      [/\bsexually transmitted infection\b/gi, '<span class="accent-purple">sexually transmitted infection</span>'],
+      [/\bright lower quadrant\b/gi, '<span class="accent-blue">right lower quadrant</span>'],
+      [/\bbowel-pattern changes\b/gi, '<span class="accent-blue">bowel-pattern changes</span>'],
+      [/\bgroin bulge\b/gi, '<span class="accent-orange">groin bulge</span>'],
+      [/\bBMI\b/g, '<span class="accent-purple">BMI</span>'],
+      [/\b18\.5–24\.9\b/g, '<span class="accent-green">18.5–24.9</span>'],
+      [/\b25–29\.9\b/g, '<span class="accent-orange">25–29.9</span>'],
+      [/\b30 or higher\b/gi, '<span class="accent-red">30 or higher</span>'],
+      [/\bCLIA\b/g, '<span class="accent-purple">CLIA</span>'],
+      [/\bCLIA-waived\b/gi, '<span class="accent-purple">CLIA-waived</span>'],
+      [/\bhCG\b/g, '<span class="accent-purple">hCG</span>'],
+      [/\bmiddle finger\b/gi, '<span class="accent-green">middle finger</span>'],
+      [/\bring finger\b/gi, '<span class="accent-green">ring finger</span>'],
+      [/\bconsent\b/gi, '<span class="accent-blue">consent</span>']
+    ];
+
+    targets.forEach(el => {
+      if(el.dataset.polished === '1') return;
+      let html = el.innerHTML;
+      patterns.forEach(([rx, rep]) => { html = html.replace(rx, rep); });
+      el.innerHTML = html;
+      el.dataset.polished = '1';
+    });
+  };
+
+  // Re-polish after user actions without affecting flashcard creation.
+  document.addEventListener('click', () => setTimeout(()=>window.polishRationaleText(document), 50));
+  document.addEventListener('DOMContentLoaded', () => setTimeout(()=>window.polishRationaleText(document), 120));
+})();
+</script>
+
+
+<script>
+/* === Full guided-practice rationale bank: thorough, efficient, selective emphasis === */
+window.FULL_RATIONALES = {"1": {"correct": "Systolic pressure", "why": "The first Korotkoff sound is the highest arterial pressure; that is systolic pressure.", "other": {"Diastolic pressure": "Diastolic is the bottom number and is read when sounds disappear.", "Pulse pressure": "Pulse pressure is systolic minus diastolic.", "Blood volume": "Blood volume is not the pressure heard through the stethoscope."}, "watch": "First sound = systolic. Disappearance = diastolic."}, "2": {"correct": "Providing information on the importance of recommended vaccines", "why": "Vaccines prevent disease before it occurs.", "other": {"Explaining how to correctly take prescribed medication": "Medication teaching supports treatment/adherence, not primary prevention.", "Showing an instructional video based on the patient's treatment plan": "Treatment-plan teaching addresses current care.", "Supplying a patient with information about self-exams": "Self-exams support early detection, not vaccine-style prevention."}, "watch": "Prevention = reduce risk before illness."}, "3": {"correct": "Gonorrhea", "why": "Dysuria plus penile/urethral discharge strongly suggests an STI; gonorrhea is the best match.", "other": {"Appendicitis": "Appendicitis usually causes abdominal pain that may localize to the right lower quadrant; it does not explain penile discharge.", "Irritable bowel syndrome": "IBS causes bowel-pattern changes such as cramping, diarrhea, constipation, or bloating; it does not cause penile discharge.", "Inguinal hernia": "Inguinal hernia usually causes a groin bulge or pressure, often worse with lifting/straining; it does not cause urethral discharge."}, "watch": "Discharge + dysuria = think STI."}, "4": {"correct": "All personnel that come in contact with the specimen", "why": "Chain of custody requires every handler to document transfer/control of the forensic specimen.", "other": {"The employer who requested the specimen": "The employer requested testing but does not prove custody.", "The patient who gives the specimen": "The patient provides the specimen; custody documentation follows every handler.", "The front office staff who checked in the patient": "Check-in is not custody unless the specimen was handled."}, "watch": "Chain of custody = every handler signs."}, "5": {"correct": "Between the cheek and gums", "why": "Buccal medication absorbs through oral mucosa between the cheek and gums.", "other": {"Under the patient's tongue": "Under the tongue is sublingual.", "Sprayed into the patient's nose": "Nasal spray is intranasal.", "In the patient's skin": "Skin injection is intradermal/subcutaneous depending depth."}, "watch": "Buccal = cheek."}, "6": {"correct": "18 inches to 4 feet", "why": "Personal space is about 18 inches to 4 feet and fits patient check-in communication.", "other": {"to 18 inches": "This is intimate distance.", "4 to 12 feet": "This is social distance.", "12 or more feet": "This is public distance."}, "watch": "Personal distance = 18 inches to 4 feet."}, "7": {"correct": "Right ear facing up with the earlobe pulled down and back", "why": "For children under 3, pull down and back; the treated ear should face upward so drops remain in the canal.", "other": {"Right ear facing up with the pinna pulled up and back": "Up and back is for older children/adults.", "Right ear facing down with the earlobe pulled down and back": "The correct pull is used, but the ear should face up.", "Right ear facing down with the pinna pulled up and back": "Wrong age technique and wrong position."}, "watch": "Under 3 years: down and back."}, "8": {"correct": "Provide the patient with a copy of the prescription with \"Copy only\" written on it.", "why": "If a prescription is called in and a paper copy is given, the copy must be clearly marked so it is not used as another original.", "other": {"Provide the patient with a copy of the prescription that reads \"Dispense as written.\"": "“Dispense as written” prevents substitution; it does not prevent duplicate prescription use.", "Provide the patient with an unaltered copy of the prescription.": "An unaltered copy could be misused as an active prescription.", "Inform the patient that a copy of the prescription cannot legally be made.": "A copy can be provided if clearly marked."}, "watch": "Called-in Rx + paper copy = mark “Copy only.”"}, "9": {"correct": "Submit an appeal for the denied claim.", "why": "If an emergent procedure was denied for no preauthorization, appeal with documentation supporting emergency medical necessity.", "other": {"Submit a new claim.": "A new claim does not address the denial reason.", "Resubmit the claim with a different procedure code.": "Changing the code without documentation is improper.", "Instruct the patient to contact the insurer about the denial of payment.": "The office appeals when the provider supports emergency necessity."}, "watch": "Emergency + preauth denial = appeal."}, "10": {"correct": "Medicare", "why": "ACOs focus on coordinated care and cost/quality improvement for Medicare patients.", "other": {"Medicaid": "Medicaid is state/federal assistance coverage, but this ACO item points to Medicare.", "Preferred provider organization (PPO)": "PPO is a private insurance network model.", "Health maintenance organization (HMO)": "HMO is a managed care model with network/referral rules."}, "watch": "ACO = Medicare coordinated care."}, "11": {"correct": "Language barrier", "why": "A language barrier can prevent understanding, so it can invalidate informed consent.", "other": {"Cultural competence": "Cultural competence improves communication.", "Acceptance": "Acceptance does not prevent comprehension.", "Active listening": "Active listening supports comprehension."}, "watch": "Consent must be understood."}, "12": {"correct": "The number of calories from fat", "why": "Fat provides 9 calories per gram.", "other": {"The number of calories from carbohydrates": "Carbohydrates provide 4 calories per gram.", "The number of calories per serving": "Calories per serving depend on food amount.", "The number of calories in the entire container": "Container calories depend on servings."}, "watch": "Fat = 9 kcal/g."}, "13": {"correct": "Obese class I", "why": "BMI 30.0–34.9 is obese class I; 30.5 falls in that range.", "other": {"Healthy weight": "Healthy weight is BMI 18.5–24.9.", "Overweight": "Overweight is BMI 25–29.9.", "Obese class II": "Class II begins at BMI 35."}, "watch": "BMI ≥30 = obese."}, "14": {"correct": "Bounding pulse", "why": "A bounding pulse feels extremely strong and full.", "other": {"Bradycardia": "Bradycardia means slow pulse rate.", "Thready pulse": "Thready pulse is weak and difficult to feel.", "Dysrhythmia": "Dysrhythmia means abnormal rhythm, not strength."}, "watch": "Bounding = strong/full."}, "15": {"correct": "Passive communication", "why": "Fidgeting/anxious behavior during social history can reflect passive communication or discomfort expressing needs.", "other": {"Assertive communication": "Assertive communication is clear and direct.", "Manipulative communication": "Manipulative communication attempts indirect control.", "Passive-aggressive communication": "Passive-aggressive communication shows indirect resistance/hostility."}, "watch": "Passive = anxious, hesitant, nonassertive."}, "16": {"correct": "Controlled medications should be stored in a locked cabinet.", "why": "Controlled substances require secure locked storage.", "other": {"Controlled medications and non-narcotic medications should be stored together.": "Controlled substances require separate secure control.", "Controlled medications should be stored in the examining room.": "Exam room storage is not appropriate unless secured per policy.", "Controlled medications should be stored in sunlight.": "Sunlight can damage medications and is not a security measure."}, "watch": "Controlled substances = locked cabinet."}, "17": {"correct": "Warm the patient's hand.", "why": "Warming improves circulation and capillary blood flow.", "other": {"Hold the patient's hand above their heart.": "Elevation can reduce blood flow to the hand.", "Squeeze the patient's finger.": "Squeezing/milking can damage cells or dilute the specimen.", "Apply a tourniquet above the patient's wrist.": "Tourniquet is not used to improve capillary puncture circulation."}, "watch": "Warm; do not squeeze."}, "18": {"correct": "Have the patient empty their bladder", "why": "Emptying the bladder improves comfort and helps the provider perform the exam.", "other": {"Listen to soothing music while waiting": "Comforting, but not the exam-prep action tested.", "Finish reading educational materials": "Education is not the physical preparation priority.", "Drink a full glass of water": "A full bladder can increase discomfort unless a specific test requires it."}, "watch": "Before physical exam: empty bladder."}, "19": {"correct": "Part B", "why": "Medicare Part B covers outpatient services and durable medical equipment.", "other": {"Part A": "Part A covers inpatient hospital/skilled facility care.", "Part C": "Part C is Medicare Advantage.", "Part D": "Part D covers prescription drugs."}, "watch": "DME = Medicare Part B."}, "20": {"correct": "Superficial dorsal hand veins", "why": "Superficial dorsal hand veins are a safer venipuncture option for a toddler than deep/femoral sites.", "other": {"Femoral vein": "Femoral puncture is high-risk and not routine for an MA.", "Deep brachial veins": "Deep veins increase risk of nerve/artery injury.", "Scalp vein": "Scalp veins may be used in infants in special settings; dorsal hand is the best listed toddler option."}, "watch": "Pediatric draw: safer superficial site."}, "21": {"correct": "Negligent torts", "why": "Failing to document a refusal/preference is a breach of reasonable care and can cause harm.", "other": {"Breach of contract": "This is not primarily a contract dispute.", "Implied consent": "Implied consent is assumed by patient actions; this is a documentation failure.", "Intentional torts": "Intentional torts involve deliberate acts such as assault or battery."}, "watch": "Negligence = failure of reasonable care."}, "22": {"correct": "Double-check the electrodes' attachment", "why": "Secure electrodes reduce artifact and help produce a clear horizontal baseline.", "other": {"Remove artifacts": "Artifacts are prevented by fixing causes; electrode attachment is the final check.", "Cover the patient with a blanket": "Comfort may reduce shivering but does not replace electrode check.", "Enter patient information into the EKG machine": "Important for documentation, not the final tracing-quality step."}, "watch": "Clear EKG = secure electrodes."}, "23": {"correct": "Health care proxy", "why": "A health care proxy names the person authorized to make decisions if the patient cannot.", "other": {"Organ donation": "Organ donation states donation wishes.", "Living will": "Living will states treatment wishes.", "Do not resuscitate (DNR)": "DNR directs no CPR/resuscitation."}, "watch": "Proxy = person; living will = treatment wishes."}, "24": {"correct": "Human chorionic gonadotropin (hCG) test", "why": "Urine hCG pregnancy testing is commonly CLIA-waived because it is simple, rapid, and low-risk.", "other": {"Blood typing and crossmatching": "High-risk transfusion compatibility testing requires stricter lab control.", "Papanicolaou (Pap) test": "Pap testing requires specimen processing and microscopic evaluation.", "Fecal leukocyte test": "Requires lab interpretation; not the simple waived test in this set."}, "watch": "CLIA-waived = simple, low-risk test."}, "25": {"correct": "Administering injections", "why": "Injections involve sharps and possible blood exposure, so PPE is needed.", "other": {"Performing an EKG": "Routine EKG does not usually involve blood/body fluid exposure.", "Assisting a patient with gowning": "No expected exposure unless patient condition requires precautions.", "Performing vital signs": "Routine vital signs do not usually require PPE beyond standard precautions."}, "watch": "PPE when exposure risk exists."}, "26": {"correct": "Tuberculosis", "why": "Tuberculosis is a communicable disease that must be reported to public health authorities.", "other": {"Gestational diabetes": "Not communicable/reportable in this sense.", "Respiratory syncytial virus (RSV)": "RSV rules vary; TB is the classic mandatory reportable disease.", "Influenza": "Influenza surveillance exists, but TB is the best reportable condition here."}, "watch": "TB = reportable."}, "27": {"correct": "128/78 mm Hg", "why": "Elevated BP is systolic 120–129 with diastolic below 80.", "other": {"116/74 mm Hg": "Normal.", "140/90 mm Hg": "Hypertension, not elevated category.", "182/124 mm Hg": "Severely elevated/crisis range."}, "watch": "Elevated BP = 120–129/<80."}, "28": {"correct": "Ability to generate reports", "why": "Electronic practice management software can generate reports and improve scheduling oversight.", "other": {"Single user access at one time": "Modern systems support multiple users.", "Extended patient wait time when scheduling": "Software should reduce delays.", "Limited search features": "Electronic systems usually improve searching."}, "watch": "Scheduling software = reports/search efficiency."}, "29": {"correct": "Head circumference", "why": "Microcephaly means abnormally small head size, assessed by head circumference.", "other": {"Body mass index (BMI)": "BMI assesses weight relative to height.", "Weight": "Weight alone does not assess head size.", "Length": "Length assesses growth, not head size."}, "watch": "Microcephaly = head circumference."}, "30": {"correct": "Dyspnea", "why": "Dyspnea means difficult or uncomfortable breathing.", "other": {"Eupnea": "Normal breathing.", "Pneumonia": "Infection diagnosis, not the term for breathing difficulty.", "Pneumothorax": "Air in pleural space/lung collapse, not the symptom term."}, "watch": "Dyspnea = difficult breathing."}, "31": {"correct": "Bulimia nervosa", "why": "Bulimia involves purging behaviors and laxative use; mood swings may also occur.", "other": {"Compulsive overeating": "Does not specifically include purging.", "Anorexia nervosa": "Centers on restriction/low body weight.", "Binge eating disorder": "Binge eating without compensatory purging."}, "watch": "Purging/laxatives = bulimia."}, "32": {"correct": "Locate the middle portion of the anterior forearm.", "why": "Intradermal allergy testing is commonly placed on the anterior forearm with shallow insertion.", "other": {"Pinch the skin between the thumb and forefinger.": "Pinching is more typical for subcutaneous injection.", "Inject the solution rapidly with the needle positioned at a 30° angle to the skin.": "Intradermal is shallow, about 5–15 degrees, and slow.", "Insert the needle with the bevel pointed down.": "Bevel should be up."}, "watch": "Intradermal = shallow, bevel up."}, "33": {"correct": "Grasp and lift the knot away from the skin.", "why": "Lifting the knot helps cut and remove the suture without pulling contaminated outside material through tissue.", "other": {"Discard each suture immediately after removal.": "Disposal follows removal technique.", "Cut the knot to remove it from the suture.": "Do not pull contaminated knot through tissue.", "Use bandage scissors to cut the suture": "Use suture scissors/removal kit."}, "watch": "Suture removal: lift knot, cut close."}, "34": {"correct": "The assistant should tell the patient to hold pressure on the site and elevate their arm.", "why": "Pressure plus elevation supports hemostasis after venipuncture.", "other": {"The assistant should instruct the patient to bend their elbow to help place pressure on the site.": "Bending the elbow can cause hematoma.", "The patient should place the bandage themselves and leave immediately after the procedure.": "Bleeding must stop before leaving.", "The assistant should tell the patient to hold pressure on the site with their arm below their heart.": "Elevation, not lowering, helps reduce bleeding."}, "watch": "After venipuncture: pressure + elevate."}, "35": {"correct": "Killing all pathogenic organisms and spores", "why": "Sterilization destroys all microorganisms including spores.", "other": {"Killing pathogenic organisms and rendering them ineffective": "This describes disinfection more than sterilization.", "Cleansing instruments using ultrasonic sound waves in a bath of cleanser and water": "This is ultrasonic cleaning/sanitization before sterilization.", "Cleansing instruments to reduce microorganisms to a safe level": "This is sanitization."}, "watch": "Sterilization kills spores."}, "36": {"correct": "Pulse oximetry", "why": "Pulse oximetry uses a finger probe to measure oxygen saturation.", "other": {"Spirometry test": "Measures airflow/volume.", "Lung volume test": "Measures lung capacity/volumes.", "Peak flow monitor": "Measures peak expiratory flow."}, "watch": "Finger probe + SpO₂ = pulse oximetry."}, "37": {"correct": "Light blue", "why": "After blood cultures, light blue coagulation tube is next in order of draw.", "other": {"Green": "Green comes later.", "SST": "Serum/SST follows coagulation tubes.", "Lavender": "Lavender comes after serum/heparin tubes."}, "watch": "Order: cultures → light blue."}, "38": {"correct": "Allergies", "why": "Allergies must be verified every visit because they directly affect medication/procedure safety.", "other": {"Blood pressure": "Important vital sign, but not the every-visit safety verification tested here.", "Surgeries": "Surgical history is important but not usually rechecked every visit.", "Major illnesses": "History matters, but allergies are the key routine safety check."}, "watch": "Every visit: verify allergies."}, "39": {"correct": "Patch testing", "why": "Patch testing applies allergen to skin and checks delayed allergic reaction.", "other": {"Intradermal testing": "Injects allergen under skin, often for immediate response.", "Percutaneous testing": "Scratch/prick testing checks immediate allergy response.", "Radioallergosorbent testing": "RAST is a blood test."}, "watch": "Delayed reaction = patch test."}, "40": {"correct": "A semi-block letter", "why": "Semi-block format uses indented paragraphs.", "other": {"A simplified letter": "Simplified style omits salutation/complimentary closing.", "A full block letter": "Full block aligns all text left, no indented paragraphs.", "A modified block letter": "Modified block changes date/closing placement; semi-block is the indented paragraph style."}, "watch": "Indented paragraphs = semi-block."}, "41": {"correct": "Use soap and water, and scrub for a minimum of 15 seconds.", "why": "Visible soil requires soap and water; scrub at least 15 seconds.", "other": {"Use an alcohol-based hand sanitizer for a minimum of 15 seconds.": "Sanitizer is not enough for visible soil.", "Use an alcohol-based hand sanitizer for a maximum of 15 seconds.": "Visible soil requires soap and water.", "Use soap and water, and scrub for a maximum of 15 seconds.": "Minimum, not maximum."}, "watch": "Visible soil = soap and water."}, "42": {"correct": "Lithotomy position", "why": "Colposcopy requires pelvic/cervical visualization; lithotomy provides access.", "other": {"Dorsal recumbent position": "Knees flexed, but lithotomy with stirrups is standard for colposcopy.", "Supine position": "Supine alone does not provide pelvic access.", "Lateral semi-prone recumbent position": "Used more for rectal procedures/enemas."}, "watch": "Pelvic procedure = lithotomy."}, "43": {"correct": "As needed", "why": "PRN means as needed.", "other": {"Before eating": "AC means before meals.", "Twice per day": "BID means twice daily.", "Nothing by mouth": "NPO means nothing by mouth."}, "watch": "PRN = as needed."}, "44": {"correct": "The specialist provided the service after the expiration date of the preauthorization.", "why": "Authorization must be valid on the service date.", "other": {"The preauthorization does not include the specialty provider's National Provider Identifier (NPI).": "NPI matters for billing, but expiration is the clear denial reason.", "The patient previously submitted and received a self-referral.": "Self-referral does not override authorization terms.", "The approved visits are listed in the preauthorization comments section.": "Approved visits support payment."}, "watch": "Expired preauthorization = denial."}, "45": {"correct": "Document the phone call.", "why": "Document the patient’s progress report accurately, then notify provider according to urgency/policy.", "other": {"Add a note to the patient's appointment file.": "The clinical phone call belongs in documentation/medical record.", "Notify the provider on the next business day.": "May be too delayed depending symptoms.", "Notify the provider immediately.": "Urgent symptoms require immediate notification; routine first step is documentation."}, "watch": "Follow-up call: document."}, "46": {"correct": "24 hr", "why": "Urine creatinine collection is commonly a 24-hour specimen.", "other": {"6 hr": "Too short for standard urine creatinine collection.", "12 hr": "Not the standard in this item.", "48 hr": "Longer than standard."}, "watch": "Urine creatinine = 24 hr."}, "47": {"correct": "32° to 38° C (90° to 100° F)", "why": "Fresh urine drug screen specimens should be near body temperature shortly after collection.", "other": {"41° to 46° C (105° to 115° F)": "Too hot; suggests invalid/tampered specimen.", "18° to 24° C (65° to 75° F)": "Room temperature is too cool.", "27° to 32° C (80° to 90° F)": "Below acceptable fresh range."}, "watch": "Drug screen urine temp = 90–100°F."}, "48": {"correct": "Negligence", "why": "Returning a dropped instrument to the sterile field breaches standard care and can cause infection.", "other": {"Abandonment": "Leaving a patient without proper care/handoff.", "Defamation": "False damaging statement.", "Battery": "Unwanted touching."}, "watch": "Break sterile field + harm = negligence."}, "49": {"correct": "Ask the patient to state and spell their full name and provide their date of birth.", "why": "Use two identifiers and have the patient state them.", "other": {"Ask the patient for their provider's name.": "Provider name is not patient identification.", "Ask the patient to verify their examination room number.": "Room number is not a reliable identifier.", "Ask the patient to state their age and address.": "Name and DOB are the standard safer identifiers."}, "watch": "Two identifiers: name + DOB."}, "50": {"correct": "Ultrasonic sanitization", "why": "Ultrasonic cleaning uses sound waves/vibration to clean instruments.", "other": {"Chemical disinfection": "Uses chemical agents, not sound waves.", "Sterilization": "Sterilization destroys all organisms/spores; ultrasonic is cleaning step.", "Autoclave": "Autoclave uses steam under pressure."}, "watch": "Sound waves = ultrasonic."}, "51": {"correct": "Paraphrasing", "why": "“I hear that you are saying…” restates the patient’s message to confirm understanding.", "other": {"Reflection": "Often mirrors feelings.", "Summarizing": "Condenses a longer discussion.", "Clarification": "Asks for more detail."}, "watch": "Restating message = paraphrasing."}, "52": {"correct": "Cervical spatula", "why": "A cervical spatula collects cervical cells for a Pap test.", "other": {"Uterine dilator": "Dilates cervix/uterine opening.", "Vaginal speculum": "Opens vaginal canal; does not collect cells.", "Uterine sound(s)": "Measures uterine depth."}, "watch": "Pap collection = cervical spatula/brush."}, "53": {"correct": "When the sound disappears", "why": "Diastolic pressure is read when Korotkoff sounds disappear.", "other": {"When the sounds change from swishing to sharp": "Not the standard endpoint.", "When repetitive sounds begin": "Beginning sounds = systolic.", "When the sounds change from strong to muffled": "Muffling may occur before the final endpoint."}, "watch": "Diastolic = sound disappears."}, "54": {"correct": "Asking open-ended questions", "why": "Open-ended questions invite the patient to give more detail about the chief complaint.", "other": {"Using an audio tool": "A tool does not replace patient questioning.", "Asking closed-ended questions": "Closed-ended questions limit responses.", "Using visual diagrams": "Visuals may teach but do not gather subjective detail."}, "watch": "More detail = open-ended."}, "55": {"correct": "Swallow the tablet whole with a glass of water.", "why": "Enteric-coated tablets must remain intact so the coating controls where/how the drug dissolves.", "other": {"Chew the tablet thoroughly before swallowing.": "Chewing destroys the coating.", "Crush the tablet and mix it with applesauce.": "Crushing destroys the coating.", "Dissolve the tablet in a glass of water before drinking.": "Dissolving defeats the coating."}, "watch": "Enteric-coated = swallow whole."}, "56": {"correct": "Receive and prepare tissue specimens for processing.", "why": "During biopsy assistance, MA can handle/prepare the tissue specimen for lab processing.", "other": {"Place sutures at the incision site.": "Suturing is provider scope.", "Swab fluids from the biopsy site.": "Specimen handling is the tested MA task.", "Retract the edges of the biopsy site.": "Retraction may be provider-directed; specimen processing is the safest answer."}, "watch": "Biopsy MA role = specimen handling."}, "57": {"correct": "Tabs downward on the arm", "why": "Tabs downward help lead wires hang without pulling and reduce artifact.", "other": {"Tabs upward on the chest": "Not the listed correct electrode-tab placement.", "Tabs downward on the lower leg": "The arm placement listed is the best answer.", "Tabs downward on the knee": "Knee is not standard electrode placement."}, "watch": "EKG wires should not pull electrodes."}, "58": {"correct": "Right upper quadrant", "why": "The gallbladder is in the right upper quadrant.", "other": {"Right lower quadrant": "Appendix/cecum region.", "Left lower quadrant": "Sigmoid colon/left pelvic organs.", "Left upper quadrant": "Stomach/spleen region."}, "watch": "Gallbladder = RUQ."}, "59": {"correct": "Maintaining an open posture toward the patient", "why": "Open posture shows receptiveness and listening.", "other": {"Rubbing the patient's back": "Touch may be inappropriate without permission.", "Staring at the patient": "Staring can feel aggressive.", "Smiling at the patient": "Can help, but open posture more directly shows receptiveness."}, "watch": "Listening cue = open posture."}, "60": {"correct": "Face the patient when speaking", "why": "Facing the patient supports lip reading, facial cues, and clearer communication.", "other": {"Face the patient, speaking toward their bad ear": "Use the better ear if one is better; always face patient.", "Speak very low when talking to the patient": "Speak clearly, not very low.", "Turn away from the patient": "Turning away removes visual cues."}, "watch": "Hard of hearing: face patient."}, "61": {"correct": "1 ½ to 2 inches", "why": "Scratch allergy test sites are spaced about 1.5–2 inches apart to prevent overlapping reactions.", "other": {"3 ½ to 4 inches": "Too far for routine scratch spacing.", "2 ½ to 3 inches": "More than needed.", "2 to 3 ½ inches": "Too broad/large for standard spacing."}, "watch": "Scratch test spacing = 1.5–2 inches."}, "62": {"correct": "Suture scissors", "why": "Suture scissors are designed to remove stitches.", "other": {"A retractor": "Holds tissue aside.", "A probe": "Explores wounds/cavities.", "A dilator": "Enlarges an opening."}, "watch": "Stitch removal = suture scissors."}, "63": {"correct": "Autoclave", "why": "Hemostats used in invasive procedures are commonly sterilized by autoclave.", "other": {"Dry Heat": "Not the common office method for hemostats.", "Gas": "Used for heat/moisture-sensitive items.", "Chemical": "Used selectively; autoclave is standard for metal instruments."}, "watch": "Metal instruments = autoclave."}, "64": {"correct": "Paper towels", "why": "Paper towels are needed to dry hands and turn off faucet without recontamination.", "other": {"Cold water": "Running water is needed; cold water is not the key supply.", "An oil-based lotion": "Not part of handwashing and can affect gloves.", "Bar soap": "Liquid soap is preferred in clinical settings."}, "watch": "Handwashing supply = paper towels."}, "65": {"correct": "The needle holder with the suture attached", "why": "The provider should receive the needle holder loaded with the suture for sterile efficient suturing.", "other": {"Only the sutures": "Needle holder is also needed.", "The needle holder and the suture, separately": "Loading should be prepared.", "Only the needle holder": "No suture is attached."}, "watch": "Hand loaded needle holder."}, "66": {"correct": "The thermometer should be inserted ½ inch into the rectum.", "why": "For an infant, rectal thermometer insertion is about 1/2 inch.", "other": {"The thermometer should be inserted ⅝ inch into the rectum.": "Not the standard listed infant depth.", "A rectal temperature should not be taken on an infant.": "Can be used when ordered/policy allows.", "The thermometer should be inserted 1 inch into the rectum.": "Too deep for an infant."}, "watch": "Infant rectal temp = 1/2 inch."}, "67": {"correct": "Sterilization", "why": "Sterilization destroys all microorganisms and spores and can use heat, gas, chemicals, UV, or radiation methods.", "other": {"Disinfection": "Does not reliably kill spores.", "Sanitization": "Reduces organisms to safe levels.", "Hand hygiene": "Cleans hands; does not sterilize instruments."}, "watch": "Sterilization kills spores."}, "68": {"correct": "Routinely wash hands before and after meals.", "why": "Hand hygiene is the practical way to reduce infection spread.", "other": {"Use only high-level disinfectants on supplies for sanitization purposes.": "Patient teaching focuses on hand hygiene/routine cleaning.", "Avoid using hand sanitizer.": "Sanitizer is useful when hands are not visibly soiled.", "Cough or sneeze into the open air.": "Use tissue/elbow and hand hygiene."}, "watch": "Infection prevention = handwashing."}, "69": {"correct": "To separate a specimen into different components", "why": "A centrifuge spins specimens to separate components such as serum/plasma from cells.", "other": {"To transfer plasma to another tube": "Transfer happens after separation.", "To aspirate plasma off the cells": "Aspirating is manual after centrifuging.", "To avoid hemolysis of the specimen": "Improper handling can cause hemolysis; it is not the centrifuge purpose."}, "watch": "Centrifuge = separate components."}, "70": {"correct": "Immediately flush the exposed area following the exposure.", "why": "First step after exposure is immediate flushing/washing.", "other": {"Report the exposure incident to the supervisor within 48 to 72 hr.": "Report promptly after first aid; 48–72 hr is too delayed.", "Utilize an alcohol-based hand sanitizer to cleanse the exposed area.": "Flush/wash thoroughly; sanitizer is not enough for a bite exposure.", "Write an incident report to be included in the employee's personal file.": "Incident report follows immediate first aid and reporting."}, "watch": "Exposure first = flush/wash."}, "71": {"correct": "Respecting a patient's culture with their health care needs", "why": "PCMH is patient-centered and considers culture, preferences, and coordinated needs.", "other": {"Providing a network of contracted providers": "Insurance network concept.", "Administering gynecologic and prenatal labor and birth care": "Service type, not PCMH principle.", "Allowing the inclusion of preexisting condition coverage": "Insurance coverage concept."}, "watch": "PCMH = patient-centered care."}, "72": {"correct": "A Holter monitor application", "why": "Applying a Holter monitor is within MA scope; interpretation is not.", "other": {"An angiogram": "Invasive procedure by licensed providers.", "A nuclear stress test": "Requires specialized licensed staff.", "A cardiac Doppler ultrasound": "Performed by trained diagnostic staff."}, "watch": "MA cardiac task = Holter application."}, "73": {"correct": "Fever of unknown origin", "why": "Outpatient coding uses confirmed diagnoses or signs/symptoms; fever is a codeable symptom/condition statement.", "other": {"Suspected strep throat": "Do not code suspected diagnosis as confirmed outpatient.", "Probable urinary tract infection": "Do not code probable diagnosis as confirmed outpatient.", "Knee pain and arthritis": "If arthritis is confirmed it may be coded; the key tested rule is avoiding uncertain diagnosis language."}, "watch": "Outpatient: do not code suspected/probable as confirmed."}, "74": {"correct": "Identify the patient.", "why": "Before specimen collection, first verify patient identity.", "other": {"Educate the patient about correct specimen collection technique.": "Education follows identification.", "Proceed with obtaining the specimen.": "Never collect before identity verification.", "Provide the patient with the lab requisition form.": "Identity check comes first."}, "watch": "Before collection: identify patient."}, "75": {"correct": "Tetanus, diphtheria, and pertussis (Tdap)", "why": "Tdap is used for age 7 or older catch-up/booster protection.", "other": {"Varicella": "Typically given in early childhood.", "Hepatitis B": "Begins in infancy.", "Measles, mumps, and rubella (MMR)": "Typically given in early childhood."}, "watch": "Age 7+ = Tdap."}, "76": {"correct": "Multiply the number of kilograms by 2.2", "why": "Kilograms to pounds: kg × 2.2.", "other": {"Divide the number of kilograms by 2.2": "Dividing converts pounds to kilograms.", "Multiply the number of kilograms by 1.2": "Wrong conversion factor.", "Divide the number of kilograms by 1.2": "Wrong conversion factor."}, "watch": "kg × 2.2 = lb."}, "77": {"correct": "The provider should include information about alternative procedures before informed consent is obtained from the patient.", "why": "Provider must explain procedure, risks, benefits, and alternatives before consent is signed.", "other": {"The provider should review the patient's insurance coverage for the procedure.": "Insurance coverage is not informed consent.", "The medical assistant should explain the procedure to the patient.": "MA may witness/reinforce; provider explains consent.", "The medical assistant should describe the risks of the procedure to the patient.": "Provider explains risks."}, "watch": "Consent explanation = provider."}, "78": {"correct": "Otoscope", "why": "Otoscope is a routine instrument for general physical exam of ears.", "other": {"Curette": "Used to scrape/remove tissue or cerumen.", "Forceps": "Used to grasp items/tissue.", "Endoscope": "Specialized internal visualization."}, "watch": "General exam = otoscope."}, "79": {"correct": "Place the patient in a supine position.", "why": "Syncope/fainting: place supine to support blood flow to the brain and prevent injury.", "other": {"Apply a warm washcloth to the patient's neck.": "Not priority.", "Elevate the patient's head above their heart.": "Can worsen cerebral blood flow.", "Offer the patient something to drink.": "Do not give oral intake until fully alert/safe."}, "watch": "Fainting = supine."}, "80": {"correct": "158.4", "why": "72 kg × 2.2 = 158.4 lb.", "other": {"185.9": "Incorrect conversion.", "72": "Still kilograms, not pounds.", "98.2": "Incorrect conversion."}, "watch": "kg to lb = multiply by 2.2."}, "81": {"correct": "Providing first aid procedures", "why": "Providing first aid is within MA scope; diagnosis/exams/medical advice are not.", "other": {"Diagnosing symptoms": "Provider scope.", "Performing a physical examination": "Provider performs physical exam.", "Giving medical advice": "MA reinforces provider instructions; does not give independent medical advice."}, "watch": "MA scope = assist/first aid, not diagnose."}, "82": {"correct": "Cold fingers", "why": "Cold fingers reduce peripheral perfusion and can cause falsely low pulse oximetry.", "other": {"Hyperventilation syndrome": "Does not cause probe-related falsely low reading.", "Carbon monoxide poisoning": "Can cause falsely normal/high SpO₂ on standard pulse ox.", "Anemia": "SpO₂ may appear normal even when oxygen-carrying capacity is low."}, "watch": "Cold/poor perfusion = falsely low SpO₂."}, "83": {"correct": "American Red Cross", "why": "The Red Cross provides disaster relief, support, and community-resource links after hurricanes.", "other": {"Department of Health and Human Services (HHS)": "Broad federal agency; not the direct disaster-relief referral here.", "Centers for Disease Control and Prevention (CDC)": "Public health guidance, not displacement support.", "National Council on Aging": "Focuses on older adults, not general hurricane displacement."}, "watch": "Disaster displacement = Red Cross."}, "84": {"correct": "Adjusting the order of draw", "why": "Incorrect order of draw is a preanalytical error because it can contaminate tubes/additives and affect results.", "other": {"Identification of the patient": "Patient ID prevents wrong-patient errors; the tested specimen-quality issue is order of draw.", "Applying the tourniquet 3 inches above the elbow": "Standard venipuncture step.", "Reading the requisition order": "Prevents error; not the error."}, "watch": "Preanalytical = before analysis."}, "85": {"correct": "Health history", "why": "Subjective intake data belongs in health history.", "other": {"Anthropometric measurements": "Height/weight/BMI are objective.", "Vital signs": "Objective measurements.", "Radiology reports": "Diagnostic reports, not subjective intake."}, "watch": "Subjective data = health history."}, "86": {"correct": "Cilia", "why": "Cilia move mucus through the respiratory tract.", "other": {"Mitochondria": "Energy production.", "Ribosomes": "Protein synthesis.", "Centrioles": "Cell division."}, "watch": "Mucus movement = cilia."}, "87": {"correct": "Butterfly method", "why": "Butterfly/winged infusion set is useful for small or fragile veins in older adults.", "other": {"Capillary method": "May not supply all ordered tests/tubes.", "Syringe method": "Can control pressure, but butterfly is best listed for small veins.", "Evacuated system method": "Vacuum can collapse fragile veins."}, "watch": "Small veins = butterfly."}, "88": {"correct": "The sender's name is in all capital letters", "why": "Simplified letter style omits salutation/complimentary close and may use sender name in all caps.", "other": {"A complimentary closing": "Simplified style omits complimentary closing.", "Center aligned dateline and salutation": "Not simplified style.", "Indented paragraphs in the body of the letter": "Indented paragraphs = semi-block."}, "watch": "Simplified letter = sender name all caps."}, "89": {"correct": "Leaning towards the other person", "why": "Leaning toward someone shows engagement and positive nonverbal listening.", "other": {"Leaning away from the other person": "Suggests disengagement.", "Turning your back towards the other person": "Negative/closed behavior.", "Displaying stiff posture towards the other person": "Closed or tense posture."}, "watch": "Positive nonverbal = lean toward."}, "90": {"correct": "Middle", "why": "Adult capillary puncture commonly uses middle or ring finger; middle is the listed correct option.", "other": {"Thumb": "Avoid thumb.", "Pinky": "Avoid pinky because tissue is thin and bone is close.", "Index": "Avoid if possible; middle/ring preferred."}, "watch": "Adult fingerstick = middle/ring."}};
+
+(function(){
+  function safeEscape(s){
+    return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+  }
+
+  window.optionRationaleHTML = function(q){
+    const bank = window.FULL_RATIONALES[String(q.id)];
+    if(!bank){
+      return `<div class="optionRats"><h4>Answer rationale</h4><div><span class="correctText">Correct:</span> ${safeEscape(q.answer)}. ${safeEscape(q.clinicalReasoning || "This matches the tested concept.")}</div></div>`;
+    }
+    const lines = [];
+    lines.push(`<div><span class="correctText">Correct:</span> <b>${safeEscape(bank.correct)}</b> — ${safeEscape(bank.why)}</div>`);
+    const other = bank.other || {};
+    Object.keys(other).forEach(key => {
+      if(key === bank.correct) return;
+      lines.push(`<div><span class="wrongText">${safeEscape(key)}:</span> ${safeEscape(other[key])}</div>`);
+    });
+    if(bank.watch){
+      lines.push(`<div class="rationaleWatch"><b>Test focus:</b> ${safeEscape(bank.watch)}</div>`);
+    }
+    return `<div class="optionRats"><h4>Answer rationale</h4>${lines.join("")}</div>`;
+  };
+
+  window.polishRationaleText = function(root){
+    if(!root) return;
+    const targets = root.querySelectorAll('.feedback, .examFeedback, .optionRats, .reviewBox');
+    const patterns = [
+      [/\bSystolic\b/g, '<span class="accent-blue">Systolic</span>'],
+      [/\bDiastolic\b/g, '<span class="accent-blue">Diastolic</span>'],
+      [/\btop number\b/gi, '<span class="accent-blue">top number</span>'],
+      [/\bbottom number\b/gi, '<span class="accent-blue">bottom number</span>'],
+      [/\bfirst sound\b/gi, '<span class="accent-orange">first sound</span>'],
+      [/\bKorotkoff sounds?\b/gi, '<span class="accent-blue">$&</span>'],
+      [/\bdisappear(s)?\b/gi, '<span class="accent-orange">$&</span>'],
+      [/\bBMI\b/g, '<span class="accent-purple">BMI</span>'],
+      [/\b18\.5–24\.9\b/g, '<span class="accent-green">18.5–24.9</span>'],
+      [/\b25–29\.9\b/g, '<span class="accent-orange">25–29.9</span>'],
+      [/\b30\.0–34\.9\b/g, '<span class="accent-red">30.0–34.9</span>'],
+      [/\b30 or higher\b/gi, '<span class="accent-red">30 or higher</span>'],
+      [/\b≥30\b/g, '<span class="accent-red">≥30</span>'],
+      [/\bCLIA\b/g, '<span class="accent-purple">CLIA</span>'],
+      [/\bCLIA-waived\b/gi, '<span class="accent-purple">CLIA-waived</span>'],
+      [/\bhCG\b/g, '<span class="accent-purple">hCG</span>'],
+      [/\bmiddle finger\b/gi, '<span class="accent-green">middle finger</span>'],
+      [/\bring finger\b/gi, '<span class="accent-green">ring finger</span>'],
+      [/\bthumb\b/gi, '<span class="accent-red">thumb</span>'],
+      [/\bpinky\b/gi, '<span class="accent-red">pinky</span>'],
+      [/\bdysuria\b/gi, '<span class="accent-orange">dysuria</span>'],
+      [/\bpenile discharge\b/gi, '<span class="accent-purple">penile discharge</span>'],
+      [/\burethral discharge\b/gi, '<span class="accent-purple">urethral discharge</span>'],
+      [/\bsexually transmitted infection\b/gi, '<span class="accent-purple">sexually transmitted infection</span>'],
+      [/\bright lower quadrant\b/gi, '<span class="accent-blue">right lower quadrant</span>'],
+      [/\bbowel-pattern changes\b/gi, '<span class="accent-blue">bowel-pattern changes</span>'],
+      [/\bgroin bulge\b/gi, '<span class="accent-orange">groin bulge</span>'],
+      [/\bconsent\b/gi, '<span class="accent-blue">consent</span>'],
+      [/\bnegligence\b/gi, '<span class="accent-purple">negligence</span>'],
+      [/\bmalpractice\b/gi, '<span class="accent-purple">malpractice</span>'],
+      [/\bbattery\b/gi, '<span class="accent-purple">battery</span>'],
+      [/\bassault\b/gi, '<span class="accent-purple">assault</span>'],
+      [/\bMedicare Part B\b/g, '<span class="accent-blue">Medicare Part B</span>'],
+      [/\bDME\b/g, '<span class="accent-blue">DME</span>'],
+      [/\bsoap and water\b/gi, '<span class="accent-green">soap and water</span>'],
+      [/\b24-hour\b/gi, '<span class="accent-orange">24-hour</span>'],
+      [/\b90–100°F\b/g, '<span class="accent-orange">90–100°F</span>'],
+      [/\blithotomy\b/gi, '<span class="accent-purple">lithotomy</span>'],
+      [/\bPRN\b/g, '<span class="accent-blue">PRN</span>'],
+      [/\bopen-ended questions\b/gi, '<span class="accent-green">open-ended questions</span>'],
+      [/\bsupine\b/gi, '<span class="accent-blue">supine</span>']
+    ];
+    targets.forEach(el => {
+      if(el.dataset.polished === '1') return;
+      let h = el.innerHTML;
+      patterns.forEach(([rx, rep]) => { h = h.replace(rx, rep); });
+      el.innerHTML = h;
+      el.dataset.polished = '1';
+    });
+  };
+
+  document.addEventListener('click', () => setTimeout(() => window.polishRationaleText(document), 50));
+  document.addEventListener('DOMContentLoaded', () => setTimeout(() => window.polishRationaleText(document), 120));
 })();
 </script>
 
